@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scriptbridge.local/schemas/screenplay.schema.json",
+  "title": "ScriptBridge Screenplay",
+  "type": "object",
+  "required": ["schema_version", "project", "story_bible", "chapters", "scenes", "metadata"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "project": {
+      "type": "object",
+      "required": ["id", "title", "source_language", "target_format", "adaptation_style"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "minLength": 1 },
+        "source_language": { "type": "string" },
+        "target_format": { "type": "string" },
+        "adaptation_style": {
+          "type": "object",
+          "required": ["genre", "tone", "dialogue_style"],
+          "properties": {
+            "genre": { "type": "string" },
+            "tone": { "type": "string" },
+            "dialogue_style": { "type": "string" },
+            "target_audience": { "type": "string" },
+            "episode_count": { "type": "integer" },
+            "target_runtime_minutes": { "type": "integer" },
+            "scene_density": { "enum": ["compact", "balanced", "expanded"] }
+          }
+        }
+      }
+    },
+    "story_bible": {
+      "type": "object",
+      "required": ["characters", "locations", "timeline"],
+      "properties": {
+        "characters": { "type": "array", "items": { "$ref": "#/$defs/character" } },
+        "locations": { "type": "array", "items": { "$ref": "#/$defs/location" } },
+        "timeline": { "type": "array", "items": { "$ref": "#/$defs/timeline_event" } },
+        "themes": { "type": "array", "items": { "$ref": "#/$defs/theme_thread" } },
+        "conflicts": { "type": "array", "items": { "$ref": "#/$defs/conflict_thread" } },
+        "foreshadowing": { "type": "array", "items": { "$ref": "#/$defs/foreshadowing_thread" } },
+        "continuity_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "chapters": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/chapter" } },
+    "scenes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scene" } },
+    "metadata": {
+      "type": "object",
+      "required": ["generated_at", "model", "provider", "provider_status", "source_chapter_count", "warnings"],
+      "properties": {
+        "generated_at": { "type": "string" },
+        "model": { "type": "string" },
+        "provider": { "type": "string" },
+        "provider_status": { "type": "string" },
+        "source_chapter_count": { "type": "integer" },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "pipeline_stages": { "type": "array", "items": { "$ref": "#/$defs/pipeline_stage" } }
+      }
+    },
+    "quality_report": { "$ref": "#/$defs/quality_report" },
+    "production": { "$ref": "#/$defs/production_breakdown" }
+  },
+  "$defs": {
+    "appearance": {
+      "type": "object",
+      "required": ["chapter_id", "paragraph_id"],
+      "properties": {
+        "chapter_id": { "type": "string" },
+        "paragraph_id": { "type": "string" }
+      }
+    },
+    "source_ref": {
+      "type": "object",
+      "required": ["chapter_id", "paragraph_ids"],
+      "properties": {
+        "chapter_id": { "type": "string" },
+        "paragraph_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "character": {
+      "type": "object",
+      "required": ["id", "name", "aliases", "role", "description", "goals", "relationships"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "role": { "enum": ["protagonist", "supporting", "antagonist", "minor"] },
+        "description": { "type": "string" },
+        "goals": { "type": "array", "items": { "type": "string" } },
+        "first_appearance": { "anyOf": [{ "$ref": "#/$defs/appearance" }, { "type": "null" }] },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["character_id", "type", "description"],
+            "properties": {
+              "character_id": { "type": "string" },
+              "type": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "arc": { "$ref": "#/$defs/character_arc" },
+        "traits": { "type": "array", "items": { "type": "string" } },
+        "secrets": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "character_arc": {
+      "type": "object",
+      "properties": {
+        "start_state": { "type": "string" },
+        "end_state": { "type": "string" },
+        "desire": { "type": "string" },
+        "fear": { "type": "string" },
+        "turning_points": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["id", "name", "type", "description"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "enum": ["interior", "exterior", "mixed", "unknown"] },
+        "description": { "type": "string" },
+        "first_appearance": { "anyOf": [{ "$ref": "#/$defs/appearance" }, { "type": "null" }] }
+      }
+    },
+    "timeline_event": {
+      "type": "object",
+      "required": ["id", "chapter_id", "order", "summary", "character_ids"],
+      "properties": {
+        "id": { "type": "string" },
+        "chapter_id": { "type": "string" },
+        "order": { "type": "integer" },
+        "summary": { "type": "string" },
+        "character_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "theme_thread": {
+      "type": "object",
+      "required": ["id", "name", "statement", "evidence_refs"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "statement": { "type": "string" },
+        "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } }
+      }
+    },
+    "conflict_thread": {
+      "type": "object",
+      "required": ["id", "title", "stakes", "status", "involved_character_ids", "source_refs"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "stakes": { "type": "string" },
+        "status": { "enum": ["setup", "escalating", "resolved", "open"] },
+        "involved_character_ids": { "type": "array", "items": { "type": "string" } },
+        "source_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } }
+      }
+    },
+    "foreshadowing_thread": {
+      "type": "object",
+      "required": ["id", "setup", "payoff", "status", "source_refs"],
+      "properties": {
+        "id": { "type": "string" },
+        "setup": { "type": "string" },
+        "payoff": { "type": "string" },
+        "status": { "enum": ["seeded", "paid_off", "missing_payoff"] },
+        "source_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } }
+      }
+    },
+    "chapter": {
+      "type": "object",
+      "required": ["id", "order", "title", "text", "paragraphs", "summary"],
+      "properties": {
+        "id": { "type": "string" },
+        "order": { "type": "integer" },
+        "title": { "type": "string" },
+        "text": { "type": "string" },
+        "summary": { "type": "string" },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "chapter_id", "index", "text", "char_start", "char_end"],
+            "properties": {
+              "id": { "type": "string" },
+              "chapter_id": { "type": "string" },
+              "index": { "type": "integer" },
+              "text": { "type": "string" },
+              "char_start": { "type": "integer" },
+              "char_end": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "required": [
+        "id",
+        "chapter_ids",
+        "source_refs",
+        "heading",
+        "title",
+        "dramatic_purpose",
+        "conflict",
+        "characters",
+        "beats",
+        "summary",
+        "elements"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "chapter_ids": { "type": "array", "items": { "type": "string" } },
+        "source_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } },
+        "heading": {
+          "type": "object",
+          "required": ["context", "location_id", "time_of_day"],
+          "properties": {
+            "context": { "enum": ["INT", "EXT", "INT/EXT", "UNKNOWN"] },
+            "location_id": { "type": "string" },
+            "time_of_day": { "enum": ["DAY", "NIGHT", "DUSK", "DAWN", "UNKNOWN"] }
+          }
+        },
+        "title": { "type": "string" },
+        "dramatic_purpose": { "type": "string" },
+        "conflict": { "type": "string" },
+        "characters": { "type": "array", "items": { "type": "string" } },
+        "beats": { "type": "array", "items": { "type": "string" } },
+        "summary": { "type": "string" },
+        "elements": { "type": "array", "items": { "$ref": "#/$defs/element" } }
+        ,
+        "act": { "type": "string" },
+        "sequence": { "type": "string" },
+        "emotional_shift": { "type": "string" },
+        "production_notes": { "type": "array", "items": { "type": "string" } },
+        "rewrite_options": { "type": "array", "items": { "type": "string" } },
+        "quality_flags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "element": {
+      "type": "object",
+      "required": ["id", "type", "text", "source_refs"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "enum": ["action", "dialogue", "parenthetical", "transition", "voice_over", "shot", "note"]
+        },
+        "text": { "type": "string" },
+        "character_id": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "emotion": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "parenthetical": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "source_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } }
+      }
+    },
+    "pipeline_stage": {
+      "type": "object",
+      "required": ["id", "name", "agent", "status", "summary"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "agent": { "type": "string" },
+        "status": { "enum": ["pending", "running", "ok", "warning", "failed"] },
+        "summary": { "type": "string" },
+        "evidence_count": { "type": "integer" },
+        "output_count": { "type": "integer" },
+        "duration_ms": { "type": "integer" }
+      }
+    },
+    "quality_report": {
+      "type": "object",
+      "properties": {
+        "overall_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "metrics": { "type": "array", "items": { "$ref": "#/$defs/quality_metric" } },
+        "risks": { "type": "array", "items": { "$ref": "#/$defs/validation_issue" } },
+        "recommendations": { "type": "array", "items": { "type": "string" } },
+        "chapter_coverage": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "quality_metric": {
+      "type": "object",
+      "required": ["id", "name", "score", "status", "detail"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "status": { "enum": ["excellent", "good", "warning", "critical"] },
+        "detail": { "type": "string" },
+        "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/source_ref" } }
+      }
+    },
+    "validation_issue": {
+      "type": "object",
+      "required": ["path", "message", "severity"],
+      "properties": {
+        "path": { "type": "string" },
+        "message": { "type": "string" },
+        "severity": { "enum": ["error", "warning"] }
+      }
+    },
+    "production_breakdown": {
+      "type": "object",
+      "properties": {
+        "estimated_pages": { "type": "number" },
+        "estimated_runtime_minutes": { "type": "number" },
+        "cast_size": { "type": "integer" },
+        "location_count": { "type": "integer" },
+        "shooting_days": { "type": "integer" },
+        "location_breakdowns": { "type": "array", "items": { "$ref": "#/$defs/location_breakdown" } },
+        "shot_plan": { "type": "array", "items": { "$ref": "#/$defs/shot_plan" } }
+      }
+    },
+    "location_breakdown": {
+      "type": "object",
+      "properties": {
+        "location_id": { "type": "string" },
+        "scene_ids": { "type": "array", "items": { "type": "string" } },
+        "estimated_half_days": { "type": "number" },
+        "requirements": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "shot_plan": {
+      "type": "object",
+      "properties": {
+        "scene_id": { "type": "string" },
+        "setup": { "type": "string" },
+        "camera": { "type": "string" },
+        "sound": { "type": "string" },
+        "difficulty": { "enum": ["low", "medium", "high"] }
+      }
+    }
+  }
+}

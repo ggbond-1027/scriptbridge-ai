@@ -1,0 +1,437 @@
+schema_version: '1.0'
+project:
+  id: proj_001
+  title: ????
+  source_language: zh-CN
+  target_format: screenplay
+  adaptation_style:
+    genre: 悬疑短剧
+    tone: 克制、紧张
+    dialogue_style: 自然
+story_bible:
+  characters:
+  - id: char_001
+    name: 林舟
+    aliases: []
+    role: protagonist
+    description: 林舟 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    goals:
+    - 在改编剧本中推动与林舟相关的核心事件。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_001
+    relationships: []
+  - id: char_002
+    name: 信封上
+    aliases: []
+    role: supporting
+    description: 信封上 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    goals:
+    - 在改编剧本中推动与信封上相关的核心事件。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_002
+    relationships: []
+  - id: char_003
+    name: 还想知
+    aliases: []
+    role: supporting
+    description: 还想知 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    goals:
+    - 在改编剧本中推动与还想知相关的核心事件。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_003
+    relationships: []
+  - id: char_004
+    name: 的男人
+    aliases: []
+    role: supporting
+    description: 的男人 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    goals:
+    - 在改编剧本中推动与的男人相关的核心事件。
+    first_appearance:
+      chapter_id: ch_002
+      paragraph_id: p_002_002
+    relationships: []
+  locations:
+  - id: loc_001
+    name: 老宅
+    type: interior
+    description: 老宅 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_001
+  - id: loc_002
+    name: 书房
+    type: interior
+    description: 书房 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_001
+  - id: loc_003
+    name: 街
+    type: exterior
+    description: 街 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_003
+  - id: loc_004
+    name: 雨夜
+    type: exterior
+    description: 雨夜 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_001
+  - id: loc_005
+    name: 房间
+    type: interior
+    description: 房间 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_002
+  - id: loc_006
+    name: 门口
+    type: mixed
+    description: 门口 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_001
+      paragraph_id: p_001_001
+  - id: loc_007
+    name: 办公室
+    type: interior
+    description: 办公室 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    first_appearance:
+      chapter_id: ch_003
+      paragraph_id: p_003_001
+  timeline:
+  - id: evt_001
+    chapter_id: ch_001
+    order: 1
+    summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
+    character_ids:
+    - char_001
+    - char_002
+  - id: evt_002
+    chapter_id: ch_002
+    order: 2
+    summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+    character_ids:
+    - char_001
+    - char_002
+  - id: evt_003
+    chapter_id: ch_003
+    order: 3
+    summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+    character_ids:
+    - char_001
+    - char_002
+chapters:
+- id: ch_001
+  order: 1
+  title: 第一章 雨夜来信
+  text: '雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
+
+
+    林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
+
+
+    “如果你还想知道真相，明晚十点，到旧街钟楼。”
+
+
+    她盯着那行字很久，直到窗外的雷声把相框震倒。相框背后夹着一张泛黄的车票，日期正是父亲失踪的那一天。'
+  paragraphs:
+  - id: p_001_001
+    chapter_id: ch_001
+    index: 1
+    text: 雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
+    char_start: 0
+    char_end: 43
+  - id: p_001_002
+    chapter_id: ch_001
+    index: 2
+    text: 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
+    char_start: 45
+    char_end: 104
+  - id: p_001_003
+    chapter_id: ch_001
+    index: 3
+    text: “如果你还想知道真相，明晚十点，到旧街钟楼。”
+    char_start: 106
+    char_end: 129
+  - id: p_001_004
+    chapter_id: ch_001
+    index: 4
+    text: 她盯着那行字很久，直到窗外的雷声把相框震倒。相框背后夹着一张泛黄的车票，日期正是父亲失踪的那一天。
+    char_start: 131
+    char_end: 180
+  summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
+- id: ch_002
+  order: 2
+  title: 第二章 旧街钟楼
+  text: '第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
+
+
+    一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+
+
+    录音笔里传出父亲的声音：“不要相信报社里的人，尤其是周启明。”
+
+
+    林舟握紧录音笔，抬头时男人已经不见了。便利店的玻璃门上映出另一个身影，周启明正站在街对面看着她。'
+  paragraphs:
+  - id: p_002_001
+    chapter_id: ch_002
+    index: 1
+    text: 第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
+    char_start: 0
+    char_end: 40
+  - id: p_002_002
+    chapter_id: ch_002
+    index: 2
+    text: 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+    char_start: 42
+    char_end: 80
+  - id: p_002_003
+    chapter_id: ch_002
+    index: 3
+    text: 录音笔里传出父亲的声音：“不要相信报社里的人，尤其是周启明。”
+    char_start: 82
+    char_end: 113
+  - id: p_002_004
+    chapter_id: ch_002
+    index: 4
+    text: 林舟握紧录音笔，抬头时男人已经不见了。便利店的玻璃门上映出另一个身影，周启明正站在街对面看着她。
+    char_start: 115
+    char_end: 163
+  summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+- id: ch_003
+  order: 3
+  title: 第三章 报社档案室
+  text: '林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
+
+
+    档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+
+
+    合影中，父亲、周启明和灰色风衣男人站在同一艘货船前。照片背面写着：事故从来不是事故。
+
+
+    门外传来脚步声。林舟把报告塞进包里，关灯躲到柜子后面。周启明推门进来，轻声说：“我知道你在这里。”'
+  paragraphs:
+  - id: p_003_001
+    chapter_id: ch_003
+    index: 1
+    text: 林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
+    char_start: 0
+    char_end: 43
+  - id: p_003_002
+    chapter_id: ch_003
+    index: 2
+    text: 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+    char_start: 45
+    char_end: 100
+  - id: p_003_003
+    chapter_id: ch_003
+    index: 3
+    text: 合影中，父亲、周启明和灰色风衣男人站在同一艘货船前。照片背面写着：事故从来不是事故。
+    char_start: 102
+    char_end: 144
+  - id: p_003_004
+    chapter_id: ch_003
+    index: 4
+    text: 门外传来脚步声。林舟把报告塞进包里，关灯躲到柜子后面。周启明推门进来，轻声说：“我知道你在这里。”
+    char_start: 146
+    char_end: 195
+  summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+scenes:
+- id: sc_001
+  chapter_ids:
+  - ch_001
+  source_refs:
+  - chapter_id: ch_001
+    paragraph_ids:
+    - p_001_001
+    - p_001_002
+    - p_001_003
+  heading:
+    context: INT
+    location_id: loc_001
+    time_of_day: NIGHT
+  title: 第一章 雨夜来信 的核心场面
+  dramatic_purpose: 将 第一章 雨夜来信 的关键事件转化为可表演的场面。
+  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
+  characters:
+  - char_001
+  - char_002
+  beats:
+  - 建立场景和人物状态
+  - 释放关键信息
+  - 用动作或对白推动冲突
+  summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
+  elements:
+  - id: el_001_001
+    type: action
+    text: 雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_001
+      paragraph_ids:
+      - p_001_001
+      - p_001_002
+      - p_001_003
+  - id: el_001_002
+    type: dialogue
+    text: 我明白了，林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机。
+    character_id: char_001
+    emotion: 压抑
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_001
+      paragraph_ids:
+      - p_001_001
+      - p_001_002
+      - p_001_003
+  - id: el_001_003
+    type: transition
+    text: 切至下一场
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_001
+      paragraph_ids:
+      - p_001_001
+      - p_001_002
+      - p_001_003
+- id: sc_002
+  chapter_ids:
+  - ch_002
+  source_refs:
+  - chapter_id: ch_002
+    paragraph_ids:
+    - p_002_001
+    - p_002_002
+    - p_002_003
+  heading:
+    context: EXT
+    location_id: loc_001
+    time_of_day: NIGHT
+  title: 第二章 旧街钟楼 的核心场面
+  dramatic_purpose: 将 第二章 旧街钟楼 的关键事件转化为可表演的场面。
+  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
+  characters:
+  - char_001
+  - char_002
+  beats:
+  - 建立场景和人物状态
+  - 释放关键信息
+  - 用动作或对白推动冲突
+  summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+  elements:
+  - id: el_002_001
+    type: action
+    text: 第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_002
+      paragraph_ids:
+      - p_002_001
+      - p_002_002
+      - p_002_003
+  - id: el_002_002
+    type: dialogue
+    text: 我明白了，一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+    character_id: char_001
+    emotion: 压抑
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_002
+      paragraph_ids:
+      - p_002_001
+      - p_002_002
+      - p_002_003
+  - id: el_002_003
+    type: transition
+    text: 切至下一场
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_002
+      paragraph_ids:
+      - p_002_001
+      - p_002_002
+      - p_002_003
+- id: sc_003
+  chapter_ids:
+  - ch_003
+  source_refs:
+  - chapter_id: ch_003
+    paragraph_ids:
+    - p_003_001
+    - p_003_002
+    - p_003_003
+  heading:
+    context: INT
+    location_id: loc_001
+    time_of_day: NIGHT
+  title: 第三章 报社档案室 的核心场面
+  dramatic_purpose: 将 第三章 报社档案室 的关键事件转化为可表演的场面。
+  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
+  characters:
+  - char_001
+  - char_002
+  beats:
+  - 建立场景和人物状态
+  - 释放关键信息
+  - 用动作或对白推动冲突
+  summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+  elements:
+  - id: el_003_001
+    type: action
+    text: 林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_003
+      paragraph_ids:
+      - p_003_001
+      - p_003_002
+      - p_003_003
+  - id: el_003_002
+    type: dialogue
+    text: 我明白了，档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁。
+    character_id: char_001
+    emotion: 压抑
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_003
+      paragraph_ids:
+      - p_003_001
+      - p_003_002
+      - p_003_003
+  - id: el_003_003
+    type: transition
+    text: 切至下一场
+    character_id: null
+    emotion: null
+    parenthetical: null
+    source_refs:
+    - chapter_id: ch_003
+      paragraph_ids:
+      - p_003_001
+      - p_003_002
+      - p_003_003
+metadata:
+  generated_at: '2026-06-05T04:55:52.514887+00:00'
+  model: fallback
+  provider: fallback
+  provider_status: fallback
+  source_chapter_count: 3
+  warnings: []
