@@ -93,4 +93,6 @@
 
 ## Current Focus
 
+2026-06-05: 已将项目非代码部分上传到 GitHub `https://github.com/ggbond-1027/scriptbridge-ai`。本地 `origin` 指向该仓库，`main` 分支跟踪 `origin/main`。首个提交 `2dd9b50` 仅包含文档、示例、Schema、`.env.example` 和 `.gitignore`；`apps/` 与 `package.json` 仍留在本地未提交。
+
 当前阶段：Enterprise V2 基础重构继续推进。已完成 SQLite 项目/任务持久化、版本快照、可切换任务队列底座、SSE 任务进度流、SQLite FTS + 本地 embedding 项目证据库、LongformChunker 长篇章节级上下文压缩、Arc Studio 风格前端工作台、诊断型 YAML 编辑器壳、场景证据检索、LLM 约束局部改写入口、批量场景改写任务、改写证据展示、审阅评论、评论指派、线程回复、评论解决/重开、项目成员、项目成员会话、Bearer token 鉴权、RBAC 底座、通知和审计事件过滤基础。API 测试已扩展到 24 个，覆盖 external 队列 worker 执行和 queued job 取消；前端已加入任务队列状态、cancel/retry/Worker run-once 控制。队列底座已用 `JOB_QUEUE_MODE=external` 在本地 8016/3016 验证：worker run-once 执行后队列状态显示 `external`、`queued 0`、`running 0`、`failed 0`、`done 13`，截图位于 `.scriptbridge_data/verify-screens/queue-external-desktop.png`、`.scriptbridge_data/verify-screens/queue-external-mobile.png`、`.scriptbridge_data/verify-screens/queue-external-mobile-queue.png`。当前仍未完成真正企业级最终态：Postgres/生产数据库、Redis/Celery/RQ 生产队列、LangGraph 式多 Agent、生产级向量 RAG 证据库、Monaco YAML language server、密码/SSO 登录、实时协作、外部通知投递和部署包装仍需要继续开发，不能把当前版本说成最终企业级完成。
