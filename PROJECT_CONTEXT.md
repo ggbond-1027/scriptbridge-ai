@@ -73,6 +73,7 @@
 - 审阅协作基础已加入：`ProjectComment`、`CommentReply`、`AuditEvent`、`POST /api/projects/{project_id}/comments`、`POST /api/projects/{project_id}/comments/{comment_id}/replies`、`PATCH /api/projects/{project_id}/comments/{comment_id}`、`GET /api/projects/{project_id}/audit-events`、右侧审阅面板、评论指派、线程回复、评论解决/重开和审计过滤动作。当前是单用户评论指派/线程/审计底座，不是完整多人权限、实时协作或指派通知系统。
 - 团队/RBAC/通知底座已加入：`ProjectMember`、`ProjectSession`、`ProjectNotification`、`POST /api/auth/sessions`、`POST /api/projects/{project_id}/members`、`GET /api/projects/{project_id}/notifications`、`PATCH /api/projects/{project_id}/notifications/{notification_id}`；默认成员包含项目负责人、主编、审阅者、编剧、制片、制片审阅；owner/admin 可管理成员，writer 可批量改写，viewer 仅可读通知。协作接口优先使用 Bearer token 解析出的项目成员身份，并覆盖请求体里的 `actor`/`author` 字段；当前是本地项目成员会话底座，不是密码登录、SSO 或完整实时协作。
 - 批量场景改写任务已加入：`POST /api/jobs/rewrite` 从当前项目版本选择显式 `scene_ids`，或自动选择质量标记/低证据/低冲突场景，逐场复用证据约束改写流水线，保存为新版本，重建证据索引，并写入 `rewrite.batch_completed` 审计事件。前端质量中心已有批量改写控制面板，任务进度沿用 SSE。
+- 2026-06-07 新增 GitHub PR 提交规范：`.github/PULL_REQUEST_TEMPLATE.md` 提供 PR 标题、功能描述、实现思路、测试方式和范围检查模板；`CONTRIBUTING.md` 说明单一功能 PR、分支流程和常用验证命令。
 
 ## Pitfalls
 
