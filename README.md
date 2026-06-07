@@ -7,6 +7,7 @@
 
 <p align="center">
   <a href="https://novel.ggbond686.online">在线演示</a> ·
+  <a href="#本地部署">本地部署</a> ·
   <a href="docs/SCHEMA.md">Schema 文档</a> ·
   <a href="docs/YAML_SCREENPLAY_SCHEMA.md">Schema 设计原因</a> ·
   <a href="https://www.bilibili.com/video/BV1t5Et6GEUz?vd_source=367974fff09da58d4ec7c6abb9f638b5">demo视频演示</a>
@@ -95,31 +96,26 @@ https://novel.ggbond686.online
 7. 打开“说明文档”，查看 YAML Schema 与设计原因。
 8. 在导出中心导出 YAML、JSON、Markdown、Fountain、ZIP 或说明文档。
 
-## 本地运行
+## 本地部署
 
-### 后端
+项目支持完整本地部署运行。线上站点 `https://novel.ggbond686.online` 只是为了比赛评审和公开展示方便；核心工作台可以在本机通过 FastAPI 后端和 Next.js 前端启动，不依赖远程服务器。
 
-```bash
-cd apps/api
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-
-### 前端
-
-```bash
-cd apps/web
-npm install
-npm run dev
-```
-
-打开：
+本地部署后访问：
 
 ```text
-http://localhost:3000
+前端工作台: http://localhost:3000
+后端 API:  http://localhost:8000
+API 文档:  http://localhost:8000/docs
 ```
 
-### 快速脚本
+### 环境要求
+
+- Python 3.10+
+- Node.js 18+
+- npm
+- 可选：OpenAI-compatible 模型 API Key，或本地 Ollama/vLLM 模型服务
+
+### 方式一：快速脚本启动
 
 Windows:
 
@@ -131,6 +127,91 @@ macOS / Linux:
 
 ```bash
 ./start-local.sh
+```
+
+首次运行脚本时，如果根目录没有 `.env`，脚本会从 `.env.example` 复制一份 `.env` 并提示填写模型配置。填好后重新运行脚本即可启动后端和前端。
+
+### 方式二：手动启动
+
+手动启动需要两个终端窗口：一个运行后端 API，一个运行前端页面。
+
+#### 后端
+
+```bash
+cd apps/api
+python -m venv venv
+```
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+macOS / Linux:
+
+```bash
+source venv/bin/activate
+```
+
+安装依赖并启动 API：
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+#### 前端
+
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+打开浏览器：
+
+```text
+http://localhost:3000
+```
+
+### 本地模型连接
+
+本地部署后，可以在网页右上角的模型设置里填写 OpenAI-compatible API 地址、API Key 和模型名。也可以在根目录 `.env` 中配置默认模型。
+
+API 模式：
+
+```env
+LLM_PROVIDER=api
+OPENAI_API_KEY=replace-with-your-api-key
+OPENAI_BASE_URL=https://api.openai.com/v1
+MODEL_NAME=gpt-4o
+```
+
+如果使用本地 Ollama/vLLM，可改为：
+
+```env
+LLM_PROVIDER=local
+LOCAL_LLM_BASE_URL=http://localhost:11434/v1
+LOCAL_LLM_MODEL=qwen2.5:14b
+```
+
+不填写模型配置时，页面仍可打开、导入文本和查看基础界面；点击“开始改编”需要可用的模型连接。
+
+### 本地验证
+
+后端检查：
+
+```bash
+cd apps/api
+python -m pytest
+```
+
+前端构建：
+
+```bash
+cd apps/web
+npm run build
 ```
 
 ## 模型配置
