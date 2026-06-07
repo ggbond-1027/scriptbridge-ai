@@ -1,0 +1,16 @@
+{
+  "name": "scriptbridge-ai",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:web": "npm --prefix apps/web run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "install:web": "npm --prefix apps/web install",
+    "api": "python -m uvicorn apps.api.main:app --reload --host 127.0.0.1 --port 8000",
+    "worker": "python -m apps.api.worker",
+    "test:api": "python -m pytest apps/api/tests",
+    "test:web:editor": "node apps/web/scripts/check-yaml-editor.mjs",
+    "test:web:model": "node apps/web/scripts/check-model-profile.mjs",
+    "test": "npm run test:api && npm run test:web:editor && npm run test:web:model && npm run build:web"
+  }
+}
