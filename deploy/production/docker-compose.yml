@@ -1,0 +1,47 @@
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: deploy/production/api.Dockerfile
+    container_name: novelscripter-api
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DEBUG: "false"
+      LLM_PROVIDER: api
+      DATABASE_URL: ""
+      REDIS_URL: ""
+      MINIO_ENDPOINT: ""
+      NOVELSCRIPTER_PROJECT_DB: /workspace/data/novelscripter_projects.sqlite3
+      CORS_ORIGINS: '["https://novel.ggbond686.online","http://novel.ggbond686.online"]'
+    volumes:
+      - novelscripter_data:/workspace/data
+    networks:
+      - default
+      - shengtu_caddy
+
+  web:
+    build:
+      context: ../..
+      dockerfile: deploy/production/web.Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: https://novel.ggbond686.online
+    container_name: novelscripter-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    networks:
+      - default
+      - shengtu_caddy
+
+volumes:
+  novelscripter_data:
+
+networks:
+  shengtu_caddy:
+    external: true
+    name: shengtu-image2_default

@@ -1,437 +1,1917 @@
-schema_version: '1.0'
+schema_version: 1.0.0
 project:
-  id: proj_001
-  title: ????
+  id: proj_yuanye_001
+  title: 雨夜来信
   source_language: zh-CN
   target_format: screenplay
   adaptation_style:
-    genre: 悬疑短剧
-    tone: 克制、紧张
-    dialogue_style: 自然
+    genre:
+    - 悬疑
+    - 惊悚
+    tone:
+    - 紧张
+    - 暗黑
+    - 诗意
+    dialogue_style: terse
 story_bible:
   characters:
-  - id: char_001
-    name: 林舟
-    aliases: []
+  - id: char_1
+    name: 沈默
+    aliases:
+    - 沈队
     role: protagonist
-    description: 林舟 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    description: 刑侦队资深警官，十二年刑侦经验。冷静、固执、不愿面对封闭记忆。祖父去世时年仅七岁，此后与老宅产生了难以割裂的联系。
     goals:
-    - 在改编剧本中推动与林舟相关的核心事件。
+    - 追查神秘来信的真相
+    - 理解祖父密室中被封印的秘密
+    - 面对被自己刻意遗忘的童年记忆
+    personality:
+    - 冷静
+    - 固执
+    - 压抑
+    - 直觉敏锐
+    appearance: 三十余岁男性，面容沉稳，目光锐利。身材偏瘦但结实，穿着深色外套，习惯将手插在衣袋中。
     first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_001
-    relationships: []
-  - id: char_002
-    name: 信封上
+      chapter_id: ch_1
+      paragraph_id: p_1_1
+    relationships:
+    - character_id: char_2
+      type: colleague
+      description: 刑侦搭档，彼此信任，方晴是唯一不会追问多余问题的人。
+    - character_id: char_3
+      type: family
+      description: 沈默的祖父，已故。留下老宅和密室中的谜团。
+    - character_id: char_5
+      type: other
+      description: 面容极为相似，像是跨越时间的镜像。沈鹤与沈默之间可能存在家族血脉的深层联系。
+  - id: char_2
+    name: 方晴
     aliases: []
     role: supporting
-    description: 信封上 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    description: 刑侦队成员，沈默的搭档。冷静、专业、不多问。是沈默最信任的人。
     goals:
-    - 在改编剧本中推动与信封上相关的核心事件。
+    - 协助沈默追查真相
+    - 保护沈默的安全
+    personality:
+    - 冷静
+    - 克制
+    - 忠诚
+    appearance: 年轻女性，穿着干练，目光沉稳。佩枪时动作熟练。
     first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_002
-    relationships: []
-  - id: char_003
-    name: 还想知
+      chapter_id: ch_1
+      paragraph_id: p_1_6
+    relationships:
+    - character_id: char_1
+      type: colleague
+      description: 沈默的刑侦搭档，彼此信任。
+  - id: char_3
+    name: 沈默祖父
+    aliases:
+    - 沈老爷
+    role: supporting
+    description: 沈默的祖父，已故。年轻时与陆远山、沈鹤有深厚联系。知道时间叠影的秘密，试图封印密室中的通道。
+    goals:
+    - 封印时间通道
+    - 保护后人
+    personality:
+    - 隐忍
+    - 睿智
+    appearance: 照片中为年轻时的样貌，面容刚毅。老年时的样貌在沈默的童年记忆中模糊不清。
+    first_appearance:
+      chapter_id: ch_1
+      paragraph_id: p_1_1
+    relationships:
+    - character_id: char_1
+      type: family
+      description: 沈默的祖父，去世时沈默年仅七岁。
+    - character_id: char_4
+      type: friend
+      description: 至交好友，陆远山深夜多次到访老宅与祖父交谈。
+    - character_id: char_5
+      type: friend
+      description: 至交好友，面容与祖父极为相似。沈鹤消失后被祖父封印密室。
+  - id: char_4
+    name: 陆远山
     aliases: []
     role: supporting
-    description: 还想知 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    description: 古镇中学历史教师，五十二岁失踪。失踪前一个月多次深夜到访沈默祖父的宅子。穿灰色长衫在雨夜巷子中被目击——可能是从另一层时间走过来的。
     goals:
-    - 在改编剧本中推动与还想知相关的核心事件。
+    - 探索时间叠影的秘密
+    - 面对另一层时间中的真相
+    personality:
+    - 温和
+    - 沉稳
+    - 执着
+    appearance: 面容温和，戴眼镜，穿灰色长衫。照片中面容模糊但体型与旁人相近。
     first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_003
-    relationships: []
-  - id: char_004
-    name: 的男人
+      chapter_id: ch_2
+      paragraph_id: p_2_2
+    relationships:
+    - character_id: char_3
+      type: friend
+      description: 至交好友，深夜多次到访老宅与沈默祖父交谈。
+  - id: char_5
+    name: 沈鹤
     aliases: []
-    role: supporting
-    description: 的男人 是从原文中识别出的关键人物，承担推动情节和冲突展开的作用。
+    role: antagonist
+    description: 沈默祖父的至交，与祖父面容极为相似。一九四七年消失——比陆远山早四十年。留下笔记本记录时间叠影的研究。在雨夜中向沈默做出邀请手势。
     goals:
-    - 在改编剧本中推动与的男人相关的核心事件。
+    - 完成时间叠影的研究
+    - 面对另一层时间中的真相
+    personality:
+    - 决绝
+    - 无畏
+    - 神秘
+    appearance: 穿灰色长衫，面容与沈默祖父极为相似，也与沈默极为相似——像是跨越时间的镜像。
     first_appearance:
-      chapter_id: ch_002
-      paragraph_id: p_002_002
+      chapter_id: ch_2
+      paragraph_id: p_2_14
+    relationships:
+    - character_id: char_3
+      type: friend
+      description: 至交好友，面容与祖父极为相似。
+    - character_id: char_1
+      type: other
+      description: 面容极为相似，可能是家族血脉的深层联系。
+  - id: char_6
+    name: 周老
+    aliases:
+    - 周警官
+    role: supporting
+    description: 当年办案民警，退休后住在市郊。保存了私下抄录的手写笔记。知道三条诫命的含义。警告沈默密室封印已破。
+    goals:
+    - 等待二十年，终于有人来问真相
+    - 警告沈默危险
+    personality:
+    - 谨慎
+    - 洞察
+    appearance: 比实际年龄更显老，双手微微颤抖，但目光仍锐利。
+    first_appearance:
+      chapter_id: ch_2
+      paragraph_id: p_2_8
+    relationships: []
+  - id: char_7
+    name: 陈老
+    aliases: []
+    role: extra
+    description: 沈默电话联系的老前辈，知道每二十年有人收到信的规律。
+    goals:
+    - 传达告诫
+    personality:
+    - 苍老
+    - 迟缓
+    appearance: 电话中出现，未见面。声音苍老。
+    first_appearance:
+      chapter_id: ch_1
+      paragraph_id: p_1_18
     relationships: []
   locations:
-  - id: loc_001
-    name: 老宅
-    type: interior
-    description: 老宅 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
-    first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_001
-  - id: loc_002
-    name: 书房
-    type: interior
-    description: 书房 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
-    first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_001
-  - id: loc_003
-    name: 街
-    type: exterior
-    description: 街 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
-    first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_003
-  - id: loc_004
-    name: 雨夜
-    type: exterior
-    description: 雨夜 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
-    first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_001
-  - id: loc_005
-    name: 房间
-    type: interior
-    description: 房间 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
-    first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_002
-  - id: loc_006
-    name: 门口
+  - id: loc_1
+    name: 沈默老宅
     type: mixed
-    description: 门口 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    description: 江南古镇巷尾的老宅，沈默祖父留下。二楼有书房和密室，后院有桂花树。平日无人居住，逢年过节才打扫。
+    atmosphere: 孤寂、阴沉、时间停滞
     first_appearance:
-      chapter_id: ch_001
-      paragraph_id: p_001_001
-  - id: loc_007
-    name: 办公室
+      chapter_id: ch_1
+      paragraph_id: p_1_1
+  - id: loc_2
+    name: 老宅密室
     type: interior
-    description: 办公室 是从原文中提取的关键空间，用于承载场景动作和人物冲突。
+    description: 祖父书房隔壁的房间，门上铜锁锈迹斑斑。室内灰尘铺了厚层，桌椅被时间凝固。墙上挂着照片和纸条。沈鹤曾住此间。
+    atmosphere: 封印、尘封、禁忌
     first_appearance:
-      chapter_id: ch_003
-      paragraph_id: p_003_001
+      chapter_id: ch_1
+      paragraph_id: p_1_11
+  - id: loc_3
+    name: 刑侦队档案室
+    type: interior
+    description: 市里刑侦队的档案室，方晴在此准备二十年前失踪案的资料。
+    atmosphere: 秩序、严谨
+    first_appearance:
+      chapter_id: ch_2
+      paragraph_id: p_2_1
+  - id: loc_4
+    name: 周老住所
+    type: interior
+    description: 市郊老式居民楼，周老坐在旧沙发上，保存了私下抄录的笔记。
+    atmosphere: 苍老、谨慎
+    first_appearance:
+      chapter_id: ch_2
+      paragraph_id: p_2_8
+  - id: loc_5
+    name: 古镇巷子
+    type: exterior
+    description: 江南古镇的石板路巷子。雨夜中曾有穿长衫的人影被目击，走路无声像是踩在水面上。巷子尽头有雨幕中的空间缝隙——时间通道。
+    atmosphere: 古老、潮湿、神秘
+    first_appearance:
+      chapter_id: ch_2
+      paragraph_id: p_2_4
+  - id: loc_6
+    name: 老宅后院
+    type: exterior
+    description: 桂花树所在的后院。歪脖子桂花树是沈默童年记忆中唯一温暖的部分，也是连接两层时间的锚点。
+    atmosphere: 芬芳、怀旧、锚定
+    first_appearance:
+      chapter_id: ch_3
+      paragraph_id: p_3_20
   timeline:
-  - id: evt_001
-    chapter_id: ch_001
-    order: 1
-    summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
-    character_ids:
-    - char_001
-    - char_002
-  - id: evt_002
-    chapter_id: ch_002
-    order: 2
-    summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
-    character_ids:
-    - char_001
-    - char_002
-  - id: evt_003
-    chapter_id: ch_003
-    order: 3
-    summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
-    character_ids:
-    - char_001
-    - char_002
+  - id: tl_1
+    chapter_id: ch_1
+    sequence: 1
+    event_summary: 沈默在雨夜收到神秘来信，信上写着你所遗忘的正在回来。
+    affected_characters:
+    - char_1
+  - id: tl_2
+    chapter_id: ch_1
+    sequence: 2
+    event_summary: 沈默用铜钥匙打开祖父密室，发现密室中照片和纸条，窗户开着有人刚刚离开。
+    affected_characters:
+    - char_1
+    - char_3
+  - id: tl_3
+    chapter_id: ch_1
+    sequence: 3
+    event_summary: 沈默联系陈老，得知每二十年都有人收到那封信并打开密室。陈老告诫勿寻。
+    affected_characters:
+    - char_1
+    - char_7
+  - id: tl_4
+    chapter_id: ch_2
+    sequence: 1
+    event_summary: 方晴查出二十年前陆远山失踪案记录，失踪前频繁到访老宅。
+    affected_characters:
+    - char_1
+    - char_2
+    - char_4
+  - id: tl_5
+    chapter_id: ch_2
+    sequence: 2
+    event_summary: 方晴发现三个目击者证词全部从档案中失踪，周老保存了私下抄录。
+    affected_characters:
+    - char_2
+    - char_6
+  - id: tl_6
+    chapter_id: ch_2
+    sequence: 3
+    event_summary: 周老揭示三个目击者在半年内全部离开镇子，吴婶说他不是失踪他是回去了。
+    affected_characters:
+    - char_1
+    - char_6
+  - id: tl_7
+    chapter_id: ch_2
+    sequence: 4
+    event_summary: 沈默看到照片中第三人面容与自己极为相似——那人叫沈鹤，一九四七年消失。密室就是沈鹤住过的房间。
+    affected_characters:
+    - char_1
+    - char_5
+  - id: tl_8
+    chapter_id: ch_2
+    sequence: 5
+    event_summary: 周老警告密室封印已破，它出来了。
+    affected_characters:
+    - char_1
+    - char_6
+  - id: tl_9
+    chapter_id: ch_3
+    sequence: 1
+    event_summary: 沈默和方晴赶回老宅，发现大门敞开、密室门再次开着、密室中灰尘消失纸条更换。
+    affected_characters:
+    - char_1
+    - char_2
+  - id: tl_10
+    chapter_id: ch_3
+    sequence: 2
+    event_summary: 沈默发现沈鹤的笔记本，记录时间叠影现象和通道的存在。
+    affected_characters:
+    - char_1
+    - char_5
+  - id: tl_11
+    chapter_id: ch_3
+    sequence: 3
+    event_summary: 雨幕中沈鹤站在桂花树下向沈默做出邀请手势。
+    affected_characters:
+    - char_1
+    - char_5
+  - id: tl_12
+    chapter_id: ch_3
+    sequence: 4
+    event_summary: 沈默选择走进雨幕中的时间通道。方晴在老宅等待。
+    affected_characters:
+    - char_1
+    - char_2
 chapters:
-- id: ch_001
+- id: ch_1
   order: 1
-  title: 第一章 雨夜来信
-  text: '雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
-
-
-    林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
-
-
-    “如果你还想知道真相，明晚十点，到旧街钟楼。”
-
-
-    她盯着那行字很久，直到窗外的雷声把相框震倒。相框背后夹着一张泛黄的车票，日期正是父亲失踪的那一天。'
+  title: 旧宅来信
+  source_title: 第一章 旧宅来信
   paragraphs:
-  - id: p_001_001
-    chapter_id: ch_001
+  - id: p_1_1
     index: 1
-    text: 雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
+    text: 旧宅来信
     char_start: 0
-    char_end: 43
-  - id: p_001_002
-    chapter_id: ch_001
+    char_end: 4
+  - id: p_1_2
     index: 2
-    text: 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
-    char_start: 45
-    char_end: 104
-  - id: p_001_003
-    chapter_id: ch_001
+    text: 秋雨从黄昏开始落下，到深夜仍未停歇。沈默站在老宅二楼的窗前，看着雨水顺着瓦片汇成细流，打在石板路上溅起微光。这座宅子是他祖父留下的，位于江南古镇的巷尾，平日无人居住，只有逢年过节他才回来打扫一番。
+    char_start: 5
+    char_end: 103
+  - id: p_1_3
     index: 3
-    text: “如果你还想知道真相，明晚十点，到旧街钟楼。”
-    char_start: 106
-    char_end: 129
-  - id: p_001_004
-    chapter_id: ch_001
+    text: 今天不同。今天他收到了一封信。
+    char_start: 104
+    char_end: 119
+  - id: p_1_4
     index: 4
-    text: 她盯着那行字很久，直到窗外的雷声把相框震倒。相框背后夹着一张泛黄的车票，日期正是父亲失踪的那一天。
-    char_start: 131
-    char_end: 180
-  summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
-- id: ch_002
+    text: 信是用牛皮纸包裹的，没有邮戳，没有寄信人地址，只在正面用毛笔写着"沈默亲启"四个字。字迹端正，却有一种说不出的古意，像是从几十年前穿越而来。他把信放在书房的旧桌上，犹豫了很久才拆开。
+    char_start: 120
+    char_end: 211
+  - id: p_1_5
+    index: 5
+    text: 里面是一张泛黄的信纸，上面只有一行字：
+    char_start: 212
+    char_end: 231
+  - id: p_1_6
+    index: 6
+    text: '"你所遗忘的，正在回来。"'
+    char_start: 232
+    char_end: 245
+  - id: p_1_7
+    index: 7
+    text: 沈默的手微微发抖。他不是胆小的人——在刑侦队干了十二年，见过太多生死，早已对恐惧免疫。但这行字让他感到一种冷意，不是恐惧，而是某种更深层的不安，像是被触碰了一段刻意封闭的记忆。
+    char_start: 246
+    char_end: 334
+  - id: p_1_8
+    index: 8
+    text: 他坐在书房的藤椅上，试图回忆这封信可能指向什么。祖父去世时他只有七岁，之后便随母亲搬到城里。对这座老宅的记忆，只剩下零碎的片段：屋檐下的燕子窝、后院那棵歪脖子的桂花树、以及——一个他不愿想起的夜晚。
+    char_start: 335
+    char_end: 434
+  - id: p_1_9
+    index: 9
+    text: 那个夜晚也是雨夜。
+    char_start: 435
+    char_end: 444
+  - id: p_1_10
+    index: 10
+    text: '"沈队？"手机响了。是搭档方晴的声音，"你还在老宅？那边什么情况？"'
+    char_start: 445
+    char_end: 479
+  - id: p_1_11
+    index: 11
+    text: '"没什么，"沈默把信折好放进衣袋，"我明天回局里，有件事想查一下。"'
+    char_start: 480
+    char_end: 514
+  - id: p_1_12
+    index: 12
+    text: '"什么事？"'
+    char_start: 515
+    char_end: 521
+  - id: p_1_13
+    index: 13
+    text: 沈默沉默了两秒："方晴，帮我查一下——二十年前，这个镇上有没有失踪案的记录。"
+    char_start: 522
+    char_end: 561
+  - id: p_1_14
+    index: 14
+    text: 电话那头安静了片刻。方晴是那种不会追问多余问题的人，她只说了句"收到"，便挂了电话。
+    char_start: 562
+    char_end: 604
+  - id: p_1_15
+    index: 15
+    text: |-
+      雨声填满了宅子里的沉默。沈默起身走到走廊尽头，那里有一扇他从未打开过的门——祖父书房隔壁的房间，门上挂着一把铜锁，锈迹斑斑。他小时候问过母亲那间房是做什么的，母亲的回答总是"那是你爷爷放旧物的地方，不用管"。
+    char_start: 605
+    char_end: 709
+  - id: p_1_16
+    index: 16
+    text: 但现在，信上的字让那扇门变得不同了。他看了看手里的钥匙串，其中有一枚他从未试过的铜钥匙——形状和门上的锁孔吻合。
+    char_start: 710
+    char_end: 766
+  - id: p_1_17
+    index: 17
+    text: 他站在门前，雨水渗过屋脊在某处滴答作响。他深吸一口气，将钥匙插入锁孔。
+    char_start: 767
+    char_end: 802
+  - id: p_1_18
+    index: 18
+    text: 锁开了。
+    char_start: 803
+    char_end: 807
+  - id: p_1_19
+    index: 19
+    text: 门后的房间里，灰尘铺了厚厚一层，桌椅像是被时间凝固。墙上挂着一幅照片——照片里是年轻时的祖父，旁边站着一个人，面容模糊，但穿着的衣裳样式很旧，像是民国时期的长衫。
+    char_start: 808
+    char_end: 889
+  - id: p_1_20
+    index: 20
+    text: 照片下方贴着一张纸条，上面的字迹和信上的一模一样：
+    char_start: 890
+    char_end: 915
+  - id: p_1_21
+    index: 21
+    text: '"勿忘。勿寻。勿回。"'
+    char_start: 916
+    char_end: 927
+  - id: p_1_22
+    index: 22
+    text: 三条诫命，三个"勿"。沈默觉得后颈一阵凉意，像是有人在身后注视着他。他猛然回头——走廊空空荡荡，只有雨声。
+    char_start: 928
+    char_end: 981
+  - id: p_1_23
+    index: 23
+    text: 但他注意到一件异常的事：这个房间的窗户是开的。一扇本该锁死的窗，此刻正迎着夜雨微微晃动，窗台上有一片新鲜的湿痕——像是有人刚刚从这里离开。
+    char_start: 982
+    char_end: 1051
+  - id: p_1_24
+    index: 24
+    text: 沈默的手电扫过窗台，在湿痕旁边看到了一个东西：一枚老式铜扣，像是大衣上的装饰扣，上面刻着一个他从未见过的符号。
+    char_start: 1052
+    char_end: 1107
+  - id: p_1_25
+    index: 25
+    text: 他把铜扣收起，关上窗户，锁好房门。回到书房后，他拿出笔记本，记下了今天的发现。然后他拨打了一个号码——这个号码他已经很久没用了。
+    char_start: 1108
+    char_end: 1172
+  - id: p_1_26
+    index: 26
+    text: '"陈老，"他对电话那头说，"我需要了解一些关于我祖父的事。"'
+    char_start: 1173
+    char_end: 1203
+  - id: p_1_27
+    index: 27
+    text: 电话那头的声音苍老而迟缓："沈默……你是不是打开了那间房？"
+    char_start: 1204
+    char_end: 1234
+  - id: p_1_28
+    index: 28
+    text: 沈默的手握紧了手机："你怎么知道？"
+    char_start: 1235
+    char_end: 1253
+  - id: p_1_29
+    index: 29
+    text: '"因为那封信，"陈老的声音在雨夜里显得格外清晰，"每二十年，都会有人收到那封信。而每一个收到信的人，都会打开那间房。"'
+    char_start: 1254
+    char_end: 1313
+  - id: p_1_30
+    index: 30
+    text: 沈默感到脊背上的冷意蔓延到了全身。
+    char_start: 1314
+    char_end: 1331
+  - id: p_1_31
+    index: 31
+    text: '"你接下来要做的事——"陈老停顿了很久，才缓缓说出最后几个字，"——千万不要去寻。"'
+    char_start: 1332
+    char_end: 1374
+  summary: 沈默在雨夜收到神秘来信，打开祖父密室发现照片和诫命纸条，窗户被打开有人刚刚离开。陈老告诫此信每二十年送达一次，勿寻勿追问。
+- id: ch_2
   order: 2
-  title: 第二章 旧街钟楼
-  text: '第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
-
-
-    一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
-
-
-    录音笔里传出父亲的声音：“不要相信报社里的人，尤其是周启明。”
-
-
-    林舟握紧录音笔，抬头时男人已经不见了。便利店的玻璃门上映出另一个身影，周启明正站在街对面看着她。'
+  title: 消失的证人
+  source_title: 第一章 消失的证人
   paragraphs:
-  - id: p_002_001
-    chapter_id: ch_002
+  - id: p_2_1
     index: 1
-    text: 第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
+    text: 消失的证人
     char_start: 0
-    char_end: 40
-  - id: p_002_002
-    chapter_id: ch_002
+    char_end: 5
+  - id: p_2_2
     index: 2
-    text: 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
-    char_start: 42
-    char_end: 80
-  - id: p_002_003
-    chapter_id: ch_002
+    text: 沈默没有听从陈老的告诫。
+    char_start: 6
+    char_end: 18
+  - id: p_2_3
     index: 3
-    text: 录音笔里传出父亲的声音：“不要相信报社里的人，尤其是周启明。”
-    char_start: 82
-    char_end: 113
-  - id: p_002_004
-    chapter_id: ch_002
+    text: |-
+      第二天一早，他驾车回到市里，直奔刑侦队的档案室。方晴已经把资料准备好了——二十年前，这个古镇确实发生过一起失踪案。失踪者名叫陆远山，男性，当时五十二岁，是镇上中学的历史教师。据记录，陆远山在一个雨夜离开住所后便再未出现，家中没有留下任何线索，案件最终以"原因不明"结案。
+    char_start: 19
+    char_end: 154
+  - id: p_2_4
     index: 4
-    text: 林舟握紧录音笔，抬头时男人已经不见了。便利店的玻璃门上映出另一个身影，周启明正站在街对面看着她。
-    char_start: 115
-    char_end: 163
-  summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
-- id: ch_003
+    text: '"有意思的是，"方晴把档案翻开，指着其中一页，"失踪前一个月，陆远山多次到访你祖父的宅子。邻居看到他们深夜在书房里交谈。"'
+    char_start: 155
+    char_end: 216
+  - id: p_2_5
+    index: 5
+    text: 沈默看着档案中陆远山的照片——面容温和，眼镜后面是一双沉稳的眼睛。他将照片和昨夜在密室里看到的那张老照片对比：祖父身旁那人穿着长衫，面容模糊，但体型和轮廓与陆远山相似。
+    char_start: 217
+    char_end: 301
+  - id: p_2_6
+    index: 6
+    text: |-
+      "还有一件事，"方晴的声音压低了，"我联系了当年的办案民警，姓周，退休后住在市郊。他说他现在不愿意谈这个案子，但——他提到一个细节：陆远山失踪当晚，镇上有三个人声称在雨中看到了一个'穿长衫的人'，走在巷子里，像是凭空出现又凭空消失。"
+    char_start: 302
+    char_end: 419
+  - id: p_2_7
+    index: 7
+    text: 沈默皱起眉："三个目击者？他们的证词呢？"
+    char_start: 420
+    char_end: 441
+  - id: p_2_8
+    index: 8
+    text: '"消失了，"方晴的语气很平静，但沈默听出了其中压抑的不安，"三个人，三份证词，全部从档案中失踪。周老说他当年提交了证词，但后来档案复查时这些页码是空的——像是被人精准地抽走了。"'
+    char_start: 442
+    char_end: 531
+  - id: p_2_9
+    index: 9
+    text: 沈默站起来，走到窗边。窗外是灰蒙蒙的天，像是昨夜的雨意尚未散尽。
+    char_start: 532
+    char_end: 564
+  - id: p_2_10
+    index: 10
+    text: '"我们去见周老，"他说。'
+    char_start: 565
+    char_end: 577
+  - id: p_2_11
+    index: 11
+    text: 市郊的老式居民楼里，周老坐在客厅的旧沙发上。他看上去比实际年龄更老，双手微微颤抖，但目光仍然锐利。
+    char_start: 578
+    char_end: 627
+  - id: p_2_12
+    index: 12
+    text: '"我等了二十年，"周老没有寒暄，直接说，"知道迟早有人会来问。"'
+    char_start: 628
+    char_end: 660
+  - id: p_2_13
+    index: 13
+    text: 他翻开一本自己保存的手写笔记——这是他当年私下抄录的，所以没有被抽走。
+    char_start: 661
+    char_end: 696
+  - id: p_2_14
+    index: 14
+    text: |-
+      "三个目击者：杂货铺老板娘吴婶、邮递员小孙、还有镇东头茶馆的伙计阿亮。他们的描述高度一致——雨夜，巷子里，一个穿灰色长衫的男人，走路没有声音，脚步像是踩在水面上。吴婶说她看清了那人的脸——那是一张她从未在镇上见过的脸，但不是陌生人的脸，而是一张让她觉得'应该认识却想不起来'的脸。"
+    char_start: 697
+    char_end: 838
+  - id: p_2_15
+    index: 15
+    text: 沈默追问："吴婶现在在哪里？"
+    char_start: 839
+    char_end: 854
+  - id: p_2_16
+    index: 16
+    text: 周老摇头："失踪了。三个目击者，在证词被抽走之后的半年内，全部离开了镇子。吴婶的杂货铺一夜之间关门，小孙辞了邮局的工作去了南方，阿亮……阿亮是最后一个，他在离开前对邻居说了一句奇怪的话。"
+    char_start: 855
+    char_end: 949
+  - id: p_2_17
+    index: 17
+    text: '"什么话？"'
+    char_start: 950
+    char_end: 956
+  - id: p_2_18
+    index: 18
+    text: 周老翻到笔记最后一页，上面写着：
+    char_start: 957
+    char_end: 973
+  - id: p_2_19
+    index: 19
+    text: '"''他不是失踪。他是回去了。''"'
+    char_start: 974
+    char_end: 990
+  - id: p_2_20
+    index: 20
+    text: 沈默感到一阵寒意。这句话和他收到的信——"你所遗忘的，正在回来"——构成了某种呼应，像是二十年前就埋下的伏笔。
+    char_start: 991
+    char_end: 1046
+  - id: p_2_21
+    index: 21
+    text: '"周老，你有没有听说过''勿忘、勿寻、勿回''这三条诫命？"'
+    char_start: 1047
+    char_end: 1075
+  - id: p_2_22
+    index: 22
+    text: 周老的手停在了笔记上。他抬起头，目光变得极为警觉："你从哪里知道这三条诫命？"
+    char_start: 1076
+    char_end: 1115
+  - id: p_2_23
+    index: 23
+    text: '"我祖父的密室里。"'
+    char_start: 1116
+    char_end: 1126
+  - id: p_2_24
+    index: 24
+    text: 周老沉默了很久。然后他站起身，走到卧室，从床底下拖出一个铁皮箱。箱子打开后，里面是更多手写笔记，还有几张照片。
+    char_start: 1127
+    char_end: 1182
+  - id: p_2_25
+    index: 25
+    text: 其中一张照片让沈默怔住了——照片里是祖父年轻时，和另外两个人站在老宅门前。一个穿着长衫（陆远山），另一个……沈默仔细看那张脸，然后看向方晴。
+    char_start: 1183
+    char_end: 1253
+  - id: p_2_26
+    index: 26
+    text: 方晴也看到了。她的嘴唇微微张开。
+    char_start: 1254
+    char_end: 1270
+  - id: p_2_27
+    index: 27
+    text: 照片里的第三人，面容和沈默一模一样。
+    char_start: 1271
+    char_end: 1289
+  - id: p_2_28
+    index: 28
+    text: 不——不是一模一样。是极为相似，像是跨越了时间的镜像。周老在一旁说："你祖父共有三个至交。陆远山是其中之一，另一个叫沈鹤——"
+    char_start: 1290
+    char_end: 1353
+  - id: p_2_29
+    index: 29
+    text: '"沈鹤？"沈默的声音紧了。'
+    char_start: 1354
+    char_end: 1367
+  - id: p_2_30
+    index: 30
+    text: '"沈鹤，和你同姓，"周老看着他，"镇上的人说，沈鹤和你祖父长得极像。而且——沈鹤也在这座宅子里住过。他住的那间房——"'
+    char_start: 1368
+    char_end: 1427
+  - id: p_2_31
+    index: 31
+    text: 沈默脱口而出："就是那间锁着的密室。"
+    char_start: 1428
+    char_end: 1447
+  - id: p_2_32
+    index: 32
+    text: 周老点头："沈鹤消失后，你的祖父就把那间房锁了。再未打开。直到——有人收到那封信。"
+    char_start: 1448
+    char_end: 1490
+  - id: p_2_33
+    index: 33
+    text: 方晴此时开口："周老，沈鹤是什么时候消失的？"
+    char_start: 1491
+    char_end: 1514
+  - id: p_2_34
+    index: 34
+    text: 周老合上笔记，目光看向窗外："一九四七年。"
+    char_start: 1515
+    char_end: 1537
+  - id: p_2_35
+    index: 35
+    text: 那是一九四七年。距陆远山失踪的四十年前。距现在——六十年。
+    char_start: 1538
+    char_end: 1567
+  - id: p_2_36
+    index: 36
+    text: 沈默看向方晴，方晴也看向他。两人都明白了一件事：这不是一起失踪案，这是一条延伸了六十年的线索，连接着三个人、两间密室、和一封每二十年准时送达的信。
+    char_start: 1568
+    char_end: 1641
+  - id: p_2_37
+    index: 37
+    text: '"我需要回去，"沈默站起来，"回老宅。"'
+    char_start: 1642
+    char_end: 1662
+  - id: p_2_38
+    index: 38
+    text: 周老抓住他的手腕，力气出奇的大："你听我说。那三条诫命不是警告——是封印。你祖父锁上那间房，不是要藏什么，是要关住什么。你打开门的那一刻，封印就破了。现在——"
+    char_start: 1663
+    char_end: 1743
+  - id: p_2_39
+    index: 39
+    text: 他的声音在颤抖："——它出来了。"
+    char_start: 1744
+    char_end: 1761
+  summary: 沈默追查二十年前的失踪案，发现陆远山失踪当晚有三个目击者看到穿长衫的人影。三个证人证词全部从档案中失踪，证人也全部离开镇子。周老揭示沈鹤于1947年消失，密室就是沈鹤住过的房间。周老警告密室封印已破。
+- id: ch_3
   order: 3
-  title: 第三章 报社档案室
-  text: '林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
-
-
-    档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
-
-
-    合影中，父亲、周启明和灰色风衣男人站在同一艘货船前。照片背面写着：事故从来不是事故。
-
-
-    门外传来脚步声。林舟把报告塞进包里，关灯躲到柜子后面。周启明推门进来，轻声说：“我知道你在这里。”'
+  title: 雨夜真相
+  source_title: 第一章 雨夜真相
   paragraphs:
-  - id: p_003_001
-    chapter_id: ch_003
+  - id: p_3_1
     index: 1
-    text: 林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
+    text: 雨夜真相
     char_start: 0
-    char_end: 43
-  - id: p_003_002
-    chapter_id: ch_003
+    char_end: 4
+  - id: p_3_2
     index: 2
-    text: 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
-    char_start: 45
-    char_end: 100
-  - id: p_003_003
-    chapter_id: ch_003
+    text: 沈默和方晴在黄昏时分赶到了古镇。
+    char_start: 5
+    char_end: 21
+  - id: p_3_3
     index: 3
-    text: 合影中，父亲、周启明和灰色风衣男人站在同一艘货船前。照片背面写着：事故从来不是事故。
-    char_start: 102
-    char_end: 144
-  - id: p_003_004
-    chapter_id: ch_003
+    text: 雨又下了起来。像是一种信号，像是一种召唤——沈默觉得这场雨和二十年前陆远山失踪时的雨、和六十年前沈鹤消失时的雨，是同一场雨。从未停止，只是在等待。
+    char_start: 22
+    char_end: 95
+  - id: p_3_4
     index: 4
-    text: 门外传来脚步声。林舟把报告塞进包里，关灯躲到柜子后面。周启明推门进来，轻声说：“我知道你在这里。”
-    char_start: 146
-    char_end: 195
-  summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+    text: 老宅的大门开着。沈默记得他离开时锁了门——他确信自己锁了门。但此刻门敞开着，像是有人——或者有什么——在等他回来。
+    char_start: 96
+    char_end: 153
+  - id: p_3_5
+    index: 5
+    text: 方晴握紧了腰间的佩枪。她是刑侦队里最冷静的人，但此刻她的呼吸微不可闻地加快了。
+    char_start: 154
+    char_end: 193
+  - id: p_3_6
+    index: 6
+    text: 两人走进宅子。一楼客厅里，家具的位置没变，但桌上多了一样东西——一盏油灯，灯芯还在燃烧，微弱的光在雨声中摇曳。这不是沈默留下的，老宅里不应该有油灯——这是祖父时代的东西。
+    char_start: 194
+    char_end: 279
+  - id: p_3_7
+    index: 7
+    text: '"二楼，"沈默低声说。'
+    char_start: 280
+    char_end: 291
+  - id: p_3_8
+    index: 8
+    text: 他们沿着楼梯上去。走廊尽头，那间密室的门——再次开着。
+    char_start: 292
+    char_end: 319
+  - id: p_3_9
+    index: 9
+    text: 沈默上次离开时锁了门。他再次确信这一点。但门开着，像是那把铜锁从未存在过。
+    char_start: 320
+    char_end: 357
+  - id: p_3_10
+    index: 10
+    text: 密室里的灰尘不见了。地面干净，桌椅整齐，墙上的照片还在——但那张写着"勿忘。勿寻。勿回。"的纸条不见了。
+    char_start: 358
+    char_end: 410
+  - id: p_3_11
+    index: 11
+    text: 取而代之的是另一张纸条，字迹依旧是那种古意的毛笔字：
+    char_start: 411
+    char_end: 437
+  - id: p_3_12
+    index: 12
+    text: '"你已回。所见即真。"'
+    char_start: 438
+    char_end: 449
+  - id: p_3_13
+    index: 13
+    text: 沈默看向窗边——上次他发现的那扇开着的窗，此刻关着。但窗台上不再是一片湿痕，而是坐着一个东西——一本旧笔记本，封面写着一个名字：沈鹤。
+    char_start: 450
+    char_end: 517
+  - id: p_3_14
+    index: 14
+    text: 方晴走近，低声说："这是沈鹤的？"
+    char_start: 518
+    char_end: 535
+  - id: p_3_15
+    index: 15
+    text: |-
+      沈默翻开笔记本。里面用小楷密密麻麻写满了内容——不是日记，而是某种研究记录。沈鹤在记录一种"时间叠影"的现象：同一个地点，在不同时间发生的事情，会在特定条件下——通常是雨夜——产生叠合，使得过去的人影出现在当下。
+    char_start: 536
+    char_end: 642
+  - id: p_3_16
+    index: 16
+    text: 笔记的最后一页，字迹变得潦草，像是在极度紧张中写下的：
+    char_start: 643
+    char_end: 670
+  - id: p_3_17
+    index: 17
+    text: '"叠影非幻象。他们是真实的——他们存在于另一层时间中。当叠合发生时，两层时间之间会产生通道。通过通道，过去的人可以来到现在——而现在的人，也可能被拉回过去。'
+    char_start: 671
+    char_end: 749
+  - id: p_3_18
+    index: 18
+    text: '"我已经看到了通道。它在雨夜出现，在老宅的密室中。我祖父知道这件事，他试图封印通道——但封印不是永久的。每隔二十年，通道会重新打开。'
+    char_start: 750
+    char_end: 816
+  - id: p_3_19
+    index: 19
+    text: '"我即将进入通道。不是被迫——是我选择。因为在另一层时间里，有一个我必须面对的真相。'
+    char_start: 817
+    char_end: 859
+  - id: p_3_20
+    index: 20
+    text: '"如果后来有人读到这些——不要试图寻找我。你找不到。但我可能会——回来。"'
+    char_start: 860
+    char_end: 897
+  - id: p_3_21
+    index: 21
+    text: 沈默合上笔记本。他的手不再颤抖，一种奇异的平静覆盖了他。多年的刑侦训练让他学会在证据面前放下情绪，只看事实——而现在，所有事实都指向同一个结论。
+    char_start: 898
+    char_end: 970
+  - id: p_3_22
+    index: 22
+    text: 方晴说："沈队，这解释了——"
+    char_start: 971
+    char_end: 986
+  - id: p_3_23
+    index: 23
+    text: |-
+      "解释了所有事，"沈默点头，"陆远山穿长衫出现在巷子里——他不是幻影，他是从另一层时间走过来的。三个目击者被抽走证词——不是人为，而是某种力量在抹除两层时间交叉的痕迹。吴婶说'他不是失踪，他是回去了'——她看到了真相。"
+    char_start: 987
+    char_end: 1097
+  - id: p_3_24
+    index: 24
+    text: 他看向密室的窗。雨正在窗外织成一面帘幕。
+    char_start: 1098
+    char_end: 1118
+  - id: p_3_25
+    index: 25
+    text: '"而现在，"沈默走到窗前，"通道又打开了。"'
+    char_start: 1119
+    char_end: 1141
+  - id: p_3_26
+    index: 26
+    text: 窗外，雨幕中，一个身影正站在后院的桂花树下。穿着灰色长衫，走路没有声音。那人缓缓转身——沈默看清了他的脸。
+    char_start: 1142
+    char_end: 1195
+  - id: p_3_27
+    index: 27
+    text: 那是沈鹤的脸。和照片里一模一样。和沈默——极为相似。
+    char_start: 1196
+    char_end: 1222
+  - id: p_3_28
+    index: 28
+    text: 沈鹤抬起手，做了一个手势。不是招呼，不是警告——是一种邀请。然后他转身，走向后院深处，消失在雨幕中。
+    char_start: 1223
+    char_end: 1273
+  - id: p_3_29
+    index: 29
+    text: 方晴走到沈默身旁，也看到了雨中的人影。她的手已经握住了枪柄，但沈默按住了她的手。
+    char_start: 1274
+    char_end: 1314
+  - id: p_3_30
+    index: 30
+    text: '"不用，"他说，"他不是威胁。他是——线索。"'
+    char_start: 1315
+    char_end: 1338
+  - id: p_3_31
+    index: 31
+    text: 沈默打开窗户，雨水扑面而来。他深吸一口气，做出了和沈鹤同样的选择——不是被迫，是他选择。
+    char_start: 1339
+    char_end: 1383
+  - id: p_3_32
+    index: 32
+    text: '"方晴，"他回头看着搭档，"如果我——像沈鹤那样——消失一段时间，不要找我。等我回来。"'
+    char_start: 1384
+    char_end: 1428
+  - id: p_3_33
+    index: 33
+    text: 方晴的眼睛里有太多话，但她最终只说了一句："我等你。"
+    char_start: 1429
+    char_end: 1456
+  - id: p_3_34
+    index: 34
+    text: 沈默翻出窗户，走进雨中。后院的桂花树在夜雨中散发着浓郁的香气，那棵歪脖子树——他童年记忆中唯一温暖的部分——此刻像是连接两层时间的锚点。
+    char_start: 1457
+    char_end: 1525
+  - id: p_3_35
+    index: 35
+    text: 他沿着沈鹤消失的方向走去。雨声越来越响，像是整座古镇都在回响某种古老的韵律。巷子里的石板路泛着水光，每一块石板都像是镜面，映出一个不属于当下的世界。
+    char_start: 1526
+    char_end: 1600
+  - id: p_3_36
+    index: 36
+    text: |-
+      在巷子的尽头，沈默看到了一扇门——不是实体的门，而是雨幕中的一个缝隙，像是空间被折出了一道折痕。缝隙里有微光，和一种遥远的、像是从几十年前传来的声音——有人在低声吟诵，吟诵的内容他听不清，但韵律像极了祖父在世时常哼的那首旧曲。
+    char_start: 1601
+    char_end: 1714
+  - id: p_3_37
+    index: 37
+    text: 沈默站在缝隙前。身后的古镇、老宅、方晴——都属于当下。缝隙里的微光和声音——属于另一层时间。
+    char_start: 1715
+    char_end: 1761
+  - id: p_3_38
+    index: 38
+    text: 他没有犹豫。像沈鹤一样，像陆远山一样——他走了进去。
+    char_start: 1762
+    char_end: 1788
+  - id: p_3_39
+    index: 39
+    text: 雨继续下着。
+    char_start: 1789
+    char_end: 1795
+  - id: p_3_40
+    index: 40
+    text: 方晴站在老宅二楼的窗前，看着沈默的身影消失在雨幕中。她没有追出去——因为她信任沈默，也因为她从笔记本中读懂了一件事：通道只向选择进入的人开放。
+    char_start: 1796
+    char_end: 1867
+  - id: p_3_41
+    index: 41
+    text: 她回到密室，拿起笔记本，翻到最后一页的背面——那里还有一行字，是沈默没来得及看到的：
+    char_start: 1868
+    char_end: 1910
+  - id: p_3_42
+    index: 42
+    text: '"回来的人，会带回答案。但答案——可能比失踪更难面对。"'
+    char_start: 1911
+    char_end: 1939
+  - id: p_3_43
+    index: 43
+    text: 方晴合上笔记本，望向窗外的雨。雨不知何时会停，但她知道，当雨停的那天——沈默会回来。
+    char_start: 1940
+    char_end: 1982
+  - id: p_3_44
+    index: 44
+    text: 带着答案。
+    char_start: 1983
+    char_end: 1988
+  - id: p_3_45
+    index: 45
+    text: 而答案，或许就是这座古镇、这座老宅、和那封每二十年准时送达的信——全部的真相。
+    char_start: 1989
+    char_end: 2028
+  summary: 沈默和方晴赶回老宅发现密室状态改变，发现沈鹤的笔记本记录时间叠影现象。雨幕中沈鹤现身做出邀请手势。沈默推断真相后选择走进雨幕中的时间通道。方晴在老宅等待沈默带回答案。
 scenes:
-- id: sc_001
+- id: sc_1
   chapter_ids:
-  - ch_001
+  - ch_1
   source_refs:
-  - chapter_id: ch_001
+  - chapter_id: ch_1
     paragraph_ids:
-    - p_001_001
-    - p_001_002
-    - p_001_003
-  heading:
-    context: INT
-    location_id: loc_001
-    time_of_day: NIGHT
-  title: 第一章 雨夜来信 的核心场面
-  dramatic_purpose: 将 第一章 雨夜来信 的关键事件转化为可表演的场面。
-  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
-  characters:
-  - char_001
-  - char_002
-  beats:
-  - 建立场景和人物状态
-  - 释放关键信息
-  - 用动作或对白推动冲突
-  summary: 第一章 雨夜来信：雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。 林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机，却在信封上看见了父亲熟悉的笔迹。
-  elements:
-  - id: el_001_001
-    type: action
-    text: 雨夜里，林舟第一次见到那封没有署名的信。信被压在老宅书房的窗台下，纸角已经被雨水洇开。
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_001
-      paragraph_ids:
-      - p_001_001
-      - p_001_002
-      - p_001_003
-  - id: el_001_002
-    type: dialogue
-    text: 我明白了，林舟推开门，房间里有一股旧报纸和潮木头混在一起的气味。她本来只是回来取父亲留下的相机。
-    character_id: char_001
-    emotion: 压抑
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_001
-      paragraph_ids:
-      - p_001_001
-      - p_001_002
-      - p_001_003
-  - id: el_001_003
-    type: transition
-    text: 切至下一场
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_001
-      paragraph_ids:
-      - p_001_001
-      - p_001_002
-      - p_001_003
-- id: sc_002
-  chapter_ids:
-  - ch_002
-  source_refs:
-  - chapter_id: ch_002
-    paragraph_ids:
-    - p_002_001
-    - p_002_002
-    - p_002_003
+    - p_1_1
+    - p_1_2
+    - p_1_3
   heading:
     context: EXT
-    location_id: loc_001
+    location_id: loc_1
     time_of_day: NIGHT
-  title: 第二章 旧街钟楼 的核心场面
-  dramatic_purpose: 将 第二章 旧街钟楼 的关键事件转化为可表演的场面。
-  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
+  title: 雨夜旧宅
+  dramatic_purpose: 建立故事氛围和主角处境。雨夜老宅的孤寂感暗示着某种被时间封存的秘密即将揭开。
+  conflict: 沈默的内心冲突——对封闭记忆的抗拒 vs 收到神秘来信后无法忽视的好奇与不安。
   characters:
-  - char_001
-  - char_002
+  - char_1
   beats:
-  - 建立场景和人物状态
-  - 释放关键信息
-  - 用动作或对白推动冲突
-  summary: 第二章 旧街钟楼：第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。 一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
+  - description: 沈默站在窗前看雨，老宅的孤寂与雨夜的暗沉交织。
+    emotional_arc: 平静 -> 不安
+    key_action: 站在窗前观望
+  - description: 沈默发现桌上的神秘来信，拆开看到你所遗忘的正在回来。
+    emotional_arc: 好奇 -> 冷意蔓延
+    key_action: 拆开信件
   elements:
-  - id: el_002_001
+  - id: el_1
     type: action
-    text: 第二天夜里，林舟来到旧街。钟楼已经停摆多年，楼下的小卖部换成了无人值守的便利店。
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_002
+    text: 秋雨从黄昏开始落下，到深夜仍未停歇。沈默站在老宅二楼的窗前，看着雨水顺着瓦片汇成细流，打在石板路上溅起微光。
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_002_001
-      - p_002_002
-      - p_002_003
-  - id: el_002_002
-    type: dialogue
-    text: 我明白了，一个穿灰色风衣的男人站在钟楼阴影里。他没有介绍自己，只把一只录音笔递给林舟。
-    character_id: char_001
-    emotion: 压抑
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_002
+      - p_1_1
+  - id: el_2
+    type: voice_over
+    text: 这座宅子是他祖父留下的，位于江南古镇的巷尾。平日无人居住，只有逢年过节才回来打扫一番。
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_002_001
-      - p_002_002
-      - p_002_003
-  - id: el_002_003
-    type: transition
-    text: 切至下一场
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_002
+      - p_1_1
+  - id: el_3
+    type: action
+    text: |-
+      今天他收到了一封信。信用牛皮纸包裹，没有邮戳，没有寄信人地址，正面用毛笔写着沈默亲启四个字。字迹端正，却有一种说不出的古意，像是从几十年前穿越而来。他把信放在书房的旧桌上，犹豫了很久才拆开。里面是一张泛黄的信纸，上面只有一行字：你所遗忘的，正在回来。
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_002_001
-      - p_002_002
-      - p_002_003
-- id: sc_003
+      - p_1_2
+      - p_1_3
+  - id: el_4
+    type: action
+    text: 沈默的手微微发抖。这行字让他感到一种冷意——不是恐惧，而是某种更深层的不安，像是被触碰了一段刻意封闭的记忆。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_4
+- id: sc_2
   chapter_ids:
-  - ch_003
+  - ch_1
   source_refs:
-  - chapter_id: ch_003
+  - chapter_id: ch_1
     paragraph_ids:
-    - p_003_001
-    - p_003_002
-    - p_003_003
+    - p_1_5
+    - p_1_6
   heading:
     context: INT
-    location_id: loc_001
+    location_id: loc_1
     time_of_day: NIGHT
-  title: 第三章 报社档案室 的核心场面
-  dramatic_purpose: 将 第三章 报社档案室 的关键事件转化为可表演的场面。
-  conflict: 人物需要在信息不完整的情况下做出选择，推动下一场行动。
+  title: 封闭的记忆
+  dramatic_purpose: 揭示沈默的心理困境——童年记忆碎片中有一个他不愿想起的雨夜，与当下的雨夜构成呼应。
+  conflict: 沈默试图回忆 vs 刻意遗忘——内心对抗。
   characters:
-  - char_001
-  - char_002
+  - char_1
   beats:
-  - 建立场景和人物状态
-  - 释放关键信息
-  - 用动作或对白推动冲突
-  summary: 第三章 报社档案室：林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。 档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁，发现报告里夹着一张合影。
+  - description: 沈默坐在藤椅上试图回忆，但童年记忆碎片中有一个不愿想起的雨夜。
+    emotional_arc: 尝试回忆 -> 回避
+    key_action: 坐在藤椅上思考
   elements:
-  - id: el_003_001
+  - id: el_5
     type: action
-    text: 林舟回到报社，借口整理旧稿进入档案室。周启明的办公室就在走廊尽头，门缝里透出一线灯光。
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_003
+    text: 沈默坐在书房的藤椅上，试图回忆这封信可能指向什么。祖父去世时他只有七岁。
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_003_001
-      - p_003_002
-      - p_003_003
-  - id: el_003_002
+      - p_1_5
+  - id: el_6
+    type: voice_over
+    text: 对这座老宅的记忆，只剩下零碎的片段：屋檐下的燕子窝、后院那棵歪脖子的桂花树、以及——一个他不愿想起的夜晚。那个夜晚也是雨夜。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_5
+      - p_1_6
+- id: sc_3
+  chapter_ids:
+  - ch_1
+  source_refs:
+  - chapter_id: ch_1
+    paragraph_ids:
+    - p_1_7
+    - p_1_8
+  heading:
+    context: INT
+    location_id: loc_1
+    time_of_day: NIGHT
+  title: 方晴来电
+  dramatic_purpose: 引入搭档方晴，建立信任关系。沈默隐瞒了信的真正含义，显示他的谨慎和独立。
+  conflict: 沈默选择隐瞒 vs 方晴的关切——信任中的缝隙。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 方晴来电询问情况，沈默只说没什么，但暗中要求查失踪案。
+    emotional_arc: 关切 -> 隐忍
+    key_action: 沈默将信折好放入衣袋
+  elements:
+  - id: el_7
+    type: action
+    text: 手机响了。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_7
+  - id: el_8
     type: dialogue
-    text: 我明白了，档案柜最底层锁着一份调查报告，标题是“南港事故内部记录”。林舟用父亲留下的钥匙打开锁。
-    character_id: char_001
-    emotion: 压抑
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_003
+    text: 你还在老宅？那边什么情况？
+    character_id: char_2
+    parenthetical: 关切
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_003_001
-      - p_003_002
-      - p_003_003
-  - id: el_003_003
-    type: transition
-    text: 切至下一场
-    character_id: null
-    emotion: null
-    parenthetical: null
-    source_refs:
-    - chapter_id: ch_003
+      - p_1_7
+  - id: el_9
+    type: dialogue
+    text: 没什么。我明天回局里，有件事想查一下。
+    character_id: char_1
+    parenthetical: 平静
+    source_ref:
+      chapter_id: ch_1
       paragraph_ids:
-      - p_003_001
-      - p_003_002
-      - p_003_003
+      - p_1_8
+  - id: el_10
+    type: dialogue
+    text: 什么事？
+    character_id: char_2
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_8
+  - id: el_11
+    type: dialogue
+    text: 帮我查一下——二十年前，这个镇上有没有失踪案的记录。
+    character_id: char_1
+    parenthetical: 沉默两秒后
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_8
+  - id: el_12
+    type: action
+    text: 电话那头安静了片刻。方晴只说了句收到，便挂了电话。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_8
+- id: sc_4
+  chapter_ids:
+  - ch_1
+  source_refs:
+  - chapter_id: ch_1
+    paragraph_ids:
+    - p_1_9
+    - p_1_10
+    - p_1_11
+    - p_1_12
+    - p_1_13
+  heading:
+    context: INT
+    location_id: loc_2
+    time_of_day: NIGHT
+  title: 打开密室
+  dramatic_purpose: 核心转折点。密室中的照片、诫命纸条和开着的窗户揭示了一个被时间封存的秘密，同时暗示有人（或某种力量）刚刚从这里离开。
+  conflict: 沈默的好奇 vs 诫命的警告——勿忘。勿寻。勿回三条诫命直接挑战他追查的决心。
+  characters:
+  - char_1
+  - char_3
+  beats:
+  - description: 沈默走到走廊尽头，面对从未打开的铜锁门。
+    emotional_arc: 犹豫 -> 决断
+    key_action: 将铜钥匙插入锁孔
+  - description: 密室内部——灰尘凝固、照片、诫命纸条。
+    emotional_arc: 震惊 -> 警觉
+    key_action: 发现照片和纸条
+  - description: 窗户开着，窗台有新鲜湿痕和铜扣——有人刚刚离开。
+    emotional_arc: 警觉 -> 恐惧蔓延
+    key_action: 发现窗户异常和铜扣
+  elements:
+  - id: el_13
+    type: action
+    text: 沈默起身走到走廊尽头，面对一扇从未打开过的门——祖父书房隔壁的房间，门上挂着一把锈迹斑斑的铜锁。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_9
+  - id: el_14
+    type: action
+    text: 他看了看钥匙串，其中有一枚从未试过的铜钥匙——形状和门上的锁孔吻合。他深吸一口气，将钥匙插入锁孔。锁开了。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_10
+  - id: el_15
+    type: action
+    text: 门后的房间里，灰尘铺了厚厚一层，桌椅像是被时间凝固。墙上挂着一幅照片——照片里是年轻时的祖父，旁边站着一个人，面容模糊，穿着民国时期的长衫。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_11
+  - id: el_16
+    type: note
+    text: 照片下方贴着一张纸条，字迹和信上的一模一样：勿忘。勿寻。勿回。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_12
+  - id: el_17
+    type: action
+    text: |-
+      三条诫命，三个勿。沈默觉得后颈一阵凉意，像是有人在身后注视着他。他猛然回头——走廊空空荡荡，只有雨声。但他注意到一件异常的事：这个房间的窗户是开的。窗台上有一片新鲜的湿痕——像是有人刚刚从这里离开。沈默的手电扫过窗台，发现一枚老式铜扣，上面刻着一个他从未见过的符号。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_13
+- id: sc_5
+  chapter_ids:
+  - ch_1
+  source_refs:
+  - chapter_id: ch_1
+    paragraph_ids:
+    - p_1_14
+    - p_1_15
+    - p_1_16
+    - p_1_17
+    - p_1_18
+  heading:
+    context: INT
+    location_id: loc_1
+    time_of_day: NIGHT
+  title: 陈老的告诫
+  dramatic_purpose: 引入外部视角——陈老揭示信的规律（每二十年送达一次），将事件从个人层面提升到超自然层面。陈老的告诫勿寻与沈默的性格形成对抗。
+  conflict: 陈老的告诫 vs 沈默的固执——外部警告与主角内驱动力的矛盾。
+  characters:
+  - char_1
+  - char_7
+  beats:
+  - description: 沈默打电话联系陈老，询问祖父的事。陈老立刻问你是不是打开了那间房。
+    emotional_arc: 犹豫 -> 震惊
+    key_action: 拨打电话
+  - description: 陈老揭示每二十年有人收到信的规律。沈默脊背冷意蔓延全身。陈老告诫勿寻。
+    emotional_arc: 震惊 -> 寒意蔓延 -> 固执
+    key_action: 握紧手机
+  elements:
+  - id: el_18
+    type: action
+    text: 沈默回到书房，拨打了一个很久没用过的号码。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_14
+  - id: el_19
+    type: dialogue
+    text: 陈老，我需要了解一些关于我祖父的事。
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_15
+  - id: el_20
+    type: dialogue
+    text: 沈默……你是不是打开了那间房？
+    character_id: char_7
+    parenthetical: 苍老而迟缓
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_15
+  - id: el_21
+    type: dialogue
+    text: 你怎么知道？
+    character_id: char_1
+    parenthetical: 握紧手机
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_16
+  - id: el_22
+    type: dialogue
+    text: 因为那封信。每二十年，都会有人收到那封信。而每一个收到信的人，都会打开那间房。
+    character_id: char_7
+    parenthetical: 声音在雨夜中格外清晰
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_17
+  - id: el_23
+    type: action
+    text: 沈默感到脊背上的冷意蔓延到了全身。
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_17
+  - id: el_24
+    type: dialogue
+    text: 你接下来要做的事——千万不要去寻。
+    character_id: char_7
+    parenthetical: 停顿很久后缓缓说出
+    source_ref:
+      chapter_id: ch_1
+      paragraph_ids:
+      - p_1_18
+- id: sc_6
+  chapter_ids:
+  - ch_2
+  source_refs:
+  - chapter_id: ch_2
+    paragraph_ids:
+    - p_2_1
+    - p_2_2
+    - p_2_3
+  heading:
+    context: INT
+    location_id: loc_3
+    time_of_day: DAY
+  title: 档案室调查
+  dramatic_purpose: 推进调查——方晴查出二十年前陆远山失踪案记录，将线索从超自然层面回归刑侦层面。
+  conflict: 沈默的刑侦理性 vs 超自然线索的冲击。
+  characters:
+  - char_1
+  - char_2
+  - char_4
+  beats:
+  - description: 沈默直奔档案室，方晴已准备好资料。
+    emotional_arc: 急迫 -> 发现
+    key_action: 翻阅档案
+  elements:
+  - id: el_25
+    type: action
+    text: 沈默没有听从陈老的告诫。第二天一早驾车回市里，直奔刑侦队档案室。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_1
+  - id: el_26
+    type: action
+    text: 方晴已经把资料准备好了——二十年前，古镇确实发生过一起失踪案。失踪者陆远山，男性，五十二岁，中学历史教师。雨夜失踪，案件以原因不明结案。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_1
+  - id: el_27
+    type: dialogue
+    text: 有意思的是，失踪前一个月，陆远山多次到访你祖父的宅子。邻居看到他们深夜在书房里交谈。
+    character_id: char_2
+    parenthetical: 翻开档案指着其中一页
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_2
+  - id: el_28
+    type: action
+    text: 沈默将档案中陆远山的照片与密室老照片对比——祖父身旁穿长衫的人体型和轮廓与陆远山相似。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_3
+- id: sc_7
+  chapter_ids:
+  - ch_2
+  source_refs:
+  - chapter_id: ch_2
+    paragraph_ids:
+    - p_2_4
+    - p_2_5
+    - p_2_6
+  heading:
+    context: INT
+    location_id: loc_3
+    time_of_day: DAY
+  title: 消失的证词
+  dramatic_purpose: 揭示更深层异常——三个目击者的证词全部从档案中失踪。
+  conflict: 刑侦逻辑 vs 超自然现象。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 方晴揭示陆远山失踪当晚三个目击者看到穿长衫的人影，证词全部失踪。
+    emotional_arc: 发现 -> 不安
+    key_action: 方晴压低声音说明异常
+  elements:
+  - id: el_29
+    type: dialogue
+    text: 我联系了当年的办案民警。陆远山失踪当晚，镇上有三个人声称在雨中看到了一个穿长衫的人，走在巷子里，像是凭空出现又凭空消失。
+    character_id: char_2
+    parenthetical: 压低声音
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_4
+  - id: el_30
+    type: dialogue
+    text: 三个目击者？他们的证词呢？
+    character_id: char_1
+    parenthetical: 皱起眉
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_5
+  - id: el_31
+    type: dialogue
+    text: 消失了。三个人，三份证词，全部从档案中失踪。周老说他当年提交了证词，但后来档案复查时这些页码是空的——像是被人精准地抽走了。
+    character_id: char_2
+    parenthetical: 语气平静但压抑不安
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_6
+- id: sc_8
+  chapter_ids:
+  - ch_2
+  source_refs:
+  - chapter_id: ch_2
+    paragraph_ids:
+    - p_2_7
+    - p_2_8
+    - p_2_9
+    - p_2_10
+    - p_2_11
+  heading:
+    context: INT
+    location_id: loc_4
+    time_of_day: DAY
+  title: 周老的笔记
+  dramatic_purpose: 关键信息节点。周老保存的私下笔记提供了缺失的证词内容。
+  conflict: 周老二十年等待终于有人来问 vs 他的谨慎和恐惧。
+  characters:
+  - char_1
+  - char_6
+  beats:
+  - description: 周老没有寒暄，直接说等了二十年。翻开私下抄录的笔记。
+    emotional_arc: 等待 -> 揭示
+    key_action: 翻开手写笔记
+  - description: 三个目击者描述高度一致。吴婶说他不是失踪他是回去了。
+    emotional_arc: 震惊 -> 寒意
+    key_action: 阅读笔记
+  elements:
+  - id: el_32
+    type: dialogue
+    text: 我等了二十年，知道迟早有人会来问。
+    character_id: char_6
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_7
+  - id: el_33
+    type: action
+    text: 周老翻开一本私下抄录的手写笔记——当年私下抄录所以没有被抽走。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_8
+  - id: el_34
+    type: dialogue
+    text: 三个目击者：吴婶、小孙、阿亮。他们的描述高度一致——雨夜巷子里，一个穿灰色长衫的男人，走路没有声音，脚步像是踩在水面上。吴婶说那是一张她觉得应该认识却想不起来的脸。
+    character_id: char_6
+    parenthetical: 翻阅笔记
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_9
+  - id: el_35
+    type: dialogue
+    text: 吴婶现在在哪里？
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_10
+  - id: el_36
+    type: note
+    text: 周老翻到笔记最后一页：他不是失踪。他是回去了。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_11
+- id: sc_9
+  chapter_ids:
+  - ch_2
+  source_refs:
+  - chapter_id: ch_2
+    paragraph_ids:
+    - p_2_12
+    - p_2_13
+    - p_2_14
+    - p_2_15
+    - p_2_16
+    - p_2_17
+  heading:
+    context: INT
+    location_id: loc_4
+    time_of_day: DAY
+  title: 三条诫命与沈鹤
+  dramatic_purpose: 核心揭示。三条诫命不是警告而是封印。沈鹤于1947年消失。照片中第三人面容与沈默极为相似。这不是一起失踪案，是延伸60年的线索。
+  conflict: 沈默得知自己与沈鹤面容极为相似——身份认同危机。密室封印已破意味着某种力量已释放。
+  characters:
+  - char_1
+  - char_2
+  - char_5
+  - char_6
+  beats:
+  - description: 沈默问周老是否知道三条诫命。周老极为警觉，从床底拖出铁皮箱。
+    emotional_arc: 追问 -> 警觉
+    key_action: 周老拖出铁皮箱
+  - description: 照片揭示：祖父、陆远山、沈鹤三人。沈鹤面容与沈默极为相似。密室就是沈鹤住过的房间。
+    emotional_arc: 震惊 -> 认同危机
+    key_action: 辨认照片中沈鹤的面容
+  - description: 沈鹤1947年消失。这不是一起失踪案，是延伸60年的线索。
+    emotional_arc: 认同危机 -> 决断
+    key_action: 沈默决定回老宅
+  elements:
+  - id: el_37
+    type: dialogue
+    text: 周老，你有没有听说过勿忘、勿寻、勿回这三条诫命？
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_12
+  - id: el_38
+    type: dialogue
+    text: 你从哪里知道这三条诫命？
+    character_id: char_6
+    parenthetical: 极为警觉
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_13
+  - id: el_39
+    type: dialogue
+    text: 我祖父的密室里。
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_13
+  - id: el_40
+    type: action
+    text: 周老站起身，从床底下拖出铁皮箱。里面是更多手写笔记和几张照片。其中一张照片让沈默怔住了——祖父年轻时和另外两个人站在老宅门前。照片里的第三人面容和沈默极为相似——像是跨越了时间的镜像。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_14
+  - id: el_41
+    type: dialogue
+    text: 你祖父共有三个至交。陆远山是其中之一，另一个叫沈鹤。沈鹤也在这座宅子里住过。他住的那间房——
+    character_id: char_6
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_15
+  - id: el_42
+    type: dialogue
+    text: 就是那间锁着的密室。
+    character_id: char_1
+    parenthetical: 脱口而出
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_15
+  - id: el_43
+    type: dialogue
+    text: 沈鹤消失后，你的祖父就把那间房锁了。再未打开。直到——有人收到那封信。
+    character_id: char_6
+    parenthetical: 点头
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_16
+  - id: el_44
+    type: dialogue
+    text: 一九四七年。
+    character_id: char_6
+    parenthetical: 目光看向窗外
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_17
+- id: sc_10
+  chapter_ids:
+  - ch_2
+  source_refs:
+  - chapter_id: ch_2
+    paragraph_ids:
+    - p_2_18
+    - p_2_19
+  heading:
+    context: INT
+    location_id: loc_4
+    time_of_day: DAY
+  title: 封印已破
+  dramatic_purpose: 高潮预警。周老揭示三条诫命是封印而非警告——密室门已破，某种力量已释放。
+  conflict: 沈默的追查决心 vs 周老的警告——封印已破意味着危险已释放。
+  characters:
+  - char_1
+  - char_6
+  beats:
+  - description: 沈默决定回老宅。周老抓住他的手腕警告：三条诫命不是警告是封印，密室门开的那一刻封印就破了。
+    emotional_arc: 决断 -> 恐惧
+    key_action: 周老抓住沈默手腕
+  elements:
+  - id: el_45
+    type: dialogue
+    text: 我需要回去。回老宅。
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_18
+  - id: el_46
+    type: action
+    text: 周老抓住沈默的手腕，力气出奇的大。
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_19
+  - id: el_47
+    type: dialogue
+    text: 那三条诫命不是警告——是封印。你祖父锁上那间房，不是要藏什么，是要关住什么。你打开门的那一刻，封印就破了。现在——它出来了。
+    character_id: char_6
+    parenthetical: 声音颤抖
+    emotion: 恐惧
+    source_ref:
+      chapter_id: ch_2
+      paragraph_ids:
+      - p_2_19
+- id: sc_11
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_1
+    - p_3_2
+    - p_3_3
+  heading:
+    context: INT.EXT
+    location_id: loc_1
+    time_of_day: DUSK
+  title: 重返老宅
+  dramatic_purpose: 故事回归原点。雨又下了——像信号、像召唤。老宅大门敞开、密室门再次开着。
+  conflict: 沈默的决心 vs 未知的力量——老宅在等待他。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 沈默和方晴赶到古镇。雨又下了。这场雨和二十年前的雨、六十年前的雨是同一场雨。
+    emotional_arc: 紧迫 -> 被召唤感
+    key_action: 驾车赶回古镇
+  - description: 老宅大门敞开。一楼桌上多了一盏燃烧的油灯。
+    emotional_arc: 被召唤感 -> 警觉
+    key_action: 走进宅子发现油灯
+  elements:
+  - id: el_48
+    type: action
+    text: 沈默和方晴在黄昏时分赶到了古镇。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_1
+  - id: el_49
+    type: voice_over
+    text: 雨又下了起来。像是一种信号，像是一种召唤——这场雨和二十年前、六十年前的雨，是同一场雨。从未停止，只是在等待。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_2
+  - id: el_50
+    type: action
+    text: 老宅的大门开着。沈默记得他离开时锁了门——他确信自己锁了门。但此刻门敞开着。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_3
+- id: sc_12
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_4
+    - p_3_5
+    - p_3_6
+  heading:
+    context: INT
+    location_id: loc_2
+    time_of_day: NIGHT
+  title: 密室异变
+  dramatic_purpose: 密室状态改变是关键信号——灰尘消失、纸条更换、沈鹤的笔记本出现。
+  conflict: 密室的改变 vs 沈默的预期——空间本身在回应他的选择。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 密室门再次开着。密室内灰尘消失，纸条更换。
+    emotional_arc: 警觉 -> 确认异变
+    key_action: 走进密室发现变化
+  elements:
+  - id: el_51
+    type: dialogue
+    text: 二楼。
+    character_id: char_1
+    parenthetical: 低声
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_4
+  - id: el_52
+    type: action
+    text: 走廊尽头，密室的门再次开着。密室里灰尘不见了，地面干净，桌椅整齐。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_5
+  - id: el_53
+    type: note
+    text: 墙上照片还在，但勿忘。勿寻。勿回的纸条不见了。取而代之的是你已回。所见即真。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_5
+  - id: el_54
+    type: action
+    text: 窗台上坐着一本旧笔记本，封面写着一个名字：沈鹤。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_6
+- id: sc_13
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_7
+    - p_3_8
+    - p_3_9
+  heading:
+    context: INT
+    location_id: loc_2
+    time_of_day: NIGHT
+  title: 沈鹤的笔记本
+  dramatic_purpose: 真相揭示。沈鹤的笔记本记录了时间叠影现象和通道的存在——所有谜团的答案。
+  conflict: 刑侦理性 vs 超自然真相——沈默多年训练要求只看事实，而事实指向了超越理性的答案。
+  characters:
+  - char_1
+  - char_2
+  - char_5
+  beats:
+  - description: 沈默翻开笔记本——沈鹤记录了时间叠影现象。
+    emotional_arc: 阅读 -> 接受
+    key_action: 翻开笔记本阅读
+  - description: 最后一页：叠影非幻象，两层时间之间有通道。沈鹤选择进入通道面对真相。
+    emotional_arc: 接受 -> 平静
+    key_action: 合上笔记本
+  elements:
+  - id: el_55
+    type: action
+    text: 沈默翻开笔记本。里面用小楷密密麻麻写满了内容——不是日记，而是某种研究记录。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_7
+  - id: el_56
+    type: note
+    text: 叠影非幻象。他们是真实的——他们存在于另一层时间中。当叠合发生时，两层时间之间会产生通道。通过通道，过去的人可以来到现在——而现在的人，也可能被拉回过去。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_8
+  - id: el_57
+    type: note
+    text: 我已经看到了通道。它在雨夜出现，在老宅的密室中。祖父试图封印通道——但封印不是永久的。每隔二十年，通道会重新打开。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_8
+  - id: el_58
+    type: note
+    text: 我即将进入通道。不是被迫——是我选择。因为在另一层时间里，有一个我必须面对的真相。不要试图寻找我。但我可能会——回来。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_9
+- id: sc_14
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_10
+    - p_3_11
+  heading:
+    context: INT
+    location_id: loc_2
+    time_of_day: NIGHT
+  title: 推理与结论
+  dramatic_purpose: 沈默将所有线索整合——所有事实指向时间叠影。
+  conflict: 无——此场景是沈默与方晴达成共识的时刻。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 沈默与方晴整合所有线索：陆远山从另一层时间走过来、证词被某种力量抹除、吴婶看到了真相。通道又打开了。
+    emotional_arc: 整合 -> 确认
+    key_action: 走到窗前看雨幕
+  elements:
+  - id: el_59
+    type: dialogue
+    text: 沈队，这解释了——
+    character_id: char_2
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_10
+  - id: el_60
+    type: dialogue
+    text: 解释了所有事。陆远山穿长衫出现在巷子里——他不是幻影，是从另一层时间走过来的。三个目击者证词被抽走——不是人为，是某种力量在抹除两层时间交叉的痕迹。吴婶说他不是失踪他是回去了——她看到了真相。
+    character_id: char_1
+    parenthetical: 点头
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_10
+  - id: el_61
+    type: action
+    text: 他看向密室的窗。雨正在窗外织成一面帘幕。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_11
+  - id: el_62
+    type: dialogue
+    text: 而现在，通道又打开了。
+    character_id: char_1
+    parenthetical: 走到窗前
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_11
+- id: sc_15
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_12
+    - p_3_13
+  heading:
+    context: EXT
+    location_id: loc_6
+    time_of_day: NIGHT
+  title: 雨中沈鹤
+  dramatic_purpose: 超自然现象的直接呈现。沈鹤站在桂花树下——不是幻影，是真实的存在。
+  conflict: 沈默的刑侦理性 vs 超自然的直接呈现。
+  characters:
+  - char_1
+  - char_2
+  - char_5
+  beats:
+  - description: 雨幕中一个身影站在后院桂花树下——穿灰色长衫的沈鹤。
+    emotional_arc: 确认 -> 面对
+    key_action: 看清沈鹤的面容
+  - description: 沈鹤做出邀请手势，转身消失在雨幕中。沈默按住方晴的手——他不是威胁。他是线索。
+    emotional_arc: 面对 -> 选择
+    key_action: 按住方晴的手
+  elements:
+  - id: el_63
+    type: action
+    text: 窗外，雨幕中，一个身影正站在后院的桂花树下。穿着灰色长衫，走路没有声音。那人缓缓转身。沈默看清了他的脸——那是沈鹤的脸。和照片里一模一样。和沈默——极为相似。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_12
+  - id: el_64
+    type: action
+    text: 沈鹤抬起手，做了一个手势——不是招呼，不是警告，是一种邀请。然后他转身，消失在雨幕中。方晴握住枪柄，沈默按住了她的手。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_13
+  - id: el_65
+    type: dialogue
+    text: 不用。他不是威胁。他是——线索。
+    character_id: char_1
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_13
+- id: sc_16
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_14
+    - p_3_15
+  heading:
+    context: EXT
+    location_id: loc_5
+    time_of_day: NIGHT
+  title: 进入通道
+  dramatic_purpose: 故事高潮与核心抉择。沈默选择进入时间通道——不是被迫，是他选择。
+  conflict: 沈默的选择 vs 方晴的等待——信任成为最后的纽带。
+  characters:
+  - char_1
+  - char_2
+  beats:
+  - description: 沈默打开窗户走进雨中。后院桂花树像连接两层时间的锚点。
+    emotional_arc: 选择 -> 行动
+    key_action: 翻出窗户走进雨中
+  - description: 巷子尽头——雨幕中的空间缝隙。微光和祖父常哼的旧曲。沈默毫不犹豫走了进去。
+    emotional_arc: 行动 -> 面对
+    key_action: 走进空间缝隙
+  elements:
+  - id: el_66
+    type: action
+    text: 沈默打开窗户，走进雨中。后院的桂花树在夜雨中散发着浓郁的香气——童年记忆中唯一温暖的部分，此刻像是连接两层时间的锚点。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_14
+  - id: el_67
+    type: action
+    text: |-
+      巷子里的石板路泛着水光，每一块石板都像是镜面。在巷子尽头，沈默看到了雨幕中的一个缝隙——像是空间被折出了一道折痕。缝隙里有微光，和一种遥远的、像是从几十年前传来的声音——有人在低声吟诵，韵律像极了祖父在世时常哼的那首旧曲。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_15
+  - id: el_68
+    type: action
+    text: 沈默站在缝隙前。身后的古镇、老宅、方晴——属于当下。缝隙里的微光和声音——属于另一层时间。他没有犹豫——走了进去。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_15
+- id: sc_17
+  chapter_ids:
+  - ch_3
+  source_refs:
+  - chapter_id: ch_3
+    paragraph_ids:
+    - p_3_16
+    - p_3_17
+  heading:
+    context: INT
+    location_id: loc_1
+    time_of_day: NIGHT
+  title: 方晴的等待
+  dramatic_purpose: 情感锚点与开放结局。方晴选择等待——信任沈默会回来。
+  conflict: 方晴的信任 vs 未知的结果。
+  characters:
+  - char_2
+  beats:
+  - description: 方晴站在窗前看着沈默消失在雨幕中。通道只向选择进入的人开放。
+    emotional_arc: 信任 -> 等待
+    key_action: 站在窗前观望
+  - description: 方晴翻到笔记本最后一页背面——回来的人会带回答案。但答案可能比失踪更难面对。
+    emotional_arc: 等待 -> 预感
+    key_action: 阅读笔记本背面
+  elements:
+  - id: el_69
+    type: action
+    text: 雨继续下着。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_16
+  - id: el_70
+    type: action
+    text: 方晴站在老宅二楼的窗前，看着沈默的身影消失在雨幕中。她没有追出去——通道只向选择进入的人开放。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_16
+  - id: el_71
+    type: note
+    text: 最后一页背面还有一行字：回来的人，会带回答案。但答案——可能比失踪更难面对。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_17
+  - id: el_72
+    type: action
+    text: 方晴合上笔记本，望向窗外的雨。雨不知何时会停，但她知道，当雨停的那天——沈默会回来。带着答案。
+    source_ref:
+      chapter_id: ch_3
+      paragraph_ids:
+      - p_3_17
 metadata:
-  generated_at: '2026-06-05T04:55:52.514887+00:00'
-  model: fallback
-  provider: fallback
-  provider_status: fallback
+  generated_at: '2026-06-05T12:00:00+08:00'
+  model: deepseek-chat
   source_chapter_count: 3
-  warnings: []
+  total_scenes: 17
+  total_elements: 72

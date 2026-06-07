@@ -1,0 +1,137 @@
+name: scene_splitting
+version: "1.0"
+model_tier: standard
+system_prompt: |
+  你是一个专业的剧本创作分析师，擅长将小说文本拆分为戏剧场景。
+  你的核心技能是识别场景边界——即叙事视角、地点、时间或情感氛围发生变化的转折点。
+
+  每个场景必须包含：
+  1. dramatic_purpose（戏剧目的）：这个场景在整体叙事中的作用
+  2. conflict（冲突描述）：场景中的核心矛盾或张力
+  3. heading（场景标题行）：INT/EXT + 地点 + 时间
+  4. characters（出场角色）：在场景中出现或被提及的角色
+  5. beats（场景节拍）：场景的情感和叙事节奏变化
+
+  场景拆分的原则：
+  - 地点变化 = 新场景
+  - 时间跳跃 = 新场景（除非时间跨度很小）
+  - 叙事视角切换 = 新场景
+  - 情感氛围显著变化 = 可以考虑新场景
+  - 连续对话不应拆为多个场景
+
+user_prompt_template: |
+  请将以下章节文本拆分为戏剧场景。
+
+  ## 章节标题: {chapter_title}
+
+  ## 章节内容:
+  {chapter_text}
+
+  ## 可用角色:
+  {character_info}
+
+  ## 可用地点:
+  {location_info}
+
+  要求：
+  1. 每个场景必须有dramatic_purpose（戏剧目的）
+  2. 每个场景必须有conflict（冲突描述）
+  3. 场景边界基于地点变化、时间变化或叙事视角变化
+  4. 每个场景需要指定heading（INT/EXT、地点、时间）
+  5. 标注出场角色
+  6. 每个场景包含1-5个beats（叙事节拍）
+
+  请输出JSON格式：
+  {
+    "scenes": [
+      {
+        "title": "场景标题（可选）",
+        "dramatic_purpose": "戏剧目的",
+        "conflict": "冲突描述",
+        "characters": ["出场角色名"],
+        "heading": {
+          "context": "INT/EXT/INT/EXT",
+          "location_name": "地点名称",
+          "time_of_day": "日/夜/晨/晚/下午/傍晚"
+        },
+        "beats": [
+          {
+            "description": "节拍描述",
+            "emotional_arc": "情感走向（如：期待→紧张→释然）",
+            "key_action": "关键动作"
+          }
+        ]
+      }
+    ]
+  }
+
+few_shot_examples:
+  - input: |
+      章节标题: 第一章 初遇
+      内容: 清晨，林晓起床，在公寓准备上班。挤地铁到科技大厦。在公司门口遇到陈远。
+      角色: 林晓(主角), 陈远(配角)
+      地点: 公寓(indoor), 地铁(vehicle), 科技大厦(indoor)
+    output:
+      scenes:
+        - title: "新的一天"
+          dramatic_purpose: "建立主角日常生活，暗示孤独状态"
+          conflict: "林晓面对新环境的紧张与期待"
+          characters: ["林晓"]
+          heading:
+            context: "INT"
+            location_name: "公寓"
+            time_of_day: "晨"
+          beats:
+            - description: "林晓起床，看着窗外的城市"
+              emotional_arc: "期待"
+              key_action: "起床准备上班"
+        - title: "通勤"
+          dramatic_purpose: "展示城市生活节奏，建立环境氛围"
+          conflict: "城市拥挤与个人空间的矛盾"
+          characters: ["林晓"]
+          heading:
+            context: "INT"
+            location_name: "地铁"
+            time_of_day: "晨"
+          beats:
+            - description: "挤在地铁人群中"
+              emotional_arc: "期待→焦虑"
+              key_action: "查看手机上的地址"
+        - title: "初遇"
+          dramatic_purpose: "引入关键配角，建立两人关系的起点"
+          conflict: "冷淡上司与热情新人的初次碰撞"
+          characters: ["林晓", "陈远"]
+          heading:
+            context: "INT"
+            location_name: "科技大厦"
+            time_of_day: "晨"
+          beats:
+            - description: "在公司门口遇到陈远"
+              emotional_arc: "期待→紧张→好奇"
+              key_action: "两人首次对话"
+
+output_schema:
+  type: object
+  required: ["scenes"]
+  properties:
+    scenes:
+      type: array
+      items:
+        type: object
+        required: ["dramatic_purpose", "conflict", "heading"]
+        properties:
+          title:
+            type: string
+          dramatic_purpose:
+            type: string
+          conflict:
+            type: string
+          characters:
+            type: array
+          heading:
+            type: object
+          beats:
+            type: array
+
+max_retries: 2
+temperature: 0.3

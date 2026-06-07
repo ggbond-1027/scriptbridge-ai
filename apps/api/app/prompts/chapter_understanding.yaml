@@ -1,0 +1,144 @@
+name: chapter_understanding
+version: "1.0"
+model_tier: standard
+system_prompt: |
+  你是一个专业的文学分析师，擅长深入理解小说文本的结构和内涵。
+  你的任务是逐章分析小说内容，提取关键信息，但不要生成剧本格式的内容。
+  你需要关注：
+  1. 角色信息（名称、别名、外貌、性格、目标）
+  2. 地点信息（名称、类型、描述、氛围）
+  3. 关键事件和情节发展
+  4. 角色关系变化
+  5. 情感和冲突线索
+
+user_prompt_template: |
+  请深入分析以下章节内容，提取关键信息。
+
+  ## 章节标题: {chapter_title}
+  ## 章节顺序: 第{chapter_order}章
+
+  ## 章节内容:
+  {chapter_text}
+
+  请输出JSON格式，包含以下字段：
+  {
+    "characters": [
+      {
+        "name": "角色名称",
+        "aliases": ["别名列表"],
+        "role": "protagonist/antagonist/supporting/minor/extra",
+        "description": "角色描述",
+        "goals": "角色目标",
+        "personality": "性格特点",
+        "appearance": "外貌描述",
+        "relationships": [
+          {"character_name": "关联角色名", "type": "关系类型", "description": "关系描述"}
+        ]
+      }
+    ],
+    "locations": [
+      {
+        "name": "地点名称",
+        "type": "indoor/outdoor/hybrid",
+        "description": "地点描述",
+        "atmosphere": "氛围描述"
+      }
+    ],
+    "events": [
+      {
+        "event": "事件简述",
+        "description": "事件详细描述",
+        "characters": ["涉及角色名"],
+        "location": "发生地点"
+      }
+    ],
+    "summary": "章节内容摘要（200字以内）",
+    "conflict": "章节中的主要冲突",
+    "primary_location": "章节主要发生地点"
+  }
+
+few_shot_examples:
+  - input: |
+      ## 章节标题: 第一章 初遇
+      ## 章节内容:
+      清晨的阳光透过窗帘缝隙照进房间。林晓从床上坐起，看着窗外的城市，心中充满期待。
+      今天是她第一天到新公司上班。她穿上浅蓝色衬衫，整理好简历，出门前回头看了一眼空荡荡的公寓。
+      "新的开始。"她对自己说。
+      地铁上人潮涌动，林晓挤在人群中，手机屏幕上显示着公司地址——科技大厦，28层。
+      到了公司门口，一个高个子男人正站在那里，穿着深色西装，眉头微皱。
+      "你好，请问你是新来的林晓吗？"他问。
+      "是的，我是林晓。"她微微一笑。
+      "我是陈远，技术部经理。跟我来。"陈远的语气冷淡，但目光中似乎有一丝好奇。
+    output:
+      characters:
+        - name: "林晓"
+          aliases: []
+          role: "protagonist"
+          description: "年轻女性，第一天入职新公司"
+          goals: "在新公司站稳脚跟"
+          personality: "积极乐观，有些紧张"
+          appearance: "穿着浅蓝色衬衫"
+          relationships:
+            - character_name: "陈远"
+              type: "同事"
+              description: "初遇，陈远是她的上级"
+        - name: "陈远"
+          aliases: []
+          role: "supporting"
+          description: "技术部经理，高个子，穿深色西装"
+          goals: "未知"
+          personality: "冷淡但有好奇心"
+          appearance: "高个子，深色西装，眉头微皱"
+          relationships:
+            - character_name: "林晓"
+              type: "下属"
+              description: "新下属，初遇"
+      locations:
+        - name: "公寓"
+          type: "indoor"
+          description: "林晓的公寓，空荡荡的"
+          atmosphere: "安静、略显孤独"
+        - name: "地铁"
+          type: "vehicle"
+          description: "拥挤的地铁车厢"
+          atmosphere: "喧嚣、匆忙"
+        - name: "科技大厦"
+          type: "indoor"
+          description: "新公司，28层"
+          atmosphere: "现代、专业"
+      events:
+        - event: "林晓起床准备上班"
+          description: "林晓在新公寓中醒来，准备第一天上班"
+          characters: ["林晓"]
+          location: "公寓"
+        - event: "地铁通勤"
+          description: "林晓在拥挤的地铁上前往公司"
+          characters: ["林晓"]
+          location: "地铁"
+        - event: "初遇陈远"
+          description: "在公司门口遇到技术部经理陈远"
+          characters: ["林晓", "陈远"]
+          location: "科技大厦"
+      summary: "林晓第一天到新公司上班，从公寓出发，地铁通勤，在公司门口初遇技术部经理陈远。"
+      conflict: "林晓需要适应新环境，面对冷淡的上司陈远"
+      primary_location: "科技大厦"
+
+output_schema:
+  type: object
+  required: ["characters", "locations", "events", "summary"]
+  properties:
+    characters:
+      type: array
+    locations:
+      type: array
+    events:
+      type: array
+    summary:
+      type: string
+    conflict:
+      type: string
+    primary_location:
+      type: string
+
+max_retries: 2
+temperature: 0.3

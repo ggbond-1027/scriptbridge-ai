@@ -1,0 +1,556 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://qiyunniu.dev/schemas/screenplay.schema.json",
+  "title": "Screenplay",
+  "description": "NovelScripter 剧本数据模型 JSON Schema 定义。用于小说转剧本的结构化输出规范，保证 AI 生成结果的完整性、一致性和可校验性。",
+  "type": "object",
+  "required": ["schema_version", "project", "story_bible", "chapters", "scenes", "metadata"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0",
+      "description": "Schema 版本号，遵循语义化版本规范 (SemVer)。用于版本兼容性校验和升级迁移。"
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "title", "source_language", "target_format"],
+      "additionalProperties": false,
+      "description": "项目元信息。定义剧本的来源小说、目标格式和改编风格。",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "项目唯一标识符。用于跨系统引用和数据库索引。"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "项目标题，即改编后剧本的标题。"
+        },
+        "source_language": {
+          "type": "string",
+          "default": "zh-CN",
+          "description": "源文本（小说）的原始语言代码，遵循 BCP 47 规范。"
+        },
+        "target_format": {
+          "type": "string",
+          "enum": ["screenplay", "teleplay", "stage_play", "animation_script"],
+          "default": "screenplay",
+          "description": "目标输出格式。不同格式影响场景标题、元素类型等细节规范。"
+        },
+        "adaptation_style": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "改编风格指导。影响 AI 生成时的整体基调和对话风格。",
+          "properties": {
+            "genre": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "目标剧本的类型标签，如悬疑、科幻、爱情等。可多选。"
+            },
+            "tone": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "基调标签，如紧张、暗黑、温情等。可多选。"
+            },
+            "dialogue_style": {
+              "type": "string",
+              "enum": ["natural", "stylized", "terse", "verbose", "poetic"],
+              "default": "natural",
+              "description": "对话风格偏好。natural=日常口语化、stylized=修辞化、terse=简洁有力、verbose=详尽、poetic=诗意化。"
+            }
+          }
+        }
+      }
+    },
+    "story_bible": {
+      "type": "object",
+      "required": ["characters", "locations", "timeline"],
+      "additionalProperties": false,
+      "description": "故事圣经。集中定义所有角色、地点和事件时间线，保证跨章节引用一致性，避免 AI 幻觉导致的角色冲突。",
+      "properties": {
+        "characters": {
+          "type": "array",
+          "minItems": 1,
+          "description": "角色列表。所有在剧本中出现的人物必须在此注册。",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "role"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^char_\\d+$",
+                "description": "角色唯一ID。格式为 char_ 加数字序号。使用 ID 而非姓名引用，避免同名别名批量重命名问题。"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "description": "角色的主要名称，即剧本中默认显示名。"
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "角色别名列表。如绰号、代号、不同身份下的称呼。用于对话识别和角色追踪。"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["protagonist", "supporting", "antagonist", "extra"],
+                "default": "supporting",
+                "description": "角色类型。protagonist=主角、supporting=配角、antagonist=反派、extra=龙套。"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "description": "角色简介。涵盖背景、性格核心和故事中的定位。"
+              },
+              "goals": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "角色的目标/动机列表。驱动角色行为的核心动力。"
+              },
+              "personality": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "性格特征标签列表。如固执、善良、狡猾等。"
+              },
+              "appearance": {
+                "type": "string",
+                "description": "角色外貌描写。用于动作描述和场景设定参考。"
+              },
+              "first_appearance": {
+                "type": "object",
+                "required": ["chapter_id", "paragraph_id"],
+                "additionalProperties": false,
+                "description": "角色首次出现的位置。用于校验角色出场顺序和跨章节引用。",
+                "properties": {
+                  "chapter_id": {
+                    "type": "string",
+                    "description": "首次出现的章节 ID。"
+                  },
+                  "paragraph_id": {
+                    "type": "string",
+                    "description": "首次出现的段落 ID。"
+                  }
+                }
+              },
+              "relationships": {
+                "type": "array",
+                "description": "角色关系列表。定义与其他角色的关系网络。",
+                "items": {
+                  "type": "object",
+                  "required": ["character_id", "type", "description"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "character_id": {
+                      "type": "string",
+                      "description": "关联角色的 ID，必须指向 story_bible.characters 中已定义的角色。"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["family", "friend", "enemy", "lover", "colleague", "mentor", "subordinate", "other"],
+                      "description": "关系类型分类。"
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "关系描述。如'表面上是合伙人，实际是卧底'。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "locations": {
+          "type": "array",
+          "minItems": 1,
+          "description": "地点列表。所有在剧本中出现的场景地点必须在此注册，保证场景引用地点时保持一致。",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^loc_\\d+$",
+                "description": "地点唯一ID。格式为 loc_ 加数字序号。使用 ID 引用保证地点一致性。"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "description": "地点名称。"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["interior", "exterior", "mixed", "unknown"],
+                "default": "unknown",
+                "description": "地点类型。interior=室内、exterior=室外、mixed=内外兼有、unknown=未明确。"
+              },
+              "description": {
+                "type": "string",
+                "description": "地点详细描述。包含空间布局、标志性物品等信息。"
+              },
+              "atmosphere": {
+                "type": "string",
+                "description": "地点氛围关键词。如阴暗、温暖、压抑、开阔。"
+              },
+              "first_appearance": {
+                "type": "object",
+                "required": ["chapter_id", "paragraph_id"],
+                "additionalProperties": false,
+                "description": "地点首次出现的位置。",
+                "properties": {
+                  "chapter_id": {
+                    "type": "string",
+                    "description": "首次出现的章节 ID。"
+                  },
+                  "paragraph_id": {
+                    "type": "string",
+                    "description": "首次出现的段落 ID。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "minItems": 1,
+          "description": "时间线事件列表。按章节顺序排列关键事件，保证故事逻辑连贯。",
+          "items": {
+            "type": "object",
+            "required": ["id", "chapter_id", "sequence", "event_summary", "affected_characters"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^tl_\\d+$",
+                "description": "时间线事件唯一ID。格式为 tl_ 加数字序号。"
+              },
+              "chapter_id": {
+                "type": "string",
+                "description": "事件所属章节 ID。"
+              },
+              "sequence": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "事件在章节内的顺序号。"
+              },
+              "event_summary": {
+                "type": "string",
+                "minLength": 1,
+                "description": "事件摘要。简述发生了什么。"
+              },
+              "affected_characters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "受此事件影响的角色 ID 列表。"
+              }
+            }
+          }
+        }
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "minItems": 1,
+      "description": "章节列表。保留原文结构，记录每章的段落内容和摘要。",
+      "items": {
+        "type": "object",
+        "required": ["id", "order", "title", "paragraphs", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^ch_\\d+$",
+            "description": "章节唯一ID。格式为 ch_ 加数字序号。"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "章节顺序号。从1开始，保证章节排列顺序。"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "改编后的章节标题。"
+          },
+          "source_title": {
+            "type": "string",
+            "description": "原文章节标题。保留用于溯源对照。"
+          },
+          "paragraphs": {
+            "type": "array",
+            "minItems": 1,
+            "description": "段落列表。将原文拆分为结构化段落，用于 source_refs 定位。",
+            "items": {
+              "type": "object",
+              "required": ["id", "index", "text", "char_start", "char_end"],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^p_\\d+_\\d+$",
+                  "description": "段落唯一ID。格式为 p_{章节序号}_{段落序号}，如 p_1_3。"
+                },
+                "index": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "段落在本章内的序号。"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "段落原文文本。"
+                },
+                "char_start": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "段落起始字符位置（在原文中的偏移量）。用于精确溯源。"
+                },
+                "char_end": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "段落结束字符位置。"
+                }
+              }
+            }
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "description": "章节摘要。提炼本章核心事件和转折。"
+          }
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "description": "场景列表。从小说段落中提取/改编的剧本场景，是 Schema 的核心产出。",
+      "items": {
+        "type": "object",
+        "required": ["id", "chapter_ids", "source_refs", "heading", "title", "dramatic_purpose", "characters", "beats", "elements"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^sc_\\d+$",
+            "description": "场景唯一ID。格式为 sc_ 加数字序号。"
+          },
+          "chapter_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "description": "场景所属的章节 ID 列列表。跨章节场景需列出所有相关章节。"
+          },
+          "source_refs": {
+            "type": "array",
+            "minItems": 1,
+            "description": "溯源引用。指向小说原文的段落，降低 AI 幻觉风险，保证剧本内容可溯源。",
+            "items": {
+              "type": "object",
+              "required": ["chapter_id", "paragraph_ids"],
+              "additionalProperties": false,
+              "properties": {
+                "chapter_id": {
+                  "type": "string",
+                  "description": "溯源章节 ID。"
+                },
+                "paragraph_ids": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "溯源段落 ID 列表。至少包含1个段落ID。"
+                }
+              }
+            }
+          },
+          "heading": {
+            "type": "object",
+            "required": ["context", "location_id", "time_of_day"],
+            "additionalProperties": false,
+            "description": "场景标题行。对应 Fountain 格式的 Slug Line / Scene Heading。",
+            "properties": {
+              "context": {
+                "type": "string",
+                "enum": ["INT", "EXT", "INT.EXT"],
+                "default": "INT",
+                "description": "场景空间类型。INT=室内、EXT=室外、INT.EXT=内外交替。"
+              },
+              "location_id": {
+                "type": "string",
+                "description": "场景地点 ID，必须指向 story_bible.locations 中已定义的地点。"
+              },
+              "time_of_day": {
+                "type": "string",
+                "enum": ["DAY", "NIGHT", "DUSK", "DAWN", "UNKNOWN"],
+                "default": "UNKNOWN",
+                "description": "场景时间。DAY=白天、NIGHT=夜晚、DUSK=黄昏、DAWN=黎明、UNKNOWN=未明确。"
+              }
+            }
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "场景标题。简洁概括场景内容。"
+          },
+          "dramatic_purpose": {
+            "type": "string",
+            "minLength": 1,
+            "description": "戏剧目的。剧本场景必须有戏剧目的，避免流水账式叙事。描述此场景为何存在、推动什么情节或揭示什么人物。"
+          },
+          "conflict": {
+            "type": "string",
+            "description": "场景冲突。强制保留冲突描述，提升剧本质量。冲突是戏剧的核心驱动力。"
+          },
+          "characters": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "description": "场景中出现的角色 ID 列表。所有 ID 必须指向 story_bible.characters 中已定义的角色。"
+          },
+          "beats": {
+            "type": "array",
+            "minItems": 1,
+            "description": "场景节拍列表。表示场景内部节奏和情绪走向，是场景的骨架。",
+            "items": {
+              "type": "object",
+              "required": ["description"],
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "节拍描述。描述此节拍中发生了什么、角色做了什么。"
+                },
+                "emotional_arc": {
+                  "type": "string",
+                  "description": "情绪弧线。如从紧张到释然、从愤怒到妥协。"
+                },
+                "key_action": {
+                  "type": "string",
+                  "description": "关键动作。节拍中的核心行为。"
+                }
+              }
+            }
+          },
+          "elements": {
+            "type": "array",
+            "minItems": 1,
+            "description": "剧本元素列表。用统一数组表达多种剧本元素（对话、动作、旁白等），而非分类型存储。统一数组便于线性编排和顺序阅读。",
+            "items": {
+              "type": "object",
+              "required": ["id", "type", "text"],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^el_\\d+$",
+                  "description": "元素唯一ID。格式为 el_ 加数字序号。"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["action", "dialogue", "parenthetical", "transition", "voice_over", "shot", "note"],
+                  "description": "元素类型。action=动作描述、dialogue=角色对话、parenthetical=括号提示(语气/动作)、transition=场景转换(如切至/淡出)、voice_over=旁白/画外音、shot=镜头指示、note=编剧注释。"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "元素文本内容。必填，不可为空。"
+                },
+                "character_id": {
+                  "type": "string",
+                  "description": "说话角色 ID。仅 dialogue 和 parenthetical 类型必填。指向 story_bible.characters 中已定义的角色。"
+                },
+                "emotion": {
+                  "type": "string",
+                  "description": "角色情绪标签。如愤怒、悲伤、喜悦。用于表演指导和情绪追踪。"
+                },
+                "parenthetical": {
+                  "type": "string",
+                  "description": "括号提示内容。如（低声）、（犹豫地）。仅在 dialogue 类型中作为行内提示使用。"
+                },
+                "source_ref": {
+                  "type": "object",
+                  "required": ["chapter_id", "paragraph_ids"],
+                  "additionalProperties": false,
+                  "description": "溯源引用。指向生成此元素的原文段落。",
+                  "properties": {
+                    "chapter_id": {
+                      "type": "string",
+                      "description": "溯源章节 ID。"
+                    },
+                    "paragraph_ids": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "溯源段落 ID 列表。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["generated_at", "model", "source_chapter_count", "total_scenes", "total_elements"],
+      "additionalProperties": false,
+      "description": "生成元数据。记录剧本的生成信息，用于审计和追溯。",
+      "properties": {
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "生成时间，ISO 8601 格式。"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "description": "生成所用的 AI 模型名称。如 gpt-4o、deepseek-chat 等。"
+        },
+        "source_chapter_count": {
+          "type": "integer",
+          "minimum": 3,
+          "description": "源文本章节数量。至少3章，保证故事有足够的结构层次。"
+        },
+        "total_scenes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "剧本总场景数。"
+        },
+        "total_elements": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "剧本总元素数（所有场景的 elements 总计）。"
+        }
+      }
+    }
+  }
+}

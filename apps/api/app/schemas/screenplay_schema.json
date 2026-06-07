@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Screenplay",
+  "description": "NovelScripter剧本数据模型Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["schema_version", "project", "story_bible", "chapters", "scenes"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0",
+      "description": "Schema版本号"
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "项目唯一ID"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "项目标题"
+        },
+        "source_language": {
+          "type": "string",
+          "default": "zh-CN",
+          "description": "源文本语言"
+        },
+        "target_format": {
+          "type": "string",
+          "default": "screenplay",
+          "description": "目标格式"
+        },
+        "adaptation_style": {
+          "type": "object",
+          "properties": {
+            "genre": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "目标类型"
+            },
+            "tone": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "基调"
+            },
+            "dialogue_style": {
+              "type": "string",
+              "default": "natural",
+              "description": "对话风格"
+            }
+          }
+        }
+      }
+    },
+    "story_bible": {
+      "type": "object",
+      "properties": {
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^char_",
+                "description": "角色ID"
+              },
+              "name": {
+                "type": "string",
+                "description": "角色名称"
+              },
+              "aliases": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "别名列表"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["protagonist", "antagonist", "supporting", "minor", "extra"],
+                "default": "supporting"
+              },
+              "description": {"type": "string"},
+              "goals": {"type": "string"},
+              "personality": {"type": "string"},
+              "appearance": {"type": "string"},
+              "first_appearance": {"type": "string"},
+              "relationships": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["character_id", "relationship_type"],
+                  "properties": {
+                    "character_id": {"type": "string"},
+                    "relationship_type": {"type": "string"},
+                    "description": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^loc_",
+                "description": "地点ID"
+              },
+              "name": {"type": "string"},
+              "type": {
+                "type": "string",
+                "enum": ["indoor", "outdoor", "hybrid", "vehicle", "virtual"],
+                "default": "indoor"
+              },
+              "description": {"type": "string"},
+              "atmosphere": {"type": "string"},
+              "first_appearance": {"type": "string"}
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "event"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^tl_",
+                "description": "时间线ID"
+              },
+              "chapter_id": {"type": "string"},
+              "event": {"type": "string"},
+              "description": {"type": "string"},
+              "characters_involved": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "location_id": {"type": "string"},
+              "timestamp": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "order", "title"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^ch_",
+            "description": "章节ID"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "章节顺序号"
+          },
+          "title": {"type": "string"},
+          "source_title": {"type": "string"},
+          "paragraphs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "text", "order"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^p_",
+                  "description": "段落ID"
+                },
+                "text": {"type": "string"},
+                "order": {"type": "integer", "minimum": 1}
+              }
+            }
+          },
+          "summary": {"type": "string"}
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^sc_",
+            "description": "场景ID"
+          },
+          "chapter_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["chapter_id"],
+              "properties": {
+                "chapter_id": {"type": "string"},
+                "paragraph_ids": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              }
+            }
+          },
+          "heading": {
+            "type": "object",
+            "properties": {
+              "context": {
+                "type": "string",
+                "enum": ["INT", "EXT", "INT/EXT"],
+                "default": "INT"
+              },
+              "location_id": {"type": "string"},
+              "time_of_day": {"type": "string", "default": "日"}
+            }
+          },
+          "title": {"type": "string"},
+          "dramatic_purpose": {"type": "string"},
+          "conflict": {"type": "string"},
+          "characters": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "beats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["description"],
+              "properties": {
+                "description": {"type": "string"},
+                "emotional_arc": {"type": "string"},
+                "key_action": {"type": "string"}
+              }
+            }
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "type", "text"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^el_",
+                  "description": "元素ID"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["action", "dialogue", "parenthetical", "transition", "voice_over", "shot", "note"],
+                  "description": "元素类型"
+                },
+                "text": {"type": "string"},
+                "character_id": {"type": "string"},
+                "emotion": {"type": "string"},
+                "parenthetical": {"type": "string"},
+                "source_ref": {
+                  "type": "object",
+                  "required": ["chapter_id"],
+                  "properties": {
+                    "chapter_id": {"type": "string"},
+                    "paragraph_ids": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["generated_at", "model", "source_chapter_count", "total_scenes", "total_elements"],
+      "properties": {
+        "generated_at": {"type": "string"},
+        "model": {"type": "string"},
+        "source_chapter_count": {"type": "integer"},
+        "total_scenes": {"type": "integer"},
+        "total_elements": {"type": "integer"}
+      }
+    }
+  }
+}
