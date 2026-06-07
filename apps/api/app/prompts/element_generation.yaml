@@ -1,0 +1,103 @@
+name: element_generation
+version: "1.0"
+model_tier: premium
+system_prompt: |
+  你是一个专业的剧本编剧，擅长将小说叙事文本转化为规范的剧本元素序列。
+
+  你需要将源文本中的每个叙事段落转化为以下类型的剧本元素：
+  - action（动作描写）：环境描写、人物动作、事件描述
+  - dialogue（对话）：角色之间的对话内容
+  - parenthetical（括号提示语）：对话中的语气、动作提示
+  - transition（转场）：场景间或时间段的转换指示
+  - voice_over（旁白/内心独白）：角色的内心想法或叙述者旁白
+  - shot（镜头指示）：特定的镜头角度或运动指示
+  - note（注释）：编剧备注
+
+  转化原则：
+  1. 对话必须指定角色（character_name）
+  2. 描写转化为action时要视觉化、简洁
+  3. 旁白/内心独白标记为voice_over
+  4. 保持叙事的完整性和连贯性
+  5. 对话要自然生动，避免书面化
+  6. 每个对话可以包含parenthetical提示情感或动作
+
+user_prompt_template: |
+  请将以下场景的源文本转化为剧本元素序列。
+
+  ## 场景信息:
+  {scene_info}
+
+  ## 源文本:
+  {source_text}
+
+  ## 角色列表:
+  {character_info}
+
+  要求：
+  1. 每个元素指定类型：action, dialogue, parenthetical, transition, voice_over, shot, note
+  2. 对话元素必须指定角色（character_name）
+  3. 保持叙事连贯性，不遗漏关键信息
+  4. 对话要自然、生动，符合角色性格
+  5. 动作描写要视觉化、简洁
+  6. 可以添加parenthetical提示角色情感或动作
+
+  请输出JSON格式：
+  {
+    "elements": [
+      {
+        "type": "action/dialogue/parenthetical/transition/voice_over/shot/note",
+        "text": "元素文本内容",
+        "character_name": "角色名（对话和旁白必填）",
+        "emotion": "情感标注（可选）",
+        "parenthetical": "括号提示语（可选，如：紧张地、微笑着）"
+      }
+    ]
+  }
+
+few_shot_examples:
+  - input: |
+      场景: INT. 科技大厦大厅 - 晨
+      源文本: 林晓走进公司大厅，环顾四周。现代化的装修让她有些紧张。
+      "你好，请问你是新来的林晓吗？"陈远站在前台旁边，语气冷淡。
+      "是的，我是林晓。"她微微一笑，试图掩饰紧张。
+      角色: 林晓(主角), 陈远(配角)
+    output:
+      elements:
+        - type: "action"
+          text: "宽敞的科技公司大厅，玻璃幕墙映着晨光。林晓推门走入，环顾四周，脚步略显犹豫。"
+        - type: "action"
+          text: "陈远站在前台旁，深色西装笔挺，目光锁定林晓。"
+        - type: "dialogue"
+          text: "你好，请问你是新来的林晓吗？"
+          character_name: "陈远"
+          parenthetical: "冷淡地"
+        - type: "dialogue"
+          text: "是的，我是林晓。"
+          character_name: "林晓"
+          parenthetical: "微微一笑，掩饰紧张"
+          emotion: "紧张但礼貌"
+
+output_schema:
+  type: object
+  required: ["elements"]
+  properties:
+    elements:
+      type: array
+      items:
+        type: object
+        required: ["type", "text"]
+        properties:
+          type:
+            type: string
+            enum: ["action", "dialogue", "parenthetical", "transition", "voice_over", "shot", "note"]
+          text:
+            type: string
+          character_name:
+            type: string
+          emotion:
+            type: string
+          parenthetical:
+            type: string
+
+max_retries: 2
+temperature: 0.5

@@ -2,97 +2,246 @@
 
 ## Overview
 
-当前项目围绕七牛云 XEngineer 暑期实训营第二批次议题三展开：AI 小说转剧本工具。
+NovelScripter is an AI-assisted novel-to-screenplay workspace. It converts multi-chapter novel text into editable screenplay data with chapters, scenes, story bible, source paragraph references, validation feedback, preview, and export flows.
 
-目标是构建一个面向小说作者的 AI 剧本改编工作台，将 3 个章节以上的小说文本转换为结构化剧本 YAML，并提供 YAML Schema 文档、Schema 设计理由、可编辑工作流和 Demo 演示。
-
-主设计文档位于：
-
-- `AI_NOVEL_TO_SCREENPLAY_DESIGN.md`
+The current repository is a local demo/workbench rather than the full production architecture described in the README.
 
 ## Commands
 
-已实现命令：
+Backend:
 
-- 安装后端依赖：`python -m pip install -r apps/api/requirements.txt`
-- 启动后端：`python -m uvicorn apps.api.main:app --reload --host 127.0.0.1 --port 8000`
-- 安装前端依赖：`npm --prefix apps/web install`
-- 启动前端：`npm --prefix apps/web run dev`
-- 后端测试：`python -m pytest apps/api/tests`
-- 前端构建：`npm --prefix apps/web run build`
-- 根测试命令：`npm run test`
+```bash
+cd apps/api
+pip install -r requirements.txt
+python -m pytest
+uvicorn app.main:app --reload --port 8000
+```
+
+Frontend:
+
+```bash
+cd apps/web
+npm install
+npm run dev
+npm run build
+```
+
+Docker development:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
+
+Production deployment on the user's server:
+
+```bash
+cd /opt/novelscripter/deploy/production
+docker compose build
+docker compose up -d
+```
+
+Quick local start scripts:
+
+```bash
+start-local.bat
+./start-local.sh
+```
+
+Verified local test run on 2026-06-06:
+
+```bash
+# Backend
+cd apps/api
+D:\learn\qiyunniu-2\apps\api\venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8017
+
+# Frontend
+cd apps/web
+cmd /c set NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8017&& npm run dev -- --hostname 127.0.0.1 --port 3000
+```
 
 ## Architecture
 
-规划架构：
-
-- 前端：Next.js、React、TypeScript、Tailwind CSS、Monaco Editor、Ajv、Zustand、TanStack Query。
-- 后端：FastAPI、Pydantic、PyYAML 或 ruamel.yaml、Instructor、可选 LangGraph。
-- 大模型：支持 OpenAI-compatible API，也支持本地 Ollama、vLLM、llama.cpp。
-- 数据结构：Schema-first，后端使用 Pydantic 定义模型并生成 JSON Schema，最终序列化为 YAML。
-- 核心流水线：小说导入 -> 章节识别 -> 文本预处理 -> 逐章理解 -> 故事圣经合并 -> 场景拆分 -> 剧本生成 -> Schema 校验 -> 编辑与导出。
-
-当前实现：
-
-- `apps/api`：FastAPI 后端，包含章节识别、LLM Provider、fallback 生成器、剧本生成、校验、导出、SQLite 项目/任务持久化、本地项目成员会话、Bearer token 鉴权、可切换任务队列底座、SSE 任务进度流、批量改写任务和 pytest。
-- `apps/api/longform.py`：LongformChunker 长篇上下文层，按章节压缩小说输入，保留标题、字数、段落数、首部/中部/尾部证据摘录和场景规划提示，供 LLM 改编计划使用。
-- `apps/api/embeddings.py`：本地 deterministic embedding 层，用于离线语义证据检索；当前是可替换底座，不是最终生产级 embedding API。
-- `apps/api/evidence.py`：场景证据检索层，根据 SQLite FTS 证据库、`source_refs`、相邻段落和关键词命中返回 `SourceEvidence`，用于约束局部改写。
-- `apps/web`：Next.js 企业级工作台，已按 Arc Studio 专业剧本编辑器方向重构，支持样例、章节索引、项目库、保存项目、启动任务、任务进度、剧本文稿、故事结构、场景证据、审阅意见、评论指派、线程回复、评论解决/重开、项目成员、项目会话、通知、审计事件过滤、质量中心、批量改写任务、制片拆解、诊断型 YAML 编辑器、校验、局部改写和导出。
-- `schemas/screenplay.schema.json`：JSON Schema。
-- `docs/SCHEMA.md`、`docs/DEMO.md`、`README.md`：提交和演示文档。
-- `examples/sample_novel.md`、`examples/sample_output.yaml`：示例输入输出。
-- `ENTERPRISE_V2_PLAN.md`：企业级 V2 方向、已实现能力和未完成边界。
+- Frontend: Next.js 14, React 18, TypeScript, Tailwind CSS, Zustand.
+- Backend: FastAPI, Pydantic, OpenAI-compatible LLM calls through `httpx`.
+- Main frontend entry: `apps/web/src/features/import/ImportPage.tsx` creates a project and starts the pipeline.
+- Main frontend API wrapper: `apps/web/src/lib/api.ts`.
+- Main frontend state: `apps/web/src/store/project-store.ts`, `pipeline-store.ts`, `model-store.ts`.
+- Main backend runtime path for the current frontend: `apps/api/app/routers/projects.py`.
+- Backend application entry: `apps/api/app/main.py`.
+- The backend registers separate routers for projects, import, pipeline, editing, export, and models.
+- `projects.py` keeps project, pipeline, chapter, scene, story bible, validation, and rewrite state in memory for the active demo flow, with local SQLite snapshots used to restore projects after backend restarts.
+- Project snapshot persistence lives in `apps/api/app/project_persistence.py`; the default SQLite file is `apps/api/data/novelscripter_projects.sqlite3`, overrideable with `NOVELSCRIPTER_PROJECT_DB`.
+- There is also a modular pipeline under `apps/api/app/core/pipeline.py` and `apps/api/app/services/*`, but the current frontend primarily uses the project-scoped endpoints in `projects.py`.
 
 ## Conventions
 
-- 默认中文回复和中文产品文档。
-- 题目三项目必须按企业级 AI 剧本改编平台开发，不再按“应付比赛的 MVP”标准收敛。
-- 项目应优先保证完整产品链路，而不是只做 prompt wrapper。
-- YAML 生成应采用结构化 JSON/Pydantic 输出后再序列化，避免直接让模型输出最终 YAML。
-- 所有场景应尽量保留 `source_refs`，方便追踪原文来源。
-- 大模型接入必须支持 API 和本地部署两种路径。
+- Do not read or persist `.env` unless explicitly needed and safe; it may contain secrets.
+- Do not write API keys, tokens, passwords, private keys, or server credentials into project memory or source files.
+- The user may provide OpenAI-compatible model settings for temporary tests. Use them only as transient environment variables or request payloads.
+- Project-facing replies should be in Simplified Chinese unless the user asks otherwise.
 
 ## Decisions
 
-- 选题确定为“AI 小说转剧本工具”。
-- 产品定位为“可追踪、可校验、可编辑的剧本改编工作台”。
-- UI 风格锁定为 Arc Studio 专业剧本编辑器方向：左侧项目/原文/章节，中间剧本文稿和场景索引，右侧场景检查/原文证据/改写结果/项目能力检查器。
-- 推荐使用 Fountain 作为剧本导出格式之一，ScreenJSON 作为 Schema 设计参考。
-- 默认模型名使用 `gpt-5.5`，通过 OpenAI-compatible `/chat/completions` 接入。
-- LLM 采用“模型生成改编计划，程序组装严格 Schema”的策略，避免模型直接输出完整 YAML 导致格式不稳定。
-- 若未配置 API key、模型不可用或调用失败，系统自动使用 deterministic fallback，保证 Demo 可跑通，并在 metadata/warnings 中标记。
-- 前端风格选用 B 方案：Arc Studio 的专业剧本编辑器质感为主，融合 Novelcrafter 的故事/证据系统与 Celtx/StudioBinder 的制片拆解模块。
-- V2 已加入质量报告、生产拆解、流水线阶段报告、故事圣经扩展、局部场景改写接口和企业级能力清单 API。
-- 局部场景改写已升级为“证据检索 + LLM JSON 改写计划 + 安全字段应用 + fallback 规则”的路径；响应返回 `evidence`、`diff_summary`、`provider_status`，并保留场景 ID、`source_refs`、章节和角色引用。
-- 本地项目持久化和任务系统已升级为 SQLite 底座：项目/版本/任务写入 `.scriptbridge_data/scriptbridge.sqlite3`，旧 JSON 运行数据会尝试一次性迁移；任务队列支持 `JOB_QUEUE_MODE=inline|background|external`、持久化 request payload、取消、重试、队列状态和 external worker run-once。当前仍是可替换底座，不是最终 Postgres + Redis/Celery/RQ 生产队列架构。
-- 任务进度已提供 SSE 接口 `/api/jobs/{job_id}/events`，前端优先使用 EventSource 实时更新，失败后回退轮询。
-- 证据检索已加入 SQLite FTS5 + 本地 embedding 融合底座：项目生成后会索引章节段落和段落向量，`/api/projects/{project_id}/evidence/search` 可搜索项目证据库；中文检索包含 LIKE 兜底，并融合 `向量证据库命中`。当前不是最终 pgvector/Qdrant/API embedding 生产 RAG。
-- 长篇输入已加入 deterministic LongformChunker：`_build_llm_prompt` 使用 `LONGFORM_CONTEXT` 覆盖所有章节，不再直接截取 `text[:12000]`；metadata pipeline stages 会显示 `stage_longform_context`。当前这仍不是最终向量 RAG 或 LangGraph 多 Agent 长篇理解。
-- YAML 编辑器已从单 textarea 升级为诊断型编辑器壳：行号、校验状态、诊断列表、活动问题高亮、组件边界均已具备；当前仍不是 Monaco Editor + YAML language server。
-- 审阅协作基础已加入：`ProjectComment`、`CommentReply`、`AuditEvent`、`POST /api/projects/{project_id}/comments`、`POST /api/projects/{project_id}/comments/{comment_id}/replies`、`PATCH /api/projects/{project_id}/comments/{comment_id}`、`GET /api/projects/{project_id}/audit-events`、右侧审阅面板、评论指派、线程回复、评论解决/重开和审计过滤动作。当前是单用户评论指派/线程/审计底座，不是完整多人权限、实时协作或指派通知系统。
-- 团队/RBAC/通知底座已加入：`ProjectMember`、`ProjectSession`、`ProjectNotification`、`POST /api/auth/sessions`、`POST /api/projects/{project_id}/members`、`GET /api/projects/{project_id}/notifications`、`PATCH /api/projects/{project_id}/notifications/{notification_id}`；默认成员包含项目负责人、主编、审阅者、编剧、制片、制片审阅；owner/admin 可管理成员，writer 可批量改写，viewer 仅可读通知。协作接口优先使用 Bearer token 解析出的项目成员身份，并覆盖请求体里的 `actor`/`author` 字段；当前是本地项目成员会话底座，不是密码登录、SSO 或完整实时协作。
-- 批量场景改写任务已加入：`POST /api/jobs/rewrite` 从当前项目版本选择显式 `scene_ids`，或自动选择质量标记/低证据/低冲突场景，逐场复用证据约束改写流水线，保存为新版本，重建证据索引，并写入 `rewrite.batch_completed` 审计事件。前端质量中心已有批量改写控制面板，任务进度沿用 SSE。
+- The current verified working mental model is the in-memory demo path:
+  - `POST /api/v1/projects`
+  - `POST /api/v1/projects/{project_id}/pipeline/start`
+  - `GET /api/v1/projects/{project_id}/pipeline/status`
+  - `GET /api/v1/projects/{project_id}/chapters`
+  - `GET /api/v1/projects/{project_id}/story-bible`
+  - `GET /api/v1/projects/{project_id}/validation/errors`
+- Model configuration for the frontend UI is persisted in browser localStorage by `model-store.ts`, not written to backend config files.
+- On 2026-06-06, the active demo path was repaired and verified against a user-provided OpenAI-compatible `gpt-5.5` endpoint without persisting the key:
+  - `projects.py::_call_llm` supports streamed `chat/completions` responses.
+  - `POST /api/v1/projects` accepts both JSON and multipart form uploads.
+  - Project-scoped screenplay, story bible, chapter patch, scene patch/delete, element rewrite/diff, export, and export download endpoints are available under `/api/v1/projects/{project_id}`.
+  - Element generation uses bounded concurrency to keep long runs stable.
+  - Scene, character, and location edits synchronize into the in-memory screenplay data used by preview, validation, and export.
+  - `models.py` test connection performs a real short streamed chat completion check instead of only checking `/models`.
+- On 2026-06-06, the active demo pipeline performance was optimized in `apps/api/app/routers/projects.py`:
+  - Chapter understanding runs with bounded concurrency, default `NOVELSCRIPTER_CHAPTER_CONCURRENCY=2`.
+  - Scene splitting runs with bounded concurrency, default `NOVELSCRIPTER_SCENE_CONCURRENCY=2`.
+  - Element generation runs with bounded concurrency, default `NOVELSCRIPTER_ELEMENT_CONCURRENCY=3`.
+  - Element prompts now generate a compact editable first draft, default `NOVELSCRIPTER_FAST_ELEMENT_TARGET=10`.
+  - LLM stages use capped `max_tokens` to avoid upstream quota pre-charge failures: `NOVELSCRIPTER_CHAPTER_MAX_TOKENS=900`, `NOVELSCRIPTER_SCENE_MAX_TOKENS=1000`, `NOVELSCRIPTER_ELEMENT_MAX_TOKENS=900`, `NOVELSCRIPTER_REWRITE_MAX_TOKENS=600`.
+  - `_call_llm` retries once on interrupted streamed responses such as incomplete chunked reads.
+  - A 3-chapter test sample completed in 151.5 seconds with 14 scenes, 205 elements, 8 characters, 11 locations, 0 validation errors, and a working YAML export.
+- On 2026-06-06, a `HTTP 403 insufficient_user_quota` regression during `chapter_understanding` was diagnosed as the OpenAI-compatible gateway rejecting requests during quota pre-charge because the previous `max_tokens=4000` cap made the estimated charge exceed the remaining balance. The fix above was verified with temporary request-payload model settings only:
+  - 2-chapter smoke project completed in about 105 seconds: 8 scenes, 101 elements, 0 validation errors.
+  - 1-chapter smoke project completed in about 50 seconds: 2 scenes, 24 elements, 11/11 dialogue elements retained `character_id`, 0 validation errors.
+  - Do not record the user-provided API key in source or memory.
+- On 2026-06-06, `apps/web/src/store/pipeline-store.ts` was updated so polling stops when `/pipeline/status` returns 404. This prevents repeated logs after the in-memory backend restarts and old browser tabs keep polling project IDs that no longer exist.
+- A full generated demo project was verified on 2026-06-06 with 3 chapters, 7 scenes, 325 screenplay elements, and 0 validation issues.
+- Project-scoped exports were verified on 2026-06-06 for `yaml`, `json`, `markdown`, `fountain`, and `zip`, including download endpoints.
+- On 2026-06-06, the previously observed UI/runtime issues were fixed and re-verified:
+  - `/favicon.ico` is served from `apps/web/public/favicon.ico` and returns 200 in the browser.
+  - Direct editor URLs restore pipeline status from `/pipeline/status`, so completed projects show overall progress 100% instead of 0%.
+  - Element rewrite output is cleaned server-side by `projects.py::_clean_rewrite_output`, removing common JSON/code-fence/string wrappers before saving.
+  - Textarea layout in the scene editor and story bible editor is explicit and responsive:
+    - `apps/web/src/app/globals.css` gives `.textarea-field` `width: 100%` and `min-width: 0`.
+    - `SceneEditor.tsx` shows "戏剧目的" and "冲突" in a one-column mobile / two-column desktop grid.
+    - `StoryBibleTable.tsx` shows character "描述", "目标", and "性格" in a one-column mobile / three-column desktop grid.
+    - Browser verification passed; temporary screenshots from this QA run were later cleaned.
+  - Browser verification after the fix showed no runtime errors, no 4xx/5xx network failures, and `npm run build` passed.
+- On 2026-06-07, the editor left sidebar was updated in `apps/web/src/components/AppShell.tsx` and `apps/web/src/app/globals.css`:
+  - The import button remains fixed at the top.
+  - The internal left-sidebar sections `处理进度`, `章节结构`, and `原文段落` are vertically resizable with two horizontal drag handles.
+  - Each section scrolls independently and has a minimum height, so one section can be expanded without removing the others.
+  - The default ratio favors chapter browsing: progress 30%, chapter structure 42%, source paragraphs 28%.
+  - Adjusted ratios are persisted in browser localStorage under `novelscripter_left_panel_layout_v1`.
+  - Double-clicking a divider resets the sidebar to the default ratio.
+  - `npm run build` passed and a clean browser session showed no runtime errors. Temporary QA screenshots were later cleaned.
+- On 2026-06-07, the export dialog format cards were aligned in `apps/web/src/components/ExportDialog.tsx`:
+  - Each export format option uses a fixed icon column and a left-aligned text column, so YAML, JSON, Markdown, Fountain, and ZIP labels/descriptions share the same x-axis.
+  - Selected state uses a stable 1px border plus outline shadow rather than changing card dimensions.
+  - The dialog width/height is responsive, keeping the desktop max width at 520px while avoiding mobile overflow and desktop button clipping.
+  - `npm run build` passed and browser checks showed no runtime errors. Temporary QA screenshots were later cleaned.
+- On 2026-06-07, chapter preview cards in the left chapter tree were clarified in `apps/web/src/components/ChapterTree.tsx`:
+  - Expanded chapters label the inline text box as `章节预览`, making it clear the content is a chapter preview rather than a numbered source paragraph.
+  - Preview text is no longer clipped by a fixed `4rem` height. Short previews render fully; longer previews are text-truncated with an explicit expand/collapse control.
+  - Collapsing a chapter resets its preview expansion state.
+  - `npm run build` passed and browser checks showed no runtime errors. Temporary QA screenshots were later cleaned.
+
+- On 2026-06-07, story bible interaction fixes were completed in `apps/web/src/components/StoryBibleTable.tsx`, `apps/web/src/components/RelationshipGraph.tsx`, and `apps/web/src/app/globals.css`:
+  - Duplicate-character merge suggestions now call the project-scoped backend merge endpoint for "merge as A/B"; "do not merge" hides the suggestion and closes the dialog when it was the last suggestion.
+  - The timeline tab uses the user's selected B plan: desktop rows render as a horizontal snake sequence such as 1-2-3 then 6-5-4, while mobile remains single-column.
+  - The relationship graph now has visible labelled directional edges. If explicit character relationships are missing, edges are inferred from shared timeline appearances.
+  - React Flow controls and attribution are hidden. The MiniMap is normally hidden and appears only while the graph canvas is panned, then hides after movement stops.
+  - The relationship graph height is resizable from 320px to 920px and resets on divider double-click.
+  - Relationship graph node positions, viewport, and height are persisted in browser localStorage under `novelscripter_relationship_graph_layout_v2:{projectId}`, so switching tabs or returning to the graph does not reset custom layout.
+  - Verified with `npm run build` and browser checks. Temporary QA screenshots were later cleaned.
+- On 2026-06-07, the YAML editor toolbar was updated in `apps/web/src/components/YamlEditor.tsx`:
+  - Added a compact `Schema说明` button next to the YAML toolbar actions.
+  - Clicking it expands an inline `Schema说明（摘要）` panel that explicitly says the panel is only a common-structure summary and links to the full human doc `docs/SCHEMA.md` plus the machine validator `apps/api/app/schemas/screenplay.schema.json`.
+  - The detail section is expanded by default and can be collapsed. It covers top-level structure, each top-level field's type/purpose/key fields, ID examples, common enum values, and reference-consistency rules.
+  - The panel has its own vertical scroll area, so the detailed schema guide does not push the YAML editor out of the right panel.
+  - The toolbar can wrap in narrow right panels, while long schema paths break safely instead of overflowing.
+  - Verified with `npm run build` and browser checks. Temporary QA screenshots were later cleaned.
+- On 2026-06-07, `docs/YAML_SCREENPLAY_SCHEMA.md` was added as a plain-language assignment/project document explaining what Schema and YAML Schema mean, how they differ, and why the novel-to-screenplay YAML Schema uses `schema_version`, `project`, `story_bible`, `chapters`, `scenes`, and `metadata`.
+- On 2026-06-07, the right editor panel and export flow were updated for full Schema documentation:
+  - `apps/web/src/components/AppShell.tsx` removed the right-panel `校验` tab and added a `说明文档` tab. The right tab order is now `YAML`, `剧本预览`, `说明文档`, `生成日志`.
+  - `apps/web/src/components/DocumentationPanel.tsx` was added. It has two inner tabs: `YAML Schema` and `Schema 设计原因`, with detailed front-end readable documentation, schema structure, ID rules, enum rules, reference rules, a minimal YAML example, design reasons, and Schema-first workflow notes.
+  - `apps/web/src/components/ExportDialog.tsx`, `apps/web/src/lib/api.ts`, and `apps/web/src/lib/types.ts` now support `docs` / `说明文档` export. The docs export hides validation status and ordinary export options because it is project-independent.
+  - `apps/api/app/routers/projects.py` now supports project-level `docs` export and global documentation export routes:
+    - `POST /api/v1/projects/documentation/export`
+    - `GET /api/v1/projects/documentation/export/download`
+  - The docs export zip contains `YAML_SCREENPLAY_SCHEMA.md`, `SCHEMA.md`, `screenplay.schema.json`, and `manifest.json`.
+  - Static documentation export routes must stay before dynamic `/{project_id}/export` routes in `projects.py` to avoid route collision.
+  - `apps/api/app/main.py` reports `docs` in `/api/v1/info` supported formats.
+  - Verified with `npm run build`, `python -m py_compile apps\api\app\routers\projects.py apps\api\app\main.py`, API smoke tests, and browser checks. Temporary QA screenshots were later cleaned.
+- On 2026-06-07, local SQLite project persistence was added for the active demo backend:
+  - `apps/api/app/project_persistence.py` stores one sanitized JSON snapshot per project in `project_snapshots`.
+  - `apps/api/app/main.py` calls `load_persisted_projects_into_memory()` during FastAPI startup, so saved projects are restored into `_projects_store`.
+  - `apps/api/app/routers/projects.py` persists snapshots after project creation/update, pipeline start/cancel/completion/failure, stage completion/error, screenplay sync, validation repair, and project deletion.
+  - `apps/api/app/routers/editing.py` and `apps/api/app/routers/pipeline.py` also persist snapshots after legacy edit/pipeline routes mutate project data.
+  - The default database path is `apps/api/data/novelscripter_projects.sqlite3`; set `NOVELSCRIPTER_PROJECT_DB` to use another path.
+  - `_model_config` and keys containing `api_key`, `apikey`, `token`, `secret`, `password`, or `private_key` are stripped before writing snapshots.
+  - Verified with a temporary `NOVELSCRIPTER_PROJECT_DB`: created a project, confirmed one SQLite row, confirmed the payload did not contain sensitive key names, restarted Uvicorn, and confirmed `GET /api/v1/projects/` still returned the project.
+- On 2026-06-07, the active project pipeline was optimized again in `apps/api/app/routers/projects.py`:
+  - The main flow now uses `_stage_scene_element_pipeline()` after story bible merge, so scene splitting and element generation overlap per chapter instead of running as two fully separate serial stages.
+  - Chapter understanding, scene splitting, and element generation use per-project incremental caches under `_pipeline_cache`; cache keys include source text, relevant story data, model/base URL/temperature/max token settings, and a cache version, but not API keys.
+  - The cache is included in the sanitized SQLite project snapshot, so repeating the same project with the same text/model config after restart can reuse completed chapter/scene/element results.
+  - Small scenes are batched for element generation with default `NOVELSCRIPTER_ELEMENT_BATCH_SIZE=2` and `NOVELSCRIPTER_ELEMENT_BATCH_TEXT_LIMIT=2600`, reducing per-scene request overhead while falling back to single-scene generation if a batch response cannot be mapped.
+  - Element generation progress is kept monotonic while the pipeline discovers more scenes, avoiding progress jumping backward in the UI.
+  - Verification: `py_compile` passed for the backend files; fake-LLM smoke tests confirmed first run generates data and second same-project/same-config run makes zero model calls; batch smoke confirmed two scenes can be handled by one element request.
+- On 2026-06-07, a real API smoke/full-flow test was run against a user-provided OpenAI-compatible `gpt-5.5` gateway without persisting the key:
+  - `/api/v1/models/test-connection` returned `connected`; available models included `gpt-5.5`, `gpt-5.4`, `gpt-5.4-mini`, and `codex-auto-review`.
+  - A two-chapter project completed all seven project pipeline stages with 2 chapters, 9 scenes, 119 elements, 6 characters, 7 locations, 16 timeline entries, and 0 validation errors.
+  - Project exports were verified for `yaml`, `json`, `markdown`, `fountain`, `zip`, and `docs`; global documentation export was also verified.
+  - A same-project/same-config rerun completed in about 2.2 seconds, confirming the incremental cache works for repeated runs. The first-run exact 0-to-complete stopwatch was not captured because the initial poll script assumed a non-existent `is_running` field, but the continuous final polling window to completion was about 95.3 seconds.
+- On 2026-06-07, project cleanup removed temporary verification artifacts that are not required for running the app:
+  - Removed root-level `ui-*.png` QA screenshots and the `ui-check/` screenshot folder.
+  - Removed `.codex-api-8028*` logs and `.codex-realtest-projects.sqlite3*` temporary real-test database files.
+  - Removed root `data/` and `scripts/` because they were empty after cleanup.
+  - Removed `apps/api/.pytest_cache`, project/test `__pycache__` folders, and `apps/web/tsconfig.tsbuildinfo`.
+  - Kept `.env`, `apps/api/data/novelscripter_projects.sqlite3`, `apps/api/venv`, `apps/web/node_modules`, `apps/web/.next` while the frontend dev server is running, and active `8017`/`3000` service logs.
+- On 2026-06-07, the user's Ubuntu 22.04 server was checked in read-only mode for deployment feasibility:
+  - The server can deploy this project, but should use a lightweight production setup: FastAPI + Next.js + SQLite snapshot persistence.
+  - Do not deploy the full development compose stack with PostgreSQL, Redis, MinIO, Celery, and vLLM on the current 2 CPU / about 1.6 GiB RAM server; it is too heavy and unnecessary for the active demo path.
+  - Existing public ports 80/443 are owned by the `shengtu-image2` Caddy Docker container. Existing routes include `ggbond686.online`/`img.ggbond686.online`, `api.ggbond686.online`, and `stream.ggbond686.online`; use a new independent subdomain for NovelScripter.
+  - Host Node/npm are not installed, but Docker, Docker Compose, git, rsync, curl, Python 3.10, and pip are available. Prefer Docker-based deployment or build artifacts locally and copy them to the server.
+  - Candidate subdomains such as `qiyunniu.ggbond686.online`, `novel.ggbond686.online`, and `script.ggbond686.online` were not resolving during the check, so public deployment needs a new DNS A record first.
+  - Recommended deployment directory: a new isolated path such as `/opt/novelscripter`, with independent container/service names and a SQLite data volume or bind mount.
+- On 2026-06-07, NovelScripter was deployed to the user's Ubuntu server with the normal Docker production path:
+  - Local deployment files were added under `deploy/production/`: `api.Dockerfile`, `web.Dockerfile`, `docker-compose.yml`, and `README.md`.
+  - `apps/web/next.config.js` now uses `output: 'standalone'` so the production web image can run Next.js standalone output.
+  - The project was uploaded to `/opt/novelscripter` without `.env*`, local virtualenvs, local SQLite data, `node_modules`, or `.next` artifacts.
+  - Server build used the Dockerfiles directly: `docker compose build api` and `docker compose --progress=plain build web`; both completed successfully. The web image ran `next build` inside Docker and passed.
+  - Runtime containers are `novelscripter-api` (`production-api`) and `novelscripter-web` (`production-web`) with a named volume `production_novelscripter_data` for `/workspace/data`.
+  - API health was verified inside the container: `GET http://127.0.0.1:8000/api/v1/health` returned `{"status":"healthy","version":"1.0.0","llm_provider":"api","model_name":"gpt-4o"}`.
+  - The existing Caddy container can reach the app containers on Docker network `shengtu-image2_default`; the Caddyfile now includes a `novel.ggbond686.online` site routing `/api/*` to `novelscripter-api:8000` and other paths to `novelscripter-web:3000`.
+  - Caddy config was validated and reloaded. A timestamped Caddyfile backup was created at `/opt/shengtu-image2/Caddyfile.bak-novel-20260607180031`.
+  - Public HTTPS is currently blocked by DNS, not by the app: Cloudflare authoritative nameservers `heather.ns.cloudflare.com` and `wilson.ns.cloudflare.com` return `NXDOMAIN` for `novel.ggbond686.online`, and Caddy/Let's Encrypt logs show certificate issuance failing for the same DNS reason.
+  - To finish public access, add an authoritative DNS record in Cloudflare DNS: `novel` A record to `8.211.133.149` (prefer DNS-only until Caddy obtains the certificate). After DNS resolves, Caddy should retry certificate issuance automatically or can be reloaded to trigger it sooner.
+  - Later on 2026-06-07, the Cloudflare DNS record resolved correctly to `8.211.133.149`. `caddy reload --force` triggered certificate issuance, and Caddy logged `certificate obtained successfully` for `novel.ggbond686.online`.
+  - Final public verification passed: `https://novel.ggbond686.online` returned HTTP 200 from Next.js, and `https://novel.ggbond686.online/api/v1/health` returned the healthy API payload.
 
 ## Pitfalls
 
-- 不要做成单次 prompt 直接输出 YAML，这会导致格式不稳定、长文本遗漏和难以解释。
-- 不要只展示最终 YAML，必须体现作者可编辑、可校验和可追踪。
-- 注意开源许可证，AGPL 项目只参考思路，不直接复用代码。
-- 不要把 API key、token 或任何敏感配置写入项目记忆或提交文档。
-- Windows PowerShell 的 `Start-Process` 在当前环境不支持 `-Environment` 参数，启动带环境变量的后端时应先在当前 shell 设置 `$env:*` 再启动。
-- Windows PowerShell 内置变量 `$PID` 是只读变量，端口重启脚本不要使用 `$pid` 作为循环变量名，改用 `$procId`。
-- Next dev/build 如果在中途被停止，`.next` 缓存可能出现 `Unexpected end of JSON input` 或 dev 端口 500；先删除 `apps/web/.next` 再重新 `npm --prefix apps/web run build` / `npm --prefix apps/web run dev`。
-- 后端 CORS 默认放行本地前端 3000、3010、3011；如需其他端口，设置 `APP_CORS_ORIGINS` 为逗号分隔 origin 列表。
-- Next dev 在 CSS 热更新后可能出现 React Client Manifest 或 `__webpack_modules__[moduleId] is not a function` 覆盖层；清理 `apps/web/.next` 并重启 dev server 后已验证恢复。
-- 当前 YAML 编辑器是诊断型 textarea 编辑器壳，保留 `YamlEditor` 组件边界，后续可替换 Monaco + YAML language server。
-- 当前局部改写和批量改写已有 LLM 证据改写入口、SQLite FTS + 本地 embedding 证据索引、fallback 规则、版本快照和审计记录，长篇输入已有章节级压缩采样，但还不是完整 LangGraph 多 Agent 改写系统，也不是生产级向量数据库 RAG；后续需要替换为 pgvector/Qdrant/API embedding、map-reduce 故事圣经合成、正式改写审阅流和生产队列。
-- 当前任务队列已有 inline/background/external 模式、持久化 payload、取消、重试和 worker run-once；正式企业级部署仍应替换为 Postgres、Redis/Celery/RQ 等生产级队列、对象存储，并继续完善生产级审计、权限和实时协作。
-- 旧 `.scriptbridge_data/` 运行数据可能包含早期乱码标题；前端已做显示兜底，但不要把这当作当前源码文案问题。
-- 使用浏览器工具验证左侧项目库打开项目时，项目卡片可能位于左栏底部裁切区；应先 `scrollintoview` 到完整卡片后再点击，否则可能看起来没触发 `GET /api/projects/{project_id}`。
+- This directory is now initialized as a Git repository for PR work against `https://github.com/ggbond-1027/scriptbridge-ai.git`.
+- README/docs describe PostgreSQL, Redis, Celery, MinIO, Monaco, and a fuller architecture, but the active code path is mostly an in-memory demo implementation.
+- Backend tests are not currently green. On 2026-06-06, `python -m pytest` in `apps/api` reported 53 passed and 28 failed. Failures clustered around export service bugs, schema validation inconsistencies, and one English chapter title expectation.
+- Frontend build was verified on 2026-06-06 with `npm run build` in `apps/web`; it passed.
+- Some OpenAI-compatible endpoints may require `stream: true`; keep streamed parsing in `_call_llm` and model test checks.
+- Do not raise pipeline LLM concurrency blindly. A test with higher concurrency (`chapter=3`, `element=8`) triggered an incomplete chunked read during chapter understanding. Keep conservative defaults unless the target model endpoint is known to tolerate more parallel requests.
+- Some OpenAI-compatible gateways pre-charge based on the requested `max_tokens`, not actual output tokens. If `HTTP 403` reports `insufficient_user_quota` during early pipeline stages, lower the per-stage `NOVELSCRIPTER_*_MAX_TOKENS` caps before assuming the API key or URL is wrong.
+- Project-scoped `/pipeline/status` currently returns the frontend status payload but does not expose the internal `is_running` flag. Test scripts should determine completion from per-stage statuses unless this API response is expanded.
+- Project data is now restored from local SQLite snapshots after backend restart, but active in-flight pipeline tasks are still process-local. If Uvicorn restarts while a pipeline is running, the project record may be restored while the running task itself is gone.
+- Schema/data shapes are inconsistent across strict JSON Schema, Pydantic models, frontend types, examples, and the live in-memory pipeline.
+- The live frontend pipeline uses `content` for elements, while Pydantic/export paths often expect `text`.
+- Generated `metadata` in the project pipeline may not satisfy the Pydantic `GenerationMetadata` model expected by backend export routes.
+- `apps/api/app/core/export.py` contains a likely bug: location name resolution references an undefined `screenplay` variable.
+- `apps/api/app/routers/pipeline.py` imports `app.routers.import_router`, but the actual file is `import.py`; this can break the older modular pipeline route.
+- `docs/DEMO.md` and frontend built-in sample text may refer to different demo novels.
+- Avoid implementing `favicon.ico` as an App Router route in this project; during dev hot reload it caused stale `.next` server chunk errors. Use the static file under `apps/web/public/favicon.ico`.
+- After `npm run build`, Next dev can serve stale HTML that references missing `/_next/static/*` chunks, causing the page to render server HTML but not hydrate. If buttons do not respond, effects do not run, and chunk requests return 404, stop the frontend dev server, delete `apps/web/.next`, and restart `npm run dev`.
+- On the 2 CPU / about 1.6 GiB RAM server, run production Docker builds serially (`api` first, then `web`) and monitor logs/resource usage. A previous combined build attempt made SSH and HTTP temporarily unresponsive until the server was rebooted.
+- The authoritative DNS provider for `ggbond686.online` is Cloudflare (`heather.ns.cloudflare.com`, `wilson.ns.cloudflare.com`). Adding records in a non-authoritative DNS panel will not make `novel.ggbond686.online` resolve.
 
 ## Current Focus
 
-2026-06-05: 已将项目非代码部分上传到 GitHub `https://github.com/ggbond-1027/scriptbridge-ai`。本地 `origin` 指向该仓库，`main` 分支跟踪 `origin/main`。首个提交 `2dd9b50` 仅包含文档、示例、Schema、`.env.example` 和 `.gitignore`；`apps/` 与 `package.json` 仍留在本地未提交。
-
-当前阶段：Enterprise V2 基础重构继续推进。已完成 SQLite 项目/任务持久化、版本快照、可切换任务队列底座、SSE 任务进度流、SQLite FTS + 本地 embedding 项目证据库、LongformChunker 长篇章节级上下文压缩、Arc Studio 风格前端工作台、诊断型 YAML 编辑器壳、场景证据检索、LLM 约束局部改写入口、批量场景改写任务、改写证据展示、审阅评论、评论指派、线程回复、评论解决/重开、项目成员、项目成员会话、Bearer token 鉴权、RBAC 底座、通知和审计事件过滤基础。API 测试已扩展到 24 个，覆盖 external 队列 worker 执行和 queued job 取消；前端已加入任务队列状态、cancel/retry/Worker run-once 控制。队列底座已用 `JOB_QUEUE_MODE=external` 在本地 8016/3016 验证：worker run-once 执行后队列状态显示 `external`、`queued 0`、`running 0`、`failed 0`、`done 13`，截图位于 `.scriptbridge_data/verify-screens/queue-external-desktop.png`、`.scriptbridge_data/verify-screens/queue-external-mobile.png`、`.scriptbridge_data/verify-screens/queue-external-mobile-queue.png`。当前仍未完成真正企业级最终态：Postgres/生产数据库、Redis/Celery/RQ 生产队列、LangGraph 式多 Agent、生产级向量 RAG 证据库、Monaco YAML language server、密码/SSO 登录、实时协作、外部通知投递和部署包装仍需要继续开发，不能把当前版本说成最终企业级完成。
+- On 2026-06-07, README was updated for GitHub PR/demo presentation work:
+  - Added the public demo URL `https://novel.ggbond686.online` and `/api/v1/health` health check link.
+  - Added local setup, quick start scripts, webpage usage steps, Schema documentation locations, documentation export notes, and a demo recording flow.
+  - `.gitignore` excludes `.env`, `.env.*` except `.env.example`, logs, local SQLite/database files, Python virtualenv/cache files, `node_modules`, and `.next`.
+- For functional hardening, prioritize unifying the screenplay schema/data model.
+- For testing with a user-provided model endpoint, avoid persisting the model key and test through transient environment variables or request payloads only.

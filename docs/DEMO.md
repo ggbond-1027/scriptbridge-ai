@@ -1,67 +1,62 @@
-# Demo 操作流程
+# Demo 视频脚本与答辩指南
 
-## 启动
+## Demo 视频脚本（3-5分钟）
 
-后端：
+### 演示顺序
 
-```powershell
-python -m pip install -r apps/api/requirements.txt
-python -m uvicorn apps.api.main:app --reload --host 127.0.0.1 --port 8000
-```
+1. **展示题目要求和项目定位** — "题目要求将3章以上小说转为结构化YAML剧本，我们的 NovelScripter 不只是文本生成工具，而是完整的改编工作流"
+2. **打开工作台** — 选择内置三章小说样例"雨夜来信"
+3. **展示章节识别** — 自动识别3章，每章字数和前300字预览。章节少于3时系统会明确提示不满足要求
+4. **选择改编风格** — 短剧类型 + 自然对白风格
+5. **点击开始生成** — 展示 PipelineStepper 7阶段进度，每阶段显示实际产物数量
+6. **展示故事圣经** — 人物表（含别名归一化：林舟=小舟）、地点表（含氛围描述）、时间线、角色关系
+7. **展示场景卡片** — 每个场景含 dramatic_purpose（戏剧目的）、conflict（冲突）、beats（节拍）
+8. **展示来源追踪** — 点击场景，左侧原文段落自动高亮 source_ref
+9. **切换到 YAML 编辑器** — 展示符合 Schema 的结构化输出，实时校验
+10. **故意修改错误字段** — 删除一个 dramatic_purpose，展示校验错误面板 + 一键修复
+11. **执行局部再生成** — 只重写一个场景的对白，不全篇重写
+12. **导出** — YAML / Markdown / Fountain 三种格式，校验通过确认
+13. **总结技术亮点** — 8条创新点
 
-前端：
+## 答辩表达重点
 
-```powershell
-npm --prefix apps/web install
-npm --prefix apps/web run dev
-```
+答辩时应聚焦以下7条核心差异，强调"我们做的不是普通 prompt wrapper"：
 
-打开：
+1. **结构化工作流而非文本生成** — 小说改编需要7阶段Pipeline，不是单次prompt
+2. **Schema-first 让AI输出可验证、可编辑、可复用** — 先定义结构再让AI填充
+3. **故事圣经保证跨章节一致性** — 人物表+地点表+时间线集中管理，解决长文本改编最常见的人物漂移问题
+4. **来源追踪让作者可以信任和审查AI结果** — 每个场景可追溯到原文段落
+5. **dramatic_purpose/conflict/beats 区别于小说摘要** — 这是真正的编剧方法论，不是简单翻译
+6. **多阶段Pipeline让长文本处理更稳定** — 每阶段独立校验修复，避免单prompt失控
+7. **API和本地模型双模式具备真实部署价值** — 云端保证质量，本地保证隐私和离线能力
 
-```text
-http://127.0.0.1:3000
-```
+## Demo 前检查清单
 
-## 演示脚本
+Demo 录制前必须验证以下5项：
 
-1. 打开页面，说明这是本地 Web 工作台，前后端分离。
-2. 点击“使用样例”，载入三章小说。
-3. 点击“检测章节”，展示识别到 3 章和段落预览。
-4. 保持“优先调用 API/本地模型”开启，点击“生成剧本”。
-5. 如果没有 API key，系统会自动 fallback，并在顶部显示 provider 状态。
-6. 展示故事圣经：人物、地点。
-7. 展示场景卡片：场景目的、冲突、人物、地点。
-8. 切换右侧 YAML，说明输出是结构化 YAML。
-9. 点击“校验”，展示 Schema 通过。
-10. 切换预览，展示标准剧本阅读效果。
-11. 点击导出 YAML、Markdown、Fountain。
+- [ ] **无 API Key 泄露** — 检查 .env 文件不在 Git 仓库中，前端不暴露 key
+- [ ] **示例项目可一键跑通** — 从导入到导出完整链路无中断
+- [ ] **生成失败时有清晰错误提示** — 错误信息转换为用户可理解的语言
+- [ ] **导出文件可打开** — YAML/Markdown/Fountain 三种文件格式正确
+- [ ] **README 中命令可执行** — pip install / npm install / uvicorn / npm run dev 都能成功运行
 
-## 模型配置演示
+## 成败标准
 
-API 模式：
+### 最低成功标准（必须达成）
 
-```powershell
-$env:LLM_PROVIDER="api"
-$env:OPENAI_API_KEY="你的 key"
-$env:OPENAI_BASE_URL="https://api.openai.com/v1"
-$env:MODEL_NAME="gpt-5.5"
-python -m uvicorn apps.api.main:app --reload --host 127.0.0.1 --port 8000
-```
+1. 能导入 3 章以上小说
+2. 能生成结构化 YAML
+3. YAML 能通过 Schema 校验
+4. README 能说明如何运行
+5. Demo 能展示完整链路
 
-本地 Ollama/vLLM 模式：
+### 高质量标准（争取达成）
 
-```powershell
-$env:LLM_PROVIDER="local"
-$env:OPENAI_BASE_URL="http://127.0.0.1:11434/v1"
-$env:OPENAI_API_KEY="ollama"
-$env:MODEL_NAME="qwen3"
-python -m uvicorn apps.api.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-## 讲解重点
-
-- 多阶段 Pipeline：章节识别、故事圣经、场景拆分、剧本生成、Schema 校验。
-- Schema-first：后端使用 Pydantic 结构化对象，最终序列化为 YAML。
-- 来源追踪：场景保留 `source_refs`。
-- 双模型路径：API 优先，本地 OpenAI-compatible 模型可切换，失败有 fallback。
-- 交付完整：YAML、Markdown、Fountain、Schema 文档、README、测试。
+1. 有故事圣经和来源追踪
+2. 有 dramatic_purpose/conflict/beats 标注
+3. 有场景卡片编辑
+4. 有实时校验和一键修复
+5. 有局部再生成
+6. 有 Fountain/Markdown 导出
+7. 模型支持 API 和本地部署
+8. 有角色关系图可视化

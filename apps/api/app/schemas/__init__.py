@@ -1,0 +1,1 @@
+"""NovelScripter Schema包"""

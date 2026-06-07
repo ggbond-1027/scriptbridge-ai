@@ -1,0 +1,98 @@
+name: story_bible_merge
+version: "1.0"
+model_tier: premium
+system_prompt: |
+  你是一个专业的故事架构分析师，擅长整合和归一化小说中的角色、地点和时间线信息。
+  你的核心任务是：
+  1. 角色别名归一化：识别同一角色的不同称呼（如全名、简称、昵称、称谓变化）
+  2. 地点同一性判断：合并名称相似或含义相同的地点
+  3. 时间线排序：按事件发生顺序排列，检测时间矛盾
+  4. 关系图谱整合：合并不同章节中描述的角色关系
+
+  你需要特别注意：
+  - "李明"、"小明"、"明哥"、"李先生"可能指同一个人
+  - "公司办公室"和"办公室"可能指同一个地点
+  - 时间线中的事件顺序必须合理
+  - 角色关系的描述必须一致
+
+user_prompt_template: |
+  请合并以下各章节分析结果，生成统一的故事圣经。
+
+  ## 逐章分析结果:
+  {chapter_understandings}
+
+  要求：
+  1. 合并所有角色信息，进行别名归一化
+  2. 合并所有地点信息，进行同一性判断
+  3. 按时间顺序排列所有事件
+  4. 统一角色关系描述
+  5. 检查是否有时间线矛盾
+
+  请输出JSON格式：
+  {
+    "characters": [
+      {
+        "name": "归一化后的角色名",
+        "aliases": ["所有别名"],
+        "role": "角色类型",
+        "description": "合并后的描述",
+        "goals": "角色目标",
+        "personality": "性格",
+        "appearance": "外貌",
+        "relationships": [{"character_name": "...", "type": "...", "description": "..."}]
+      }
+    ],
+    "locations": [
+      {
+        "name": "归一化后的地点名",
+        "type": "地点类型",
+        "description": "合并后的描述",
+        "atmosphere": "氛围"
+      }
+    ],
+    "timeline": [
+      {
+        "chapter_id": "章节ID",
+        "event": "事件描述",
+        "description": "详细描述",
+        "characters": ["涉及角色"],
+        "location": "发生地点"
+      }
+    ],
+    "conflicts_resolved": ["解决的别名冲突描述"],
+    "timeline_conflicts": ["检测到的时间矛盾"]
+  }
+
+few_shot_examples:
+  - input: |
+      章节1分析:
+      characters: [{name: "林晓", aliases: ["晓晓"], role: "protagonist"}, {name: "陈经理", role: "supporting"}]
+      章节2分析:
+      characters: [{name: "林晓", aliases: ["小林"], role: "protagonist"}, {name: "陈远", aliases: ["陈经理"], role: "supporting"}]
+    output:
+      characters:
+        - name: "林晓"
+          aliases: ["晓晓", "小林"]
+          role: "protagonist"
+        - name: "陈远"
+          aliases: ["陈经理"]
+          role: "supporting"
+      conflicts_resolved: ["陈经理和陈远是同一人物，归一化为陈远"]
+
+output_schema:
+  type: object
+  required: ["characters", "locations", "timeline"]
+  properties:
+    characters:
+      type: array
+    locations:
+      type: array
+    timeline:
+      type: array
+    conflicts_resolved:
+      type: array
+    timeline_conflicts:
+      type: array
+
+max_retries: 3
+temperature: 0.2

@@ -1,0 +1,110 @@
+name: element_generation
+version: "1.0"
+model_tier: premium
+system_prompt: |
+  你是一个专业的剧本编剧助手，擅长将小说文本转换为剧本元素（动作、对话、旁白/内心独白、转场等）。
+  你的核心任务是将每个场景的内容转化为完整的剧本元素序列。
+  包括：
+    1. 每个元素必须指定类型（action, dialogue, parenthetical, transition, voice_over, shot, note）
+    2. 对话元素必须指定角色（character_name）
+    3. 对话必须自然、生动
+有角色特色
+    4. 保持叙事连贯性
+    不要添加角色解释或旁白提示语
+    5. 动作描写要简洁、视觉化
+    6. 对话节奏感把控（适当加快或放慢
+    7. 场景切换时的转场要明确
+
+    8. 每个场景需要标注出场角色列表和场景标题行中的出场角色
+
+    8. 注意角色间的互动是否推进情节
+
+  9. 每个场景的源文本范围必须与元素长度控制在约'{source_text}[:3000字，超出则不继续
+  10. 每个场景的元素数量不超过源文本长度（每个场景的元素总数限制在305个左右）
+
+user_prompt_template: |
+  请将以下场景的源文本转化为剧本元素。
+
+  ## 场景信息:
+  {scene_info}
+
+  ## 源文本:
+  {source_text}
+
+  ## 角色列表:
+  {character_info}
+
+  要求：
+    1. 每个元素必须指定类型：action, dialogue, parenthetical, transition, voice_over, shot, note
+    2. 对话元素必须指定角色（character_name）
+    3. 保持叙事连贯性
+    4. 动作描写要简洁、视觉化
+    5. 对话节奏感把控，适当加快和放慢
+    6. 场景切换时的转场要明确
+    7. 保持必要的语气词和情感标记
+    8. 对话要自然、生动，有角色特色
+    9. 保持原有信息不遗漏
+    4. 对话可以适当调整措辞的力度（如需强调时改为有力）
+    6. 不要添加角色解释或旁白提示语
+
+  请输出JSON格式：
+  {"elements": [{"type": "action/dialogue/...", "text": "...", "character_name": "...", "emotion": "...(可选)", "parenthetical": "...(可选)"}]}}
+
+few_shot_examples:
+  - input: |
+      场景内容: 第3章《琅环天堂》（20字）
+        - 角色列表: [林晓,陈远]
+        - 对话: [林晓]："你来了。"       + 林远出场]
+        - 源节冲突: [两人之间的距离感"
+    output:
+      characters:
+        - name: "林晓"
+          aliases: ["晓晓"]
+          role: "protagonist"
+          description: "年轻女性，新入职科技公司，积极乐观"
+          goals: "适应新环境、站稳脚跟"
+          personality: "积极但有些紧张"
+          appearance: "浅蓝色衬衫"
+        - name: "陈远"
+          aliases: ["陈经理"]
+          role: "supporting"
+          description: "技术部经理，冷淡但有好奇心"
+        - name: "科技大厦"
+          type: "indoor"
+          description: "新公司办公楼"
+          atmosphere: "现代、专业"
+      heading:
+        context: "INT"
+        location_name: "科技大厦"
+        time_of_day: "晨"
+      dramatic_purpose: "引入关键配角，建立两人物关系"
+      conflict: "林晓需要适应新环境，面对冷淡的上级陈远"
+      characters: ["林晓", "陈远"]
+      beats:
+        - description: "林晓起床，穿浅蓝衬衫出门上班"
+        - description: "挤地铁去科技大厦"
+        - type: action
+          text: "林晓在公寓中醒来，穿好衣服出门"
+        - type: dialogue
+          character_name: "林晓"
+          text: "新的开始。"
+        - type: dialogue
+          character_name: "陈远"
+          text: "你好，请问你是新来的林晓吗？我是陈远，技术部经理。"
+        - type: transition
+          text: "切至办公室门口"
+
+      - type: voice_over
+          character_name: "林晓"
+          text: "(内心独白)新的开始...不过空荡荡的公寓回头看...窗外的城市，心中充满期待。"
+
+output_schema:
+  type: object
+  required: ["elements"]
+  properties:
+    elements:
+      type: array
+      items:
+        type: string
+max_retries: 2
+temperature: 0.5

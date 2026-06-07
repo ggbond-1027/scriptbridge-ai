@@ -1,0 +1,257 @@
+version: "3.8"
+
+services:
+  # ============================================================
+  # 前端 - Next.js
+  # ============================================================
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    container_name: qiyunniu-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_APP_NAME=NovelScripter
+      - NEXT_PUBLIC_APP_VERSION=1.0.0
+      - NODE_ENV=development
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+
+  # ============================================================
+  # 后端 - FastAPI
+  # ============================================================
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    container_name: qiyunniu-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APP_LOG_LEVEL=INFO
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - API_V1_PREFIX=/api/v1
+      - DATABASE_URL=postgresql://qiyunniu:qiyunniu_dev_password@db:5432/qiyunniu_dev
+      - DATABASE_POOL_SIZE=10
+      - DATABASE_MAX_OVERFLOW=20
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_BACKEND_URL=redis://redis:6379/1
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_EXTERNAL_ENDPOINT=localhost:9000
+      - MINIO_ACCESS_KEY=qiyunniu_minio_access
+      - MINIO_SECRET_KEY=qiyunniu_minio_secret
+      - MINIO_BUCKET_SCREENPLAYS=screenplays
+      - MINIO_BUCKET_EXPORTS=exports
+      - MINIO_SECURE=false
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      - OPENAI_MODEL_NAME=${OPENAI_MODEL_NAME:-gpt-4o}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+      - DEEPSEEK_MODEL_NAME=${DEEPSEEK_MODEL_NAME:-deepseek-chat}
+      - GLM_API_KEY=${GLM_API_KEY}
+      - GLM_BASE_URL=${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}
+      - GLM_MODEL_NAME=${GLM_MODEL_NAME:-glm-4}
+      - LLM_PROVIDER=${LLM_PROVIDER:-api}
+      - OLLAMA_BASE_URL=http://localhost:11434
+      - VLLM_BASE_URL=http://vllm:8001
+      - CELERY_BROKER_URL=redis://redis:6379/2
+      - CELERY_RESULT_BACKEND=redis://redis:6379/3
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000
+      - CORS_ALLOW_METHODS=GET,POST,PUT,DELETE,OPTIONS
+      - CORS_ALLOW_HEADERS=*
+      - CORS_MAX_AGE=86400
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret-key-change-in-production}
+      - JWT_ALGORITHM=HS256
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=60
+    volumes:
+      - ./apps/api:/app
+    depends_on:
+      - db
+      - redis
+      - minio
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ============================================================
+  # Celery Worker - 异步任务处理
+  # ============================================================
+  worker:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    container_name: qiyunniu-worker
+    environment:
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APP_LOG_LEVEL=INFO
+      - DATABASE_URL=postgresql://qiyunniu:qiyunniu_dev_password@db:5432/qiyunniu_dev
+      - REDIS_URL=redis://redis:6379/0
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=qiyunniu_minio_access
+      - MINIO_SECRET_KEY=qiyunniu_minio_secret
+      - MINIO_BUCKET_SCREENPLAYS=screenplays
+      - MINIO_BUCKET_EXPORTS=exports
+      - MINIO_SECURE=false
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      - OPENAI_MODEL_NAME=${OPENAI_MODEL_NAME:-gpt-4o}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL:-https://api.deepseek.com/v1}
+      - DEEPSEEK_MODEL_NAME=${DEEPSEEK_MODEL_NAME:-deepseek-chat}
+      - GLM_API_KEY=${GLM_API_KEY}
+      - GLM_BASE_URL=${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}
+      - GLM_MODEL_NAME=${GLM_MODEL_NAME:-glm-4}
+      - LLM_PROVIDER=${LLM_PROVIDER:-api}
+      - OLLAMA_BASE_URL=http://localhost:11434
+      - VLLM_BASE_URL=http://vllm:8001
+      - CELERY_BROKER_URL=redis://redis:6379/2
+      - CELERY_RESULT_BACKEND=redis://redis:6379/3
+      - CELERY_CONCURRENCY=4
+      - CELERY_TASK_SOFT_TIME_LIMIT=300
+      - CELERY_TASK_TIME_LIMIT=600
+    volumes:
+      - ./apps/api:/app
+    depends_on:
+      - db
+      - redis
+      - minio
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    command: celery -A app.celery_app worker --loglevel=info --concurrency=4
+
+  # ============================================================
+  # PostgreSQL 16
+  # ============================================================
+  db:
+    image: postgres:16-alpine
+    container_name: qiyunniu-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=qiyunniu
+      - POSTGRES_PASSWORD=qiyunniu_dev_password
+      - POSTGRES_DB=qiyunniu_dev
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - qiyunniu-db-data:/var/lib/postgresql/data
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qiyunniu -d qiyunniu_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # Redis 7 Alpine
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: qiyunniu-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - qiyunniu-redis-data:/data
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # MinIO - 对象存储
+  # ============================================================
+  minio:
+    image: minio/minio:latest
+    container_name: qiyunniu-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=qiyunniu_minio_access
+      - MINIO_ROOT_PASSWORD=qiyunniu_minio_secret
+    volumes:
+      - qiyunniu-minio-data:/data
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # vLLM - 本地大模型推理 (可选, profile: local-model)
+  # ============================================================
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: qiyunniu-vllm
+    profiles:
+      - local-model
+    ports:
+      - "8001:8000"
+    environment:
+      - MODEL_NAME=${VLLM_MODEL_NAME:-Qwen/Qwen2.5-14B-Instruct}
+      - GPU_MEMORY_UTILIZATION=${VLLM_GPU_MEMORY_UTILIZATION:-0.85}
+      - MAX_MODEL_LEN=${VLLM_MAX_MODEL_LEN:-8192}
+      - VLLM_API_KEY=local-vllm-api-key
+    volumes:
+      - qiyunniu-vllm-models:/root/.cache/huggingface
+    networks:
+      - qiyunniu-net
+    restart: unless-stopped
+    command: >
+      --model ${VLLM_MODEL_NAME:-Qwen/Qwen2.5-14B-Instruct}
+      --gpu-memory-utilization ${VLLM_GPU_MEMORY_UTILIZATION:-0.85}
+      --max-model-len ${VLLM_MAX_MODEL_LEN:-8192}
+      --served-model-name local-model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+# ============================================================
+# 持久化数据卷
+# ============================================================
+volumes:
+  qiyunniu-db-data:
+    driver: local
+  qiyunniu-redis-data:
+    driver: local
+  qiyunniu-minio-data:
+    driver: local
+  qiyunniu-vllm-models:
+    driver: local
+
+# ============================================================
+# 网络
+# ============================================================
+networks:
+  qiyunniu-net:
+    driver: bridge
