@@ -7,7 +7,6 @@
 
 <p align="center">
   <a href="https://novel.ggbond686.online">在线演示</a> ·
-  <a href="docs/DEMO.md">Demo 脚本</a> ·
   <a href="docs/SCHEMA.md">Schema 文档</a> ·
   <a href="docs/YAML_SCREENPLAY_SCHEMA.md">Schema 设计原因</a>
 </p>
@@ -228,7 +227,6 @@ NovelScripter/
 ├── deploy/production/          # 生产部署配置
 ├── docs/
 │   ├── assets/                 # README 展示截图
-│   ├── DEMO.md                 # Demo 脚本
 │   ├── SCHEMA.md               # Schema 说明
 │   └── YAML_SCREENPLAY_SCHEMA.md
 ├── examples/
@@ -241,15 +239,6 @@ NovelScripter/
 └── README.md
 ```
 
-## Demo 录制建议
-
-1. 先展示在线演示地址和首页截图。
-2. 导入一篇三章以上小说，说明章节识别和原文段落追踪。
-3. 点击开始改编，展示流水线进度。
-4. 展示故事圣经、S 型时间线、关系图谱和场景编辑。
-5. 打开说明文档，讲清楚 YAML Schema 和设计原因。
-6. 打开导出中心，展示 YAML、JSON、Markdown、Fountain、ZIP 和说明文档导出。
-
 ## License
 
-本项目用于课程/比赛 Demo 展示。第三方依赖许可证请参考各依赖项目声明。
+本项目用于课程/比赛项目展示。第三方依赖许可证请参考各依赖项目声明。

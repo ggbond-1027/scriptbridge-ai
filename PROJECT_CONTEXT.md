@@ -231,7 +231,6 @@ cmd /c set NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8017&& npm run dev -- --hos
 - Generated `metadata` in the project pipeline may not satisfy the Pydantic `GenerationMetadata` model expected by backend export routes.
 - `apps/api/app/core/export.py` contains a likely bug: location name resolution references an undefined `screenplay` variable.
 - `apps/api/app/routers/pipeline.py` imports `app.routers.import_router`, but the actual file is `import.py`; this can break the older modular pipeline route.
-- `docs/DEMO.md` and frontend built-in sample text may refer to different demo novels.
 - Avoid implementing `favicon.ico` as an App Router route in this project; during dev hot reload it caused stale `.next` server chunk errors. Use the static file under `apps/web/public/favicon.ico`.
 - After `npm run build`, Next dev can serve stale HTML that references missing `/_next/static/*` chunks, causing the page to render server HTML but not hydrate. If buttons do not respond, effects do not run, and chunk requests return 404, stop the frontend dev server, delete `apps/web/.next`, and restart `npm run dev`.
 - On the 2 CPU / about 1.6 GiB RAM server, run production Docker builds serially (`api` first, then `web`) and monitor logs/resource usage. A previous combined build attempt made SSH and HTTP temporarily unresponsive until the server was rebooted.
@@ -239,13 +238,14 @@ cmd /c set NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8017&& npm run dev -- --hos
 
 ## Current Focus
 
-- On 2026-06-07, README was updated for GitHub PR/demo presentation work:
-  - Added the public demo URL `https://novel.ggbond686.online` and `/api/v1/health` health check link.
-  - Added local setup, quick start scripts, webpage usage steps, Schema documentation locations, documentation export notes, and a demo recording flow.
+- On 2026-06-07, README was updated for GitHub PR/project presentation work:
+  - Added the public site URL `https://novel.ggbond686.online`.
+  - Added local setup, quick start scripts, webpage usage steps, Schema documentation locations, and documentation export notes.
   - `.gitignore` excludes `.env`, `.env.*` except `.env.example`, logs, local SQLite/database files, Python virtualenv/cache files, `node_modules`, and `.next`.
 - On 2026-06-07, README was redesigned in the style of polished open-source project homepages:
-  - Added centered title, entry links, badges, product tour sections, quick experience flow, local run commands, architecture summary, Schema links, and demo recording guidance.
+  - Added centered title, entry links, badges, product tour sections, quick experience flow, local run commands, architecture summary, and Schema links.
   - Added real website screenshots under `docs/assets/`: `novelscripter-home.png`, `novelscripter-docs.png`, and `novelscripter-export.png`.
   - Removed the health-check link and DNS troubleshooting note from the public README.
+- On 2026-06-07, the old public presentation guidance material was removed from `docs/` and README; README now keeps only product, setup, usage, architecture, Schema, and export documentation.
 - For functional hardening, prioritize unifying the screenplay schema/data model.
 - For testing with a user-provided model endpoint, avoid persisting the model key and test through transient environment variables or request payloads only.
