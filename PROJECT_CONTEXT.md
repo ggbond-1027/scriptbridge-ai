@@ -243,5 +243,9 @@ cmd /c set NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8017&& npm run dev -- --hos
   - Added the public demo URL `https://novel.ggbond686.online` and `/api/v1/health` health check link.
   - Added local setup, quick start scripts, webpage usage steps, Schema documentation locations, documentation export notes, and a demo recording flow.
   - `.gitignore` excludes `.env`, `.env.*` except `.env.example`, logs, local SQLite/database files, Python virtualenv/cache files, `node_modules`, and `.next`.
+- On 2026-06-07, README was redesigned in the style of polished open-source project homepages:
+  - Added centered title, entry links, badges, product tour sections, quick experience flow, local run commands, architecture summary, Schema links, and demo recording guidance.
+  - Added real website screenshots under `docs/assets/`: `novelscripter-home.png`, `novelscripter-docs.png`, and `novelscripter-export.png`.
+  - Removed the health-check link and DNS troubleshooting note from the public README.
 - For functional hardening, prioritize unifying the screenplay schema/data model.
 - For testing with a user-provided model endpoint, avoid persisting the model key and test through transient environment variables or request payloads only.
