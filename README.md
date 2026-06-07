@@ -5,8 +5,6 @@
 ## 在线演示
 
 - 演示站点：[https://novel.ggbond686.online](https://novel.ggbond686.online)
-- 健康检查：[https://novel.ggbond686.online/api/v1/health](https://novel.ggbond686.online/api/v1/health)
-- 如果浏览器暂时无法解析域名，通常是本地 DNS 缓存或网络出口问题，可以稍后刷新、切换网络，或清理本地 DNS 缓存后再访问。
 
 ## 功能亮点
 
