@@ -8,7 +8,8 @@
 <p align="center">
   <a href="https://novel.ggbond686.online">在线演示</a> ·
   <a href="docs/SCHEMA.md">Schema 文档</a> ·
-  <a href="docs/YAML_SCREENPLAY_SCHEMA.md">Schema 设计原因</a>
+  <a href="docs/YAML_SCREENPLAY_SCHEMA.md">Schema 设计原因</a> ·
+  <a href="https://www.bilibili.com/video/BV1t5Et6GEUz?vd_source=367974fff09da58d4ec7c6abb9f638b5">demo视频演示</a>
 </p>
 
 <p align="center">

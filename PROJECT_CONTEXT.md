@@ -238,6 +238,15 @@ cmd /c set NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8017&& npm run dev -- --hos
 
 ## Current Focus
 
+- On 2026-06-07, a no-narration feature demo video was generated for the public NovelScripter site:
+  - Final MP4: `docs/video-demo/novelscripter-feature-demo.mp4`.
+  - Specs verified with `ffprobe`: H.264 MP4, 1920x1080, 30 fps, AAC audio, about 72.02 seconds, about 59.4 MiB.
+  - Source HyperFrames project: `docs/video-demo/demo-video/`; captured UI frames are under `docs/video-demo/capture/`.
+  - The video uses real captured UI states from `https://novel.ggbond686.online/`, a Chrome-style frame, cursor/click animation, locally generated low-volume tech ambience, and click/chime sounds.
+  - Public Bilibili upload: `https://www.bilibili.com/video/BV1t5Et6GEUz?vd_source=367974fff09da58d4ec7c6abb9f638b5`.
+  - It intentionally has no voiceover subtitles; the user plans to add narration first and then add subtitles later.
+  - Rendering command used from `docs/video-demo/demo-video/`: `npx --yes hyperframes@0.6.79 render --output "D:\learn\qiyunniu-2\docs\video-demo\novelscripter-feature-demo.mp4" --quality high`.
+  - QA performed: `npm run check` passed with no errors, WCAG text check passed, layout inspect had 0 issues, `blackdetect` found no black-screen segment, and key frames were visually checked. Remaining HyperFrames warnings were non-blocking: reusable click-ring overlap warning and single-file composition size warning.
 - On 2026-06-07, README was updated for GitHub PR/project presentation work:
   - Added the public site URL `https://novel.ggbond686.online`.
   - Added local setup, quick start scripts, webpage usage steps, Schema documentation locations, and documentation export notes.
