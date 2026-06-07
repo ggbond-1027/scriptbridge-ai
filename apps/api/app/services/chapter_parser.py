@@ -1,4 +1,4 @@
-"""章节解析服务 - 支持12种章节模式正则
+r"""章节解析服务 - 支持12种章节模式正则
 
 解析模式：
 1. 第[一二三四五六七八九十百千万0-9]+章
@@ -396,12 +396,13 @@ class ChapterParser:
 
         elif pattern_name in ("english_chapter_lower", "english_chapter_upper"):
             # Chapter X: 标题
+            prefix = "CHAPTER" if pattern_name == "english_chapter_upper" else "Chapter"
             if len(groups) >= 2:
                 chapter_num = groups[0]
                 title = groups[1].strip() if groups[1] else ""
-                return f"Chapter {chapter_num}" + (f": {title}" if title else "")
+                return f"{prefix} {chapter_num}" + (f": {title}" if title else "")
             elif len(groups) >= 1:
-                return f"Chapter {groups[0]}"
+                return f"{prefix} {groups[0]}"
 
         elif pattern_name == "markdown_heading":
             return groups[0].strip() if groups[0] else "未命名章节"

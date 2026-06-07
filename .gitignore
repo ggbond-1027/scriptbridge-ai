@@ -24,6 +24,8 @@ data/projects/
 .scriptbridge_data/
 .ui-check/
 ui-*.png
+PROJECT_CONTEXT.md
+docs/video-demo/
 *.sqlite
 *.sqlite3
 *.db

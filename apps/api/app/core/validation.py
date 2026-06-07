@@ -109,7 +109,7 @@ class SchemaValidator:
         # 验证模型本身
         try:
             # 重新序列化并反序列化来确保数据完整
-            data = screenplay.model_dump()
+            data = screenplay.model_dump(mode="json", exclude_none=True)
             Screenplay.model_validate(data)
         except Exception as e:
             errors.append(ValidationError(
@@ -246,7 +246,7 @@ class SchemaValidator:
                 # 使用jsonschema库校验
                 try:
                     import jsonschema
-                    data = screenplay.model_dump()
+                    data = screenplay.model_dump(mode="json", exclude_none=True)
                     jsonschema.validate(data, schema)
                 except jsonschema.ValidationError as e:
                     errors.append(ValidationError(
@@ -409,6 +409,37 @@ class SchemaValidator:
                     location=f"story_bible.locations[{location.id}].first_appearance",
                     repair_type=RepairType.PROGRAM,
                     actual_value=location.first_appearance,
+                ))
+
+        # 检查空场景
+        for scene in screenplay.scenes:
+            if not scene.elements and not scene.beats:
+                errors.append(ValidationError(
+                    type=ValidationErrorType.REFERENCE,
+                    severity=ErrorSeverity.WARNING,
+                    message=f"空场景: {scene.id} 没有任何元素或节拍",
+                    location=f"scenes[{scene.id}]",
+                    repair_type=RepairType.AI,
+                    actual_value=scene.id,
+                ))
+
+        # 检查孤立角色
+        referenced_chars: Set[str] = set()
+        for scene in screenplay.scenes:
+            referenced_chars.update(scene.characters)
+            for element in scene.elements:
+                if element.character_id:
+                    referenced_chars.add(element.character_id)
+
+        for char_id in character_ids:
+            if char_id not in referenced_chars:
+                errors.append(ValidationError(
+                    type=ValidationErrorType.REFERENCE,
+                    severity=ErrorSeverity.WARNING,
+                    message=f"孤立角色: {char_id} 没有被任何场景引用",
+                    location=f"story_bible.characters[{char_id}]",
+                    repair_type=RepairType.AI,
+                    actual_value=char_id,
                 ))
 
         return errors

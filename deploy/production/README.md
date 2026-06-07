@@ -37,6 +37,6 @@ novel.ggbond686.online {
 Validate before reloading Caddy:
 
 ```bash
-docker exec shengtu-image2-caddy-1 caddy validate --config /etc/caddy/Caddyfile
-docker exec shengtu-image2-caddy-1 caddy reload --config /etc/caddy/Caddyfile
+docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
+docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
 ```

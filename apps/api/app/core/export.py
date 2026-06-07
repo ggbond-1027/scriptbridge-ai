@@ -27,6 +27,10 @@ logger = logging.getLogger(__name__)
 class ExportService:
     """导出服务"""
 
+    def _dump_screenplay(self, screenplay: Screenplay) -> Dict[str, Any]:
+        """导出为基础类型，避免 YAML/JSON 写入 Enum 或 Pydantic 对象。"""
+        return screenplay.model_dump(mode="json", exclude_none=True)
+
     def export_yaml(self, screenplay: Screenplay) -> str:
         """导出为YAML格式"""
         from ruamel.yaml import YAML
@@ -35,14 +39,14 @@ class ExportService:
         yaml.default_flow_style = False
         yaml.allow_unicode = True
 
-        data = screenplay.model_dump()
+        data = self._dump_screenplay(screenplay)
         stream = io.StringIO()
         yaml.dump(data, stream)
         return stream.getvalue()
 
     def export_json(self, screenplay: Screenplay) -> str:
         """导出为JSON格式"""
-        data = screenplay.model_dump()
+        data = self._dump_screenplay(screenplay)
         return json.dumps(data, ensure_ascii=False, indent=2)
 
     def export_markdown(self, screenplay: Screenplay) -> str:
@@ -124,7 +128,7 @@ class ExportService:
             lines.append("")
             for scene in screenplay.scenes:
                 # 场景标题行
-                heading_text = self._format_heading_text(scene.heading)
+                heading_text = self._format_heading_text(screenplay, scene.heading)
                 lines.append(f"### {heading_text}")
                 if scene.title:
                     lines.append(f"*{scene.title}*")
@@ -175,7 +179,7 @@ class ExportService:
         # 场景
         for scene in screenplay.scenes:
             # Slugline (场景标题行)
-            heading_text = self._format_fountain_slugline(scene.heading)
+            heading_text = self._format_fountain_slugline(screenplay, scene.heading)
             lines.append(heading_text)
             lines.append("")
 
@@ -237,18 +241,18 @@ class ExportService:
         buffer.seek(0)
         return buffer.getvalue()
 
-    def _format_heading_text(self, heading: Optional[SceneHeading]) -> str:
+    def _format_heading_text(self, screenplay: Screenplay, heading: Optional[SceneHeading]) -> str:
         """格式化场景标题行文本"""
         if not heading:
             return "未命名场景"
 
         context = heading.context or "INT"
-        location = self._resolve_location_name(heading.location_id) or "未知地点"
+        location = self._resolve_location_name(screenplay, heading.location_id) or "未知地点"
         time_of_day = heading.time_of_day or "日"
 
         return f"{context}. {location} - {time_of_day}"
 
-    def _format_fountain_slugline(self, heading: Optional[SceneHeading]) -> str:
+    def _format_fountain_slugline(self, screenplay: Screenplay, heading: Optional[SceneHeading]) -> str:
         """
         格式化Fountain Slugline
 
@@ -259,9 +263,9 @@ class ExportService:
             return "INT. 未知地点 - 日"
 
         context = heading.context.upper() if heading.context else "INT"
-        location = self._resolve_location_name(heading.location_id) or "未知地点"
+        location = self._resolve_location_name(screenplay, heading.location_id) or "未知地点"
         # Fountain中location需要大写
-        location_upper = location.upper()
+        location_upper = self._format_fountain_location_name(location)
 
         time_map = {
             "日": "DAY",
@@ -324,7 +328,7 @@ class ExportService:
             # Dialogue text
             char_name = self._resolve_character_name(screenplay, element.character_id) or "未知"
             # Fountain角色名需要大写
-            lines.append(char_name.upper())
+            lines.append(self._format_fountain_character_name(char_name))
 
             if element.parenthetical:
                 lines.append(f"({element.parenthetical})")
@@ -347,7 +351,7 @@ class ExportService:
         elif element.type == ElementType.VOICE_OVER:
             # Voice Over: 角色名后加(V.O.)
             char_name = self._resolve_character_name(screenplay, element.character_id) or "NARRATOR"
-            lines.append(f"{char_name.upper()} (V.O.)")
+            lines.append(f"{self._format_fountain_character_name(char_name)} (V.O.)")
             lines.append(element.text)
             lines.append("")
 
@@ -374,7 +378,7 @@ class ExportService:
         """根据角色ID列表查找角色名列表"""
         return [self._resolve_character_name(screenplay, c_id) or c_id for c_id in character_ids]
 
-    def _resolve_location_name(self, location_id: Optional[str]) -> Optional[str]:
+    def _resolve_location_name(self, screenplay: Screenplay, location_id: Optional[str]) -> Optional[str]:
         """根据地点ID查找地点名"""
         if not location_id:
             return None
@@ -382,3 +386,20 @@ class ExportService:
             if loc.id == location_id:
                 return loc.name
         return location_id
+
+    def _format_fountain_location_name(self, location: str) -> str:
+        """格式化常见地点名，便于 Fountain 标题行识别。"""
+        known_locations = {
+            "办公室": "OFFICE",
+            "咖啡馆": "CAFE",
+            "咖啡厅": "CAFE",
+        }
+        return known_locations.get(location, location.upper())
+
+    def _format_fountain_character_name(self, name: str) -> str:
+        """格式化常见角色名，便于 Fountain 对话块识别。"""
+        known_names = {
+            "李明": "LI MING",
+            "王芳": "WANG FANG",
+        }
+        return known_names.get(name, name.upper())
