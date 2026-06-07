@@ -13,3 +13,4 @@ data/projects/
 *.pyc
 *.log
 ui-*.png
+.ui-check/
